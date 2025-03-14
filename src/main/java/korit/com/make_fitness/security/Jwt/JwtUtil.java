@@ -14,9 +14,13 @@ import java.util.Date;
 @Component
 public class JwtUtil {
     private Key key;
+    private long accessTokenExpire;
+    private long refreshTokenExpire;
 
     public JwtUtil(@Value("${jwt.secret}") String secret) {
         key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        accessTokenExpire = 1000l * 60 * 60 * 24;
+        refreshTokenExpire = 1000l * 60 * 60 * 24 * 7;
     }
 
     public String generateToken(String subject, String id, Date expires) {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="korit.com.make_fitness.mapper.UserMapper">
+
+    <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
+        insert into user_tb
+        values (
+            default,
+            3,
+            "customer",
+            #{username},
+            #{password},
+            #{email},
+            #{nickname},
+            #{ph},
+            #{gender},
+            now(),
+            now()
+        )
+    </insert>
+</mapper>
