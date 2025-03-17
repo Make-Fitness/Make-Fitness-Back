@@ -9,17 +9,18 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
+@AllArgsConstructor
+public class Pay {
+    private int paymentId;
     private int customerId;
-    private int userId;
-    private LocalDateTime joinDate;
-    private LocalDateTime expireDate;
-    private LocalDateTime resetDate;
-    private LocalDateTime restDate;
-    private String classStatus;
-    private int classSessionCount;
+    private int classId;
+    private String paymentMethod;
+    private int paymentAmount;
+    private int refund;
+    private int renewal;
+    private int monthly;
+    private String promotion;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

@@ -11,15 +11,10 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
+public class CustomerState {
+    private int stateId;
     private int customerId;
-    private int userId;
-    private LocalDateTime joinDate;
-    private LocalDateTime expireDate;
-    private LocalDateTime resetDate;
-    private LocalDateTime restDate;
-    private String classStatus;
-    private int classSessionCount;
+    private String statement;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
