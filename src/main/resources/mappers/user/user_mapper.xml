@@ -8,8 +8,7 @@
         insert into user_tb
         values (
             default,
-            3,
-            "customer",
+            "ROLE_CUSTOMER",
             #{username},
             #{password},
             #{email},

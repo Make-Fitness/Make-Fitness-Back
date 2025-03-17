@@ -3,6 +3,7 @@ package korit.com.make_fitness.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import korit.com.make_fitness.entity.User;
 import lombok.Data;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Data
 @Schema(description = "회원가입 정보 DTO")
@@ -25,10 +26,10 @@ public class ReqJoinDto {
     @Schema(description = "성별")
     private String gender;
 
-    public User toUser() {
+    public User toUser(BCryptPasswordEncoder passwordEncoder) {
         return User.builder()
                 .username(username)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .email(email)
                 .nickname(nickname)
                 .ph(ph)

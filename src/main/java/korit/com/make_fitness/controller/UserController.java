@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/auth")
 public class UserController {
@@ -22,6 +24,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<User> join(@RequestBody ReqJoinDto reqJoinDto) {
         System.out.println("회원가입 요청 수신: " + reqJoinDto);
+
         return ResponseEntity.ok().body(userService.join(reqJoinDto));
     }
 }
