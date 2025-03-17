@@ -5,5 +5,12 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface UserMapper {
+    // 회원가입
     int insert(User user);
+
+    // 아이디 중복 확인
+    User selectByUsername(String username);
+
+    // 로그인
+    User selectByUserId(int userId);
 }

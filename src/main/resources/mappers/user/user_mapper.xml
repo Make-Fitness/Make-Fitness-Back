@@ -3,6 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="korit.com.make_fitness.mapper.UserMapper">
+    <resultMap id="UserResultMap" type="korit.com.make_fitness.entity.User">
+        <id column="user_id" property="userId" />
+        <result property="roleName" column="role_name" />
+        <result property="username" column="username" />
+        <result property="password" column="password" />
+        <result property="email" column="email" />
+        <result property="nickname" column="nickname" />
+        <result property="ph" column="ph" />
+        <result property="gender" column="gender" />
+        <result property="createdAt" column="created_at" />
+        <result property="updatedAt" column="updated_at" />
+    </resultMap>
 
     <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
         insert into user_tb
@@ -15,8 +27,43 @@
             #{nickname},
             #{ph},
             #{gender},
+<!--            concat('MF', floor(rand() * 1000000)),-->
             now(),
             now()
         )
     </insert>
+    <select id="selectByUsername" resultMap="UserResultMap">
+        select
+            user_id,
+            role_name,
+            username,
+            password,
+            email,
+            nickname,
+            ph,
+            gender,
+            created_at,
+            updated_at
+        from
+            user_tb
+        where
+            username = #{username}
+    </select>
+    <select id="selectByUserId" resultMap="UserResultMap">
+        select
+            user_id,
+            role_name,
+            username,
+            password,
+            email,
+            nickname,
+            ph,
+            gender,
+            created_at,
+            updated_at
+        from
+            user_tb
+        where
+            user_id = #{userId}
+    </select>
 </mapper>
