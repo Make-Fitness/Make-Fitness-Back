@@ -3,6 +3,7 @@ package korit.com.make_fitness.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import korit.com.make_fitness.dto.request.ReqJoinDto;
 import korit.com.make_fitness.dto.request.ReqLoginDto;
+import korit.com.make_fitness.dto.response.RespTokenDto;
 import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.service.UserService;
 import org.apache.ibatis.javassist.NotFoundException;
@@ -30,6 +31,13 @@ public class UserController {
     @Operation(summary = "로그인", description = "로그인 설명")
     @PostMapping("/signin")
     public ResponseEntity<?> signin(@RequestBody ReqLoginDto reqLoginDto) throws NotFoundException {
-        return ResponseEntity.ok().body(userService.getUserByUsername(reqLoginDto));
+        RespTokenDto respTokenDto = RespTokenDto.builder()
+                .type("JWT")
+                .name("AccessToken")
+                .token(userService.login(reqLoginDto))
+                .build();
+
+        return ResponseEntity.ok().body(respTokenDto);
+
     }
 }
