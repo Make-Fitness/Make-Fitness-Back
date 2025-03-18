@@ -77,6 +77,8 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/auth/**")
                         .permitAll()
+                        .requestMatchers("/makefitness/**")
+                        .permitAll()
                         .anyRequest().authenticated());
         return http.build();
     }

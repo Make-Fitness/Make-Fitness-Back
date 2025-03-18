@@ -33,4 +33,9 @@ public class UserRepository {
     public Optional<User> findByUserId(int userId) {
         return Optional.ofNullable(userMapper.selectByUserId(userId));
     }
+
+    // 닉네임 조회
+    public String findNicknameByUserId(int userId) {
+        return userMapper.selectNickNameByUserId(userId);
+    }
 }

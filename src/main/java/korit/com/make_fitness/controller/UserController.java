@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,10 +18,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Operation(summary = "닉네임 추출", description = "닉네임 추출")
-    @GetMapping("/user/me")
-    public ResponseEntity<?> getLoginUser(@Parameter(hidden = true) @AuthenticationPrincipal PrincipalUser principalUser) {
+//    @Operation(summary = "닉네임 추출", description = "닉네임 추출")
+//    @GetMapping("/user/me")
+//    public ResponseEntity<?> getLoginUser(@Parameter(hidden = true) @AuthenticationPrincipal PrincipalUser principalUser) {
+//
+//        return ResponseEntity.ok().body(principalUser.getUser().getNickname());
+//    }
 
-        return ResponseEntity.ok().body(principalUser.getUser().getNickname());
+    @Operation(summary = "닉네임 추출", description = "닉네임 추출")
+    @GetMapping("/user/nickname/{userId}")
+    public ResponseEntity<?> getNickname(@PathVariable int userId) {
+        return ResponseEntity.ok().body(userService.nickname(userId));
     }
 }

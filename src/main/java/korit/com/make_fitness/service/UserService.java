@@ -75,7 +75,10 @@ public class UserService {
                 user.getUsername(),
                 Integer.toString(user.getUserId()),
                 expires);
+    }
 
+    public String nickname(int userId) {
+        return userRepository.findNicknameByUserId(userId);
     }
 
 }

@@ -13,4 +13,7 @@ public interface UserMapper {
 
     // 로그인
     User selectByUserId(int userId);
+
+    // 닉네임 조회
+    String selectNickNameByUserId(int userId);
 }

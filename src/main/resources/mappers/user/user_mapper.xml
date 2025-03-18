@@ -89,4 +89,12 @@
         where
             user_id = #{userId}
     </select>
+    <select id="selectNickNameByUserId" resultType="string">
+        select
+            nickname
+        from
+            user_tb
+        where
+            user_id = #{userId}
+    </select>
 </mapper>
