@@ -3,6 +3,7 @@ package korit.com.make_fitness.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import korit.com.make_fitness.dto.request.ReqJoinDto;
 import korit.com.make_fitness.dto.request.ReqLoginDto;
+import korit.com.make_fitness.dto.response.RespLoginDto;
 import korit.com.make_fitness.dto.response.RespTokenDto;
 import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.service.UserService;
@@ -35,6 +36,18 @@ public class AuthController {
                 .token(userService.login(reqLoginDto))
                 .build();
 
-        return ResponseEntity.ok().body(respTokenDto);
+        User user = userService.getUserByUsername(reqLoginDto);
+
+
+        RespLoginDto respLoginDto = RespLoginDto.builder()
+                .roleName(user.getRoleName())
+                .nickname(user.getNickname())
+                .type(respTokenDto.getType())
+                .name(respTokenDto.getName())
+                .token(respTokenDto.getToken())
+                .build();
+
+
+        return ResponseEntity.ok().body(respLoginDto);
     }
 }
