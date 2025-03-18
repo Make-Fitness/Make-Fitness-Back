@@ -1,5 +1,6 @@
 package korit.com.make_fitness.exception;
 
+import korit.com.make_fitness.controller.advice.FieldError;
 import lombok.Getter;
 
 

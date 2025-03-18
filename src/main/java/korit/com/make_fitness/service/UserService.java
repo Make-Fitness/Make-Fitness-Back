@@ -4,7 +4,7 @@ import korit.com.make_fitness.dto.request.ReqJoinDto;
 import korit.com.make_fitness.dto.request.ReqLoginDto;
 import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.exception.DuplicatedValueException;
-import korit.com.make_fitness.exception.FieldError;
+import korit.com.make_fitness.controller.advice.FieldError;
 import korit.com.make_fitness.repository.UserRepository;
 import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {

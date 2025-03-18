@@ -1,4 +1,4 @@
-package korit.com.make_fitness.exception;
+package korit.com.make_fitness.controller.advice;
 
 import lombok.Builder;
 import lombok.Data;

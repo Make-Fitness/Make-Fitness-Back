@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -22,6 +23,11 @@ public class User {
     private String gender;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private int accountExpired;
+    private int accountLocked;
+    private int credentialsExpired;
+    private int accountEnabled;
 
 
 }
