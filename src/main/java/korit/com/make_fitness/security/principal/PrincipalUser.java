@@ -6,6 +6,7 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Map;
 
 @Getter
 @Builder
-public class PrincipalUser implements UserDetails {
+public class PrincipalUser implements UserDetails, OAuth2User {
     private User user;
     private Map<String, Object> attributes;
     private String name;
@@ -28,15 +29,15 @@ public class PrincipalUser implements UserDetails {
         return user.getPassword();
     }
 
-//    @Override
-//    public String getName() {
-//        return attributes.get("id").toString();
-//    }
-//
-//    @Override
-//    public Map<String, Object> getAttributes() {
-//        return attributes;
-//    }
+    @Override
+    public String getName() {
+        return attributes.get("id").toString();
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

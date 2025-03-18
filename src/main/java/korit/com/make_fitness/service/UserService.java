@@ -69,10 +69,6 @@ public class UserService {
             throw new BadCredentialsException("사용자 정보를 다시 확인하세요.");
         }
 
-        if(!passwordEncoder.matches(reqLoginDto.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("사용자 정보를 다시 확인하세요.");
-        }
-
         Date expires = new Date(new Date().getTime() + (1000l * 60 * 60 * 24));
 
         return jwtUtil.generateToken(

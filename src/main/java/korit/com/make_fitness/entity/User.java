@@ -1,5 +1,6 @@
 package korit.com.make_fitness.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,9 +17,14 @@ public class User {
     private int userId;
     private String roleName;
     private String username;
+    @JsonIgnore
     private String password;
     private String email;
     private String nickname;
+
+    private String oAuth2Name;
+    private String oAuth2Provider;
+
     private String ph;
     private String gender;
     private LocalDateTime createdAt;
