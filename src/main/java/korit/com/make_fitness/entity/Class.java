@@ -9,11 +9,16 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class Class {
-    private int classId;
-    private String className;
+    private int class_id;
+    private int customerId;
+    private int managerId;
+    private int class_subject_id;
+    private LocalDateTime classTime;
+    private int classMaxCustomer;
+    private int classCustomerReserve;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

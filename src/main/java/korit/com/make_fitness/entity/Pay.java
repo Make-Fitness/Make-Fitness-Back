@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Pay {
     private int paymentId;
     private int customerId;
-    private int classId;
+    private int classSubjectId;
     private String paymentMethod;
     private int paymentAmount;
     private int refund;

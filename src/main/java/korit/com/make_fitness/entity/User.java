@@ -27,13 +27,16 @@ public class User {
 
     private String ph;
     private String gender;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
+    
     private int accountExpired;
     private int accountLocked;
     private int credentialsExpired;
     private int accountEnabled;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+
 
 
 }

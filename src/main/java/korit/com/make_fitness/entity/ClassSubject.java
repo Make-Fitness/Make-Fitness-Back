@@ -9,10 +9,11 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Role {
-    private int roleId;
-    private String rolename;
+@AllArgsConstructor
+public class ClassSubject {
+    private int classSubjectId;
+    private String classSubjectName;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

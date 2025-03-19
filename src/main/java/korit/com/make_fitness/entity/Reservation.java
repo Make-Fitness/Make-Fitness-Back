@@ -14,9 +14,7 @@ import java.time.LocalDateTime;
 public class Reservation {
     private int reservationId;
     private int customerId;
-    private int classRegisterId;
-    private int managerId;
-    private String nickname;
+    private int classId;
     private LocalDateTime bookingDate;
     private LocalDateTime bookingTime;
     private String classList;
