@@ -27,7 +27,7 @@ public class User {
 
     private String ph;
     private String gender;
-    
+
     private int accountExpired;
     private int accountLocked;
     private int credentialsExpired;

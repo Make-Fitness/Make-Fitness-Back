@@ -57,10 +57,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                             .accountEnabled(1)
                             .build();
 
+                    userRepository.save(newUser);
                     return userRepository.findByUsername(USERNAME).get();
 
                 });
-
 
         return PrincipalUser.builder()
                 .user(user)
