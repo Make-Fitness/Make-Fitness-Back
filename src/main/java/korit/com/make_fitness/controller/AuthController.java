@@ -38,7 +38,6 @@ public class AuthController {
 
         User user = userService.getUserByUsername(reqLoginDto);
 
-
         RespLoginDto respLoginDto = RespLoginDto.builder()
                 .roleName(user.getRoleName())
                 .nickname(user.getNickname())
@@ -47,7 +46,8 @@ public class AuthController {
                 .token(respTokenDto.getToken())
                 .build();
 
-
         return ResponseEntity.ok().body(respLoginDto);
     }
+
+
 }

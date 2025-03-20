@@ -11,13 +11,5 @@ public class RespTokenDto {
     private String name;
     private String token;
 
-    private String nickname;
-    private String roleName;
 
-    public User toUser() {
-        return User.builder()
-                .nickname(nickname)
-                .roleName(roleName)
-                .build();
-    }
 }
