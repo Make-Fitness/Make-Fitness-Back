@@ -46,8 +46,7 @@ public class AuthController {
                 .name(respTokenDto.getName())
                 .token(respTokenDto.getToken())
                 .build();
-
-
+        
         return ResponseEntity.ok().body(respLoginDto);
     }
 }
