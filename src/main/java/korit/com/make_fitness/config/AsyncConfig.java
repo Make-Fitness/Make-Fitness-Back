@@ -7,4 +7,5 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync    // 비동기 처리
 public class AsyncConfig {
 
+    
 }
