@@ -26,7 +26,7 @@
         insert into user_tb
         values (
             default,
-            "ROLE_CUSTOMER",
+            "ROLE_ANONYMOUS",
             #{username},
             #{password},
             #{email},
