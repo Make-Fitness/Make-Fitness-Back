@@ -10,7 +10,7 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalControllerAdvice {
 
-    // ✅ 중복 예외 처리 (Swagger에서 응답 표시되도록 수정)
+    // ✅ 중복 예외 처리 (Swagger 에서 응답 표시되도록 수정)
     @ExceptionHandler(DuplicatedValueException.class)
     public ResponseEntity<?> duplicatedException(DuplicatedValueException e) {
         List<FieldError> errors = e.getFieldErrors();
