@@ -42,6 +42,7 @@ public class AuthController {
         RespLoginDto respLoginDto = RespLoginDto.builder()
                 .roleName(user.getRoleName())
                 .nickname(user.getNickname())
+                .ph(user.getPh())
                 .type(respTokenDto.getType())
                 .name(respTokenDto.getName())
                 .token(respTokenDto.getToken())
@@ -49,4 +50,12 @@ public class AuthController {
         
         return ResponseEntity.ok().body(respLoginDto);
     }
+
+    @Operation(summary = "비밀번호 변경", description = "비밀번호 변경 설명")
+    @PutMapping("/account/password")
+    public ResponseEntity<?> updatePassword(int userId, String password) {
+        userService.updatePasswordByUserId(userId, password);
+        return ResponseEntity.ok().build();
+    }
+
 }

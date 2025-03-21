@@ -4,6 +4,7 @@ import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -37,5 +38,10 @@ public class UserRepository {
     // 닉네임 조회
     public String findNicknameByUserId(int userId) {
         return userMapper.selectNickNameByUserId(userId);
+    }
+
+    // 비밀번호 변경
+    public void updatePasswordByUserId(int userId, String password) {
+        userMapper.updatePasswordByUserId(userId, password);
     }
 }

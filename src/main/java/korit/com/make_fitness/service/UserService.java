@@ -81,4 +81,11 @@ public class UserService {
         return userRepository.findNicknameByUserId(userId);
     }
 
+    // 비밀번호 변경
+    public void updatePasswordByUserId(int userId, String password) {
+        String newPassword = passwordEncoder.encode(password);
+        userRepository.updatePasswordByUserId(userId, newPassword);
+
+    }
+
 }

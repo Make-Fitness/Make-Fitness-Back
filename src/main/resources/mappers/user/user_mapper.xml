@@ -43,6 +43,7 @@
             now()
         )
     </insert>
+
     <select id="selectByUsername" resultMap="UserResultMap">
         select
             user_id,
@@ -97,4 +98,13 @@
         where
             user_id = #{userId}
     </select>
+
+    <update id="updatePasswordByUserId" keyProperty="userId">
+        update
+            user_tb
+        set
+            password = #{password}
+        where
+            user_id = #{userId}
+    </update>
 </mapper>
