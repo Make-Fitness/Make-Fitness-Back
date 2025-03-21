@@ -1,6 +1,7 @@
 package korit.com.make_fitness.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import korit.com.make_fitness.dto.request.ReqCustomerDto;
 import korit.com.make_fitness.dto.request.ReqUpdateCustomerDto;
 import korit.com.make_fitness.service.MembershipService;
@@ -25,6 +26,10 @@ public class MembershipController {
     @Operation(summary = "멤버십 가입", description = "멤버십 가입 설명")
     @PutMapping("/pilates")
     public ResponseEntity<?> updateMembership(@RequestBody ReqUpdateCustomerDto reqUpdateCustomerDto) {
+        if (reqUpdateCustomerDto.getCustomerId() == 0) {
+            throw new IllegalArgumentException("customerId is required");
+        }
+
         membershipService.updateCustomer(reqUpdateCustomerDto);
         return ResponseEntity.ok().build();
     }

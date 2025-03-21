@@ -18,7 +18,7 @@
             now()
         )
     </insert>
-    <update id="update" keyProperty="customerId">
+    <update id="update" keyProperty="customerId" useGeneratedKeys="true">
         update customer_tb
         set
             expire_date = DATE_ADD(now(), INTERVAL #{classSessionCount} DAY),
