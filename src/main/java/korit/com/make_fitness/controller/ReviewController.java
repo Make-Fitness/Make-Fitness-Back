@@ -1,5 +1,6 @@
 package korit.com.make_fitness.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import korit.com.make_fitness.dto.request.ReqReviewDto;
 import korit.com.make_fitness.entity.Review;
 import korit.com.make_fitness.service.ReviewService;
@@ -17,6 +18,7 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
+    @Operation(summary = "리뷰", description = "리뷰작성 설명")
     @PostMapping("/review")
     public ResponseEntity<Review> writeReview(@RequestBody ReqReviewDto req) {
         Review review = reviewService.createReview(req);
