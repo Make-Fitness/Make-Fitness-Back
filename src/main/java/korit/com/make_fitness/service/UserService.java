@@ -34,8 +34,8 @@ public class UserService {
     public User join(ReqJoinDto reqJoinDto) {
         if(duplicatedByUsername(reqJoinDto.getUsername())) {
             throw new DuplicatedValueException(List.of(FieldError.builder()
-                    .field("username")
-                    .message("이미 존재하는 사용자이름입니다.")
+                    .field("userId")
+                    .message("이미 존재하는 아이디 입니다.")
                     .build()));
         }
 
