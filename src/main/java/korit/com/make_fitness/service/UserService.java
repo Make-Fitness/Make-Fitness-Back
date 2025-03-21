@@ -29,20 +29,13 @@ public class UserService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    // 회원가입(아이디 중복확인, 휴대폰번호 중복확인 포함)
+    // 회원가입(아이디 중복확인 포함)
     @Transactional(rollbackFor = Exception.class)
     public User join(ReqJoinDto reqJoinDto) {
         if(duplicatedByUsername(reqJoinDto.getUsername())) {
             throw new DuplicatedValueException(List.of(FieldError.builder()
                     .field("userId")
                     .message("이미 존재하는 아이디 입니다.")
-                    .build()));
-        }
-
-        if (duplicatedByPhoneNumber(reqJoinDto.getPh())) {
-            throw new DuplicatedValueException(List.of(FieldError.builder()
-                    .field("phoneNumber")
-                    .message("이미 존재하는 휴대폰 번호입니다.")
                     .build()));
         }
 
@@ -56,17 +49,12 @@ public class UserService {
         return userRepository.findByUsername(username).isPresent();
     }
 
-    // 휴대폰 번호 중복확인
-    public boolean duplicatedByPhoneNumber(String ph) {
-
-        return userRepository.findByPhoneNumber(ph).isPresent();
-    }
-
     // 로그인
     public User getUserByUsername(ReqLoginDto reqLoginDto) throws NotFoundException {
         User user = userRepository
                 .findByUsername(reqLoginDto.getUsername())
                 .orElseThrow(() -> new NotFoundException("사용자를 찾지 못했습니다."));
+
 
         return user;
     }
@@ -91,6 +79,13 @@ public class UserService {
 
     public String nickname(int userId) {
         return userRepository.findNicknameByUserId(userId);
+    }
+
+    // 비밀번호 변경
+    public void updatePasswordByUserId(int userId, String password) {
+        String newPassword = passwordEncoder.encode(password);
+        userRepository.updatePasswordByUserId(userId, newPassword);
+
     }
 
 }
