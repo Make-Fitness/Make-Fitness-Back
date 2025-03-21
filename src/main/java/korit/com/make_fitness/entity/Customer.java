@@ -20,6 +20,5 @@ public class Customer {
     private LocalDateTime restDate;
     private String classStatus;
     private int classSessionCount;
-    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

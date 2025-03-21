@@ -74,4 +74,5 @@ spring:
 mybatis:
   mapper-locations:
     - /mappers/user/*.xml
+    - /mappers/membership/*.xml
     - /mappers/*.xml
