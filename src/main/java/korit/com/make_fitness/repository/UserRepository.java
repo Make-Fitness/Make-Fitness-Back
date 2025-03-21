@@ -29,6 +29,10 @@ public class UserRepository {
         return Optional.ofNullable(userMapper.selectByUsername(username));
     }
 
+    public Optional<User> findByPhoneNumber(String ph) {
+        return Optional.ofNullable(userMapper.selectByPhoneNumber(ph));
+    }
+
     // 로그인
     public Optional<User> findByUserId(int userId) {
         return Optional.ofNullable(userMapper.selectByUserId(userId));

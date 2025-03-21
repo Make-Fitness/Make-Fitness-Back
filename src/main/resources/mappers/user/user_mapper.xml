@@ -97,4 +97,27 @@
         where
             user_id = #{userId}
     </select>
+    <select id="selectByPhoneNumber" resultType="korit.com.make_fitness.entity.User">
+        select
+            user_id,
+            role_name,
+            username,
+            password,
+            email,
+            nickname,
+            oauth2_name,
+            oauth2_provider,
+            ph,
+            gender,
+            account_expired,
+            account_locked,
+            credentials_expired,
+            account_enabled,
+            created_at,
+            updated_at
+        from
+            user_tb
+        where
+            ph = #{ph}
+    </select>
 </mapper>

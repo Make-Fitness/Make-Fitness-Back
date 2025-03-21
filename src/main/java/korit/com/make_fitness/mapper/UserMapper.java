@@ -11,6 +11,9 @@ public interface UserMapper {
     // 아이디 중복 확인
     User selectByUsername(String username);
 
+    // 휴대폰 번호 중복확인
+    User selectByPhoneNumber(String ph);
+
     // 로그인
     User selectByUserId(int userId);
 
