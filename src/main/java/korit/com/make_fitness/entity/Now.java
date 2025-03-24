@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Class {
-    private int classId;
+public class Now {
+    private int nowId;
     private int managerId;
     private int classSubjectId;
     private LocalDateTime classTime;

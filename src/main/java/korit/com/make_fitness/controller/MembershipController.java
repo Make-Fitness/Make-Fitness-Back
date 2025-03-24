@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/makefitness")
+@RequestMapping("/api/makefitness")
 public class MembershipController {
     @Autowired
     private MembershipService membershipService;

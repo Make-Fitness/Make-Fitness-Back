@@ -74,6 +74,9 @@ public class UserService {
         return jwtUtil.generateToken(
                 user.getUsername(),
                 Integer.toString(user.getUserId()),
+                user.getNickname(),
+                user.getPh(),
+                user.getRoleName(),
                 expires);
     }
 

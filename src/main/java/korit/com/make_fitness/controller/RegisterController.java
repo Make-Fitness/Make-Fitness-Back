@@ -1,9 +1,8 @@
 package korit.com.make_fitness.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import korit.com.make_fitness.dto.request.ReqReviewDto;
-import korit.com.make_fitness.entity.Review;
-import korit.com.make_fitness.service.ReviewService;
+import korit.com.make_fitness.dto.request.ReqClassDto;
+import korit.com.make_fitness.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,16 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/makefitness")
-public class ReviewController {
+public class RegisterController {
 
     @Autowired
-    private ReviewService reviewService;
+    private RegisterService registerService;
 
-    @Operation(summary = "리뷰", description = "리뷰작성 설명")
-    @PostMapping("/review")
-    public ResponseEntity<Review> writeReview(@RequestBody ReqReviewDto req) {
-        Review review = reviewService.createReview(req);
-        return ResponseEntity.ok().body(review);
+    @Operation(summary = "매니저 권한 수업 등록", description = "매니저 권한 수업 등록 설명")
+    @PostMapping("/classes")
+    public ResponseEntity<?> addClass(@RequestBody ReqClassDto reqClassDto) {
+        return ResponseEntity.ok().body(registerService.insertClass(reqClassDto));
     }
-
 }
