@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Class {
     private int class_id;
-    private int customerId;
     private int managerId;
     private int class_subject_id;
     private LocalDateTime classTime;
