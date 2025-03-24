@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 
     @Autowired
@@ -40,12 +40,12 @@ public class AuthController {
 
 
         RespLoginDto respLoginDto = RespLoginDto.builder()
-                .roleName(user.getRoleName())
-                .nickname(user.getNickname())
-                .ph(user.getPh())
                 .type(respTokenDto.getType())
                 .name(respTokenDto.getName())
                 .token(respTokenDto.getToken())
+                .nickname(user.getNickname())
+                .ph(user.getPh())
+                .roleName(user.getRoleName())
                 .build();
 
         return ResponseEntity.ok().body(respLoginDto);

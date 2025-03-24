@@ -23,10 +23,13 @@ public class JwtUtil {
         refreshTokenExpire = 1000l * 60 * 60 * 24 * 7;
     }
 
-    public String generateToken(String subject, String id, Date expires) {
+    public String generateToken(String subject, String id, String nickName, String ph, String roleName, Date expires) {
         return Jwts.builder()
                 .setSubject(subject)
                 .setId(id)
+                .claim("nickName", nickName)       // ✅ 닉네임 추가
+                .claim("ph", ph) // ✅ 전화번호 추가
+                .claim("roleName", roleName)
                 .setExpiration(expires)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();

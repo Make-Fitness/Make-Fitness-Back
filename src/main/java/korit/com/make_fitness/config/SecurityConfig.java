@@ -75,9 +75,9 @@ public class SecurityConfig {
                 auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**")
                         .permitAll()
-                        .requestMatchers("/auth/**")
+                        .requestMatchers("/api/auth/**")
                         .permitAll()
-                        .requestMatchers("/makefitness/**")
+                        .requestMatchers("/api/makefitness/**")
                         .permitAll()
                         .anyRequest().authenticated());
         return http.build();

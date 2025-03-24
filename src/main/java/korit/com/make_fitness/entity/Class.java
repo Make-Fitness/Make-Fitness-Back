@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Class {
-    private int class_id;
+    private int classId;
     private int managerId;
-    private int class_subject_id;
+    private int classSubjectId;
     private LocalDateTime classTime;
     private int classMaxCustomer;
     private int classCustomerReserve;
