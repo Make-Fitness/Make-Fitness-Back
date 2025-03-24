@@ -6,14 +6,14 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class ReqReviewDto {
+public class ReqReservationDto {
 
     @Schema(description = "회원 아이디")
     private int customerId;
 
-    @Schema(description = "별점")
-    int likeStar;
+    @Schema(description = "수업 아이디")
+    private int classId;
 
-    @Schema(description = "리뷰 내용")
-    String content;
+    @Schema(description = "예약 날짜 및 시간")
+    private LocalDateTime bookingDateTime;
 }

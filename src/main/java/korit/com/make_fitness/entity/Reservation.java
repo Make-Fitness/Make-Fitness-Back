@@ -15,13 +15,8 @@ public class Reservation {
     private int reservationId;
     private int customerId;
     private int classId;
-    private LocalDateTime bookingDate;
-    private LocalDateTime bookingTime;
-    private String classList;
-    private String teacher;
+    private LocalDateTime bookingDateTime;
     private String bookingStatus;
-    private int mySessionCount;
-    private int openSlots;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
