@@ -20,4 +20,7 @@ public class Class {
     private int classCustomerReserve;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private User user;
+    private ClassSubject classSubject;
 }
