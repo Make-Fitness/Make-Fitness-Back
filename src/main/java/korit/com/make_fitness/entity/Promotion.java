@@ -9,12 +9,14 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class Reservation {
-    private int reservationId;
-    private int classId;
-    private int membershipId;
+@NoArgsConstructor
+public class Promotion {
+
+    private int promotionId;
+    private String promotionName;
+    private int promotionSessionCount;
+    private int promotionSessionTime;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
