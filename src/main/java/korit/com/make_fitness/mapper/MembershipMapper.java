@@ -8,4 +8,6 @@ public interface MembershipMapper {
     int insert(Customer customer);
 
     int update(Customer customer);
+
+    Customer findByUserId(int userId);
 }
