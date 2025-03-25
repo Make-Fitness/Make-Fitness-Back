@@ -7,6 +7,15 @@
 
     <insert id="insertReview" keyProperty="reviewId" useGeneratedKeys="true">
         insert into review_tb
-        values(default, #{customerId}, #{likeStar}, #{content}, now())
+        values(default, #{likeStar}, #{content}, now())
     </insert>
+
+    <select id="selectAllReviews" resultType="korit.com.make_fitness.entity.Review">
+        SELECT
+        review_id, likeStar, content, created_at
+        FROM
+        review_tb
+        ORDER BY
+        created_at DESC
+    </select>
 </mapper>

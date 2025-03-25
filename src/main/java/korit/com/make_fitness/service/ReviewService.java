@@ -8,8 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ReviewService {
+
+    public List<Review> getAllReviews() {
+        return reviewRepository.findAll();
+    }
 
     @Autowired
     private ReviewRepository reviewRepository;
@@ -18,7 +24,6 @@ public class ReviewService {
     public Review createReview(ReqReviewDto reqReviewDto) {
 
         Review review = Review.builder()
-                .customerId(reqReviewDto.getCustomerId())
                 .likeStar(reqReviewDto.getLikeStar())
                 .content(reqReviewDto.getContent())
                 .build();

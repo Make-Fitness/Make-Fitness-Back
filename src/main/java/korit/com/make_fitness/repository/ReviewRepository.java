@@ -5,6 +5,8 @@ import korit.com.make_fitness.mapper.ReviewMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ReviewRepository {
 
@@ -15,5 +17,9 @@ public class ReviewRepository {
 
         reviewMapper.insertReview(review);
         return review;
+    }
+
+    public List<Review> findAll() {
+        return reviewMapper.selectAllReviews();
     }
 }

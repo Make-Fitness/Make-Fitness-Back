@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 @Data
 public class ReqReviewDto {
 
-    @Schema(description = "회원 아이디")
-    private int customerId;
-
     @Schema(description = "별점")
     int likeStar;
 
