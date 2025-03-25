@@ -14,4 +14,6 @@ public class RespLoginDto {
     private String nickname;
     private String roleName;
     private String ph;
+
+    private RespCustomerDto customer;
 }

@@ -22,6 +22,11 @@ public class MembershipRepository {
         return Optional.ofNullable(customer);
     }
 
+    public Customer findByUserId(int userId) {
+        Customer customer = membershipMapper.findByUserId(userId);
+        return customer;
+    }
+
     public void update(Customer customer) {
         membershipMapper.update(customer);
     }
