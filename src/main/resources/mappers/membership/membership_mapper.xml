@@ -3,6 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="korit.com.make_fitness.mapper.MembershipMapper">
+    <resultMap id="customerResultMap" type="korit.com.make_fitness.entity.Customer">
+        <id property="customerId" column="customer_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="joinDate" column="join_date"/>
+        <result property="expireDate" column="expire_date"/>
+        <result property="resetDate" column="reset_date"/>
+        <result property="restDate" column="rest_date"/>
+        <result property="classStatus" column="class_status"/>
+        <result property="classSessionCount" column="class_session_count"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
 
     <insert id="insert" keyProperty="customerId" useGeneratedKeys="true">
         insert into customer_tb
@@ -27,4 +39,11 @@
         where
             customer_id = #{customerId}
     </update>
+    <select id="findByUserId" resultMap="customerResultMap">
+        select *
+        from
+            customer_tb
+        where
+            user_id = #{userId}
+    </select>
 </mapper>

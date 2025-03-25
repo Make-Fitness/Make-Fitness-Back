@@ -27,6 +27,10 @@ public class MembershipService {
         return customer;
     }
 
+    public Customer getCustomerByUserId(int userId) {
+        return membershipRepository.findByUserId(userId);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public void updateCustomer(ReqUpdateCustomerDto reqUpdateCustomerDto) {
 

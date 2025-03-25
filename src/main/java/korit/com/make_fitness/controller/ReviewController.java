@@ -6,10 +6,9 @@ import korit.com.make_fitness.entity.Review;
 import korit.com.make_fitness.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/makefitness")
@@ -23,6 +22,13 @@ public class ReviewController {
     public ResponseEntity<Review> writeReview(@RequestBody ReqReviewDto req) {
         Review review = reviewService.createReview(req);
         return ResponseEntity.ok().body(review);
+    }
+
+    @Operation(summary = "리뷰 목록 조회", description = "등록된 리뷰들을 모두 불러옵니다.")
+    @GetMapping("/review")
+    public ResponseEntity<List<Review>> getReviews() {
+        List<Review> reviews = reviewService.getAllReviews();
+        return ResponseEntity.ok().body(reviews);
     }
 
 }

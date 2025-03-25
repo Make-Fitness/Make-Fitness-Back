@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Review {
     private int reviewId;
-    private int customerId;
     private int likeStar;
     private String content;
     private LocalDateTime createdAt;
