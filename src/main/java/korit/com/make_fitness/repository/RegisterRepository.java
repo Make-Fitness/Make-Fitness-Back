@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,12 +15,17 @@ public class RegisterRepository {
     @Autowired
     private RegisterMapper registerMapper;
 
-    public Optional<Class> save(Class classes) {
+    public Optional<List<Class>> save(List<Class> classes) {
         try {
-            registerMapper.save(classes);
+            registerMapper.insert(classes);
         } catch (DuplicateKeyException e) {
             return Optional.empty();
         }
         return Optional.ofNullable(classes);
+    }
+
+    public Optional<List<Class>> findAll() {
+        List<Class> foundList = registerMapper.selectAll();
+        return foundList.isEmpty() ? Optional.empty() : Optional.of(foundList);
     }
 }
