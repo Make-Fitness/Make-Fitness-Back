@@ -50,13 +50,17 @@ public class JwtAuthenticationFilter implements Filter {
     }
 
     private void jwtAuthentication(String accessToken) {
-        if (accessToken == null) return;
+        if (accessToken == null) {
+            System.out.println("❌ 토큰 없음. 인증 처리 생략.");
+            return;
+        }
 
         Claims claims = jwtUtil.parseToken(accessToken);
         int userId = Integer.parseInt(claims.getId());
 
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+        System.out.println("✅ 인증 성공. userId: " + userId);
 
         PrincipalUser principalUser = PrincipalUser.builder().user(user).build();
 

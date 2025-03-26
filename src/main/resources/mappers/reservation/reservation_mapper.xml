@@ -6,10 +6,7 @@
 
     <resultMap id="ReservationResultMap" type="korit.com.make_fitness.entity.Reservation">
         <id property="reservationId" column="reservation_id"/>
-        <result property="customerId" column="customer_id"/>
         <result property="classId" column="class_id"/>
-        <result property="bookingDateTime" column="booking_date_time"/>
-        <result property="bookingStatus" column="booking_status"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
