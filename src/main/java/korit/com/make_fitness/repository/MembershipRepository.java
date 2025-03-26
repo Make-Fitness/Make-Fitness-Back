@@ -1,6 +1,7 @@
 package korit.com.make_fitness.repository;
 
 import korit.com.make_fitness.entity.Customer;
+import korit.com.make_fitness.entity.Membership;
 import korit.com.make_fitness.mapper.MembershipMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
@@ -13,21 +14,20 @@ public class MembershipRepository {
     @Autowired
     private MembershipMapper membershipMapper;
 
-    public Optional<Customer> save(Customer customer) {
+    public Optional<Membership> save(Membership membership) {
         try {
-            membershipMapper.insert(customer);
+            membershipMapper.insert(membership);
         } catch (DuplicateKeyException e) {
             return Optional.empty();
         }
-        return Optional.ofNullable(customer);
+        return Optional.ofNullable(membership);
     }
 
-    public Customer findByUserId(int userId) {
-        Customer customer = membershipMapper.findByUserId(userId);
-        return customer;
+    public Membership findByUserId(int userId) {
+        return membershipMapper.findByUserId(userId);
     }
 
-    public void update(Customer customer) {
-        membershipMapper.update(customer);
+    public void update(Membership membership) {
+        membershipMapper.update(membership);
     }
 }

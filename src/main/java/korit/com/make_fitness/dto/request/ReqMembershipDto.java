@@ -6,10 +6,11 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ReqCustomerDto {
-    @Schema(description = "고유키")
+public class ReqMembershipDto {
+    @Schema(description = "멤버십 가입자 고유키")
     private int userId;
 
-    @Schema(description = "수업 종류")
-    private String classStatus;
+    @Schema(description = "프로모션 고유키")
+    private int promotionId;
+
 }

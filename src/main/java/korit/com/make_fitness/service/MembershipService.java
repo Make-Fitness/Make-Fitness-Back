@@ -1,14 +1,13 @@
 package korit.com.make_fitness.service;
 
-import korit.com.make_fitness.dto.request.ReqCustomerDto;
-import korit.com.make_fitness.dto.request.ReqUpdateCustomerDto;
+import korit.com.make_fitness.dto.request.ReqMembershipDto;
+import korit.com.make_fitness.dto.request.ReqUpdateMembershipDto;
 import korit.com.make_fitness.entity.Customer;
+import korit.com.make_fitness.entity.Membership;
 import korit.com.make_fitness.repository.MembershipRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
 
 @Service
 public class MembershipService {
@@ -17,31 +16,27 @@ public class MembershipService {
     private MembershipRepository membershipRepository;
 
     @Transactional(rollbackFor = Exception.class)
-    public Customer insertCustomer(ReqCustomerDto reqCustomerDto) {
-        Customer customer = Customer.builder()
-                .userId(reqCustomerDto.getUserId())
-                .classStatus(reqCustomerDto.getClassStatus())
+    public Membership insertCustomer(ReqMembershipDto reqMembershipDto) {
+        Membership membership = Membership.builder()
+                .userId(reqMembershipDto.getUserId())
+                .promotionId(reqMembershipDto.getPromotionId())
                 .build();
 
-        membershipRepository.save(customer);
-        return customer;
+        membershipRepository.save(membership);
+        return membership;
     }
 
-    public Customer getCustomerByUserId(int userId) {
+    public Membership getMembershipByUserId(int userId) {
         return membershipRepository.findByUserId(userId);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateCustomer(ReqUpdateCustomerDto reqUpdateCustomerDto) {
+    public void updateMembership(ReqUpdateMembershipDto reqUpdateMembershipDto) {
 
-
-
-        Customer customer = Customer.builder()
-                .customerId(reqUpdateCustomerDto.getCustomerId())
-                .expireDate(reqUpdateCustomerDto.getJoinDate())
-                .classSessionCount(reqUpdateCustomerDto.getClassSessionCount())
+        Membership membership = Membership.builder()
+                .membershipId(reqUpdateMembershipDto.getMembershipId())
                 .build();
 
-        membershipRepository.update(customer);
+        membershipRepository.update(membership);
     }
 }

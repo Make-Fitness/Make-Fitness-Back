@@ -5,8 +5,10 @@ import korit.com.make_fitness.dto.request.ReqJoinDto;
 import korit.com.make_fitness.dto.request.ReqLoginDto;
 import korit.com.make_fitness.dto.response.RespCustomerDto;
 import korit.com.make_fitness.dto.response.RespLoginDto;
+import korit.com.make_fitness.dto.response.RespMembershipDto;
 import korit.com.make_fitness.dto.response.RespTokenDto;
 import korit.com.make_fitness.entity.Customer;
+import korit.com.make_fitness.entity.Membership;
 import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.service.MembershipService;
 import korit.com.make_fitness.service.UserService;
@@ -44,19 +46,33 @@ public class AuthController {
         User user = userService.getUserByUsername(reqLoginDto);
 
         // 고객 정보 조회 조건
-        Customer customer = membershipService.getCustomerByUserId(user.getUserId());
-        RespCustomerDto customerDto = null;
-        if (customer != null) {
-            customerDto = RespCustomerDto.builder()
-                    .customerId(customer.getCustomerId())
-                    .joinDate(customer.getJoinDate())
-                    .expireDate(customer.getExpireDate())
-                    .resetDate(customer.getResetDate())
-                    .restDate(customer.getRestDate())
-                    .classStatus(customer.getClassStatus())
-                    .classSessionCount(customer.getClassSessionCount())
+//        Customer customer = membershipService.getCustomerByUserId(user.getUserId());
+//        RespCustomerDto customerDto = null;
+//        if (customer != null) {
+//            customerDto = RespCustomerDto.builder()
+//                    .customerId(customer.getCustomerId())
+//                    .joinDate(customer.getJoinDate())
+//                    .expireDate(customer.getExpireDate())
+//                    .resetDate(customer.getResetDate())
+//                    .restDate(customer.getRestDate())
+//                    .classStatus(customer.getClassStatus())
+//                    .classSessionCount(customer.getClassSessionCount())
+//                    .build();
+//        }
+
+        Membership membership = membershipService.getMembershipByUserId(user.getUserId());
+        RespMembershipDto membershipDto = null;
+        if(membership != null) {
+            membershipDto = RespMembershipDto.builder()
+                    .membershipId(membership.getMembershipId())
+                    .promotionId(membership.getPromotionId())
+                    .promotionSessionCount(membership.getPromotionSessionCount())
+                    .promotionSessionTime(membership.getPromotionSessionTime())
+                    .expiredDate(membership.getExpiredDate())
                     .build();
         }
+
+
 
         // 응답 객체 생성
         RespLoginDto respLoginDto = RespLoginDto.builder()
@@ -66,7 +82,7 @@ public class AuthController {
                 .nickname(user.getNickname())
                 .ph(user.getPh())
                 .roleName(user.getRoleName())
-                .customer(customerDto)
+                .membership(membershipDto)
                 .build();
 
         return ResponseEntity.ok().body(respLoginDto);
