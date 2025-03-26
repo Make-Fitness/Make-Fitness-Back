@@ -1,9 +1,8 @@
 package korit.com.make_fitness.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.validation.Valid;
-import korit.com.make_fitness.dto.request.ReqCustomerDto;
-import korit.com.make_fitness.dto.request.ReqUpdateCustomerDto;
+import korit.com.make_fitness.dto.request.ReqMembershipDto;
+import korit.com.make_fitness.dto.request.ReqUpdateMembershipDto;
 import korit.com.make_fitness.service.MembershipService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +18,18 @@ public class MembershipController {
 
     @Operation(summary = "멤버십 선택", description = "멤버십 선택 설명")
     @PostMapping("/membership")
-    public ResponseEntity<?> registerMembership(@RequestBody ReqCustomerDto reqCustomerDto) {
-        return ResponseEntity.ok().body(membershipService.insertCustomer(reqCustomerDto));
+    public ResponseEntity<?> registerMembership(@RequestBody ReqMembershipDto reqMembershipDto) {
+        return ResponseEntity.ok().body(membershipService.insertCustomer(reqMembershipDto));
     }
 
     @Operation(summary = "멤버십 가입", description = "멤버십 가입 설명")
     @PutMapping("/pilates")
-    public ResponseEntity<?> updateMembership(@RequestBody ReqUpdateCustomerDto reqUpdateCustomerDto) {
-        if (reqUpdateCustomerDto.getCustomerId() == 0) {
+    public ResponseEntity<?> updateMembership(@RequestBody ReqUpdateMembershipDto reqUpdateMembershipDto) {
+        if (reqUpdateMembershipDto.getMembershipId() == 0) {
             throw new IllegalArgumentException("customerId is required");
         }
 
-        membershipService.updateCustomer(reqUpdateCustomerDto);
+        membershipService.updateMembership(reqUpdateMembershipDto);
         return ResponseEntity.ok().build();
     }
 

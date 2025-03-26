@@ -15,5 +15,5 @@ public class RespLoginDto {
     private String roleName;
     private String ph;
 
-    private RespCustomerDto customer;
+    private RespMembershipDto membership;
 }
