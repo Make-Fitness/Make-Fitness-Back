@@ -11,13 +11,14 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Now {
-    private int nowId;
-    private int managerId;
-    private int classSubjectId;
-    private LocalDateTime classTime;
-    private int classMaxCustomer;
-    private int classCustomerReserve;
+public class Membership {
+
+    private int membershipId;
+    private int userId;
+    private int promotionId;
+    private int promotionSessionCount;
+    private int promotionSessionTime;
+    private LocalDateTime expiredDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

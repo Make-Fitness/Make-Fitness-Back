@@ -13,6 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class DayAttendance {
     private int attendId;
-    private int customerId;
+    private int userId;
     private LocalDateTime attendDate;
 }
