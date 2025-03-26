@@ -4,8 +4,28 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="korit.com.make_fitness.mapper.ReservationMapper">
 
+    <resultMap id="ReservationResultMap" type="korit.com.make_fitness.entity.Reservation">
+        <id property="reservationId" column="reservation_id"/>
+        <result property="customerId" column="customer_id"/>
+        <result property="classId" column="class_id"/>
+        <result property="bookingDateTime" column="booking_date_time"/>
+        <result property="bookingStatus" column="booking_status"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
     <insert id="insertReservation" keyProperty="reservationId" useGeneratedKeys="true">
         insert into reservation_tb
         values(default, #{customerId}, #{classId}, #{bookingDateTime}, #{bookingStatus}, now(), now())
     </insert>
+
+    <select id="findAllByCustomerId" resultMap="ReservationResultMap">
+        select
+            *
+        from
+            reservation_tb
+        where
+            customer_id = #{customerId}
+            order by booking_date_time desc
+    </select>
 </mapper>

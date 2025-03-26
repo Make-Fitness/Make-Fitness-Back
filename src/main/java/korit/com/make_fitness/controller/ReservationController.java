@@ -7,10 +7,7 @@ import korit.com.make_fitness.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/makefitness")
@@ -26,5 +23,12 @@ public class ReservationController {
         Reservation reservation = reservationService.createReservation(reqReservationDto);
 
         return ResponseEntity.ok().body(reservation);
+    }
+
+    @Operation(summary = "수업조회(다건)", description = "수업조회 다건")
+    @GetMapping("reservation/{customerId}")
+    public ResponseEntity<?> getReservations(@PathVariable int customerId) {
+
+        return ResponseEntity.ok().body(reservationService.getAllReservationsByCustomerId(customerId));
     }
 }

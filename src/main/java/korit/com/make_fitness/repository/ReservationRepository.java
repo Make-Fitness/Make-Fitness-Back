@@ -5,6 +5,8 @@ import korit.com.make_fitness.mapper.ReservationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ReservationRepository {
 
@@ -14,5 +16,10 @@ public class ReservationRepository {
     public Reservation save(Reservation reservation) {
         reservationMapper.insertReservation(reservation);
         return reservation;
+    }
+
+    public List<Reservation> findAllByCustomerId(int customerId) {
+
+        return reservationMapper.findAllByCustomerId(customerId);
     }
 }
