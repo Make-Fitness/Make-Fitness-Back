@@ -11,8 +11,9 @@ import java.util.stream.Collectors;
 
 @Data
 public class ReqClassDto {
-    @Schema(description = "사용자 고유키")
-    private int managerId;
+
+    @Schema(description = "트레이너 id")
+    private int userId;
 
     @Schema(description = "수업 고유키")
     private int classSubjectId;
@@ -20,8 +21,11 @@ public class ReqClassDto {
     @Schema(description = "수업 시간")
     private LocalDateTime classTime;
 
-    @Schema(description = "시간과 날짜")
-    private List<Map<String, Integer>> dateTimes;
+    @Schema(description = "최대 수업 인원")
+    private int classMaxCustomer;
+
+    @Schema(description = "최대 수업 인원")
+    private int classCustomerReserve;
 
 }
 
