@@ -19,10 +19,8 @@ public class ReservationService {
     public Reservation createReservation(ReqReservationDto reqReservationDto) {
 
         Reservation reservation = Reservation.builder()
-                .customerId(reqReservationDto.getCustomerId())
                 .classId(reqReservationDto.getClassId())
-                .bookingDateTime(reqReservationDto.getBookingDateTime())
-                .bookingStatus("예약중")
+                .membershipId(reqReservationDto.getMembershipId())
                 .build();
 
         return reservationRepository.save(reservation);

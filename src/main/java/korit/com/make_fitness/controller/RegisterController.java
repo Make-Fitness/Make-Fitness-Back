@@ -15,11 +15,11 @@ public class RegisterController {
     @Autowired
     private RegisterService registerService;
 
-    @Operation(summary = "매니저 권한 수업 등록", description = "매니저 권한 수업 등록 설명")
+/*    @Operation(summary = "매니저 권한 수업 등록", description = "매니저 권한 수업 등록 설명")
     @PostMapping("/classes")
     public ResponseEntity<?> addClass(@RequestBody ReqClassDto reqClassDto) {
         return ResponseEntity.ok().body(registerService.insertClasses(reqClassDto));
-    }
+    } */
 
     @Operation(summary = "매니저 권한 수업 다건 조회", description = "매니저 권한 수업 다건 조회 설명")
     @GetMapping("/classes")
