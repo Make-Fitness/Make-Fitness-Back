@@ -22,8 +22,6 @@ public class ReservationService {
     @Autowired
     private ClassRepository classRepository;
 
-
-
      // 수업 예약 처리 (조건 만족 시 삽입 + 세션 차감 + 정원 증가)
     @Transactional(rollbackFor = Exception.class)
     public void reserveClass(int classId, int membershipId) {
@@ -33,9 +31,9 @@ public class ReservationService {
             throw new IllegalStateException("예약 조건을 만족하지 않아 예약에 실패했습니다.");
         }
 
+        // 예약 인원수 증가
         classRepository.increaseCustomerReserve(classId);
     }
-
 
      // 이미 예약했는지 확인
     @Transactional(readOnly = true)
@@ -48,7 +46,6 @@ public class ReservationService {
     public List<Integer> getClassIdListByMembershipId(int membershipId) {
         return reservationRepository.findClassIdListByMembershipId(membershipId);
     }
-
 
      // 해당 멤버십의 전체 예약 내역 조회
     @Transactional(readOnly = true)
