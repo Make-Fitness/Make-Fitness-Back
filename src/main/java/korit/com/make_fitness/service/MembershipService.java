@@ -30,13 +30,5 @@ public class MembershipService {
         return membershipRepository.findByUserId(userId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void updateMembership(ReqUpdateMembershipDto reqUpdateMembershipDto) {
 
-        Membership membership = Membership.builder()
-                .membershipId(reqUpdateMembershipDto.getMembershipId())
-                .build();
-
-        membershipRepository.update(membership);
-    }
 }

@@ -15,6 +15,8 @@ public class Promotion {
 
     private int promotionId;
     private String promotionName;
+    private int classSubjectId;
+    private int price;
     private int promotionSessionCount;
     private int promotionSessionTime;
     private LocalDateTime createdAt;

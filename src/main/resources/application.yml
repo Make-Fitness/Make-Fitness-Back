@@ -79,5 +79,6 @@ mybatis:
     - /mappers/membership/*.xml
     - /mappers/**/*.xml
     - /mappers/register/*.xml
+    - /mappers/pay/*.xml
 springdoc:
   override-with-generic-response: false

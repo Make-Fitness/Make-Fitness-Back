@@ -27,7 +27,4 @@ public class MembershipRepository {
         return membershipMapper.findByUserId(userId);
     }
 
-    public void update(Membership membership) {
-        membershipMapper.update(membership);
-    }
 }

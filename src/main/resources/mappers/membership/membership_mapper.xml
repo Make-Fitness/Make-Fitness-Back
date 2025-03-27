@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="korit.com.make_fitness.mapper.MembershipMapper">
-    <resultMap id="customerResultMap" type="korit.com.make_fitness.entity.Membership">
+    <resultMap id="membershipResultMap" type="korit.com.make_fitness.entity.Membership">
         <id property="membershipId" column="membership_id"/>
         <result property="userId" column="user_id"/>
         <result property="promotionId" column="promotion_id"/>
@@ -16,36 +16,31 @@
 
 
     <insert id="insert" keyProperty="membershipId" useGeneratedKeys="true">
-        insert into membership_tb
-        values (
-            default,
-            #{userId},
-            #{promotionId},
-            #{promotionSessionCount},
-            #{promotionSessionTime},
-            now(),
-            now(),
-            now()
+        INSERT INTO membership_tb (
+            user_id,
+            promotion_id,
+            promotion_session_count,
+            promotion_session_time,
+            expired_date,
+            created_at,
+            updated_at
         )
+        SELECT
+            #{userId},
+            pt.promotion_id,
+            pt.promotion_session_count,
+            pt.promotion_session_time,
+            DATE_ADD(NOW(), INTERVAL pt.promotion_session_time MONTH),
+            NOW(),
+            NOW()
+        FROM
+            promotion_tb pt
+        WHERE
+            pt.promotion_id = #{promotionId}
     </insert>
-    <update id="update" keyProperty="membershipId" useGeneratedKeys="true">
-        update membership_tb
-        left outer join
-        set
-            promotion_session_count = (
-                select
-                    SUBSTRING_INDEX(#{promotionName}, '_', 2)
-                from
-                    promotion_tb
 
-            ),
-            promotion_session_time = (select #{promotionTime} from promotion_tb),
-            expired_date = DATE_ADD(now(), INTERVAL #{promotionSessionCount} MONTH),
-            updated_at = now()
-        where
-            membership_id = #{membershipId}
-    </update>
-    <select id="findByUserId" resultMap="customerResultMap">
+
+    <select id="findByUserId" resultMap="membershipResultMap">
         select *
         from
             customer_tb
