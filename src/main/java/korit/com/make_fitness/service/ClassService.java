@@ -1,5 +1,6 @@
 package korit.com.make_fitness.service;
 
+import korit.com.make_fitness.dto.response.RespClassListDto;
 import korit.com.make_fitness.entity.Class;
 import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.repository.ClassRepository;
@@ -19,7 +20,6 @@ public class ClassService {
 
     @Transactional(rollbackFor = Exception.class)
     public Class createClass(Class classEntity, User user) throws AccessDeniedException {
-
         if (!user.getRoleName().equals("ROLE_MASTER") && !user.getRoleName().equals("ROLE_MANAGER")) {
             throw new AccessDeniedException("수업 등록 권한이 없습니다.");
         }
@@ -32,21 +32,44 @@ public class ClassService {
         return classEntity;
     }
 
-    // 수업 전체 조회
     @Transactional(readOnly = true)
-    public List<Class> getAllClassWithUserAndSubject() {
-        return classRepository.findAllUserAndSubject();
+    public List<RespClassListDto> getAllClassWithUserAndSubject() {
+        return classRepository.findAllUserAndSubject().stream()
+                .map(this::convertToDto)
+                .toList();
     }
 
-    // 수업 이름으로 조회
     @Transactional(readOnly = true)
-    public List<Class> getBySubjectName(String subjectName) {
-        return classRepository.findBySubjectName(subjectName);
+    public List<RespClassListDto> getBySubjectName(String subjectName) {
+        return classRepository.findBySubjectName(subjectName).stream()
+                .map(this::convertToDto)
+                .toList();
     }
 
-    // 강사 이름으로 조회
     @Transactional(readOnly = true)
-    public List<Class> getByManagerNickname(String nickname) {
-        return classRepository.findByManagerNickname(nickname);
+    public List<RespClassListDto> getByManagerNickname(String nickname) {
+        return classRepository.findByManagerNickname(nickname).stream()
+                .map(this::convertToDto)
+                .toList();
+    }
+
+    public void increaseCustomerReserve(int classId) {
+        classRepository.increaseCustomerReserve(classId);
+    }
+
+    // DTO 변환
+    private RespClassListDto convertToDto(Class c) {
+        return RespClassListDto.builder()
+                .classId(c.getClassId())
+                .userId(c.getUserId())
+                .classSubjectName(c.getClassSubject().getClassSubjectName())
+                .classTime(c.getClassTime().toString())
+                .classMaxCustomer(c.getClassMaxCustomer())
+                .classCustomerReserve(c.getClassCustomerReserve())
+                .remainingSeats(c.getClassMaxCustomer() - c.getClassCustomerReserve())
+                .nickname(c.getUser().getNickname())
+                .ph(c.getUser().getPh())
+                .gender(c.getUser().getGender())
+                .build();
     }
 }

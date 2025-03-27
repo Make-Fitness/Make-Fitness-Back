@@ -13,13 +13,22 @@ public class ReservationRepository {
     @Autowired
     private ReservationMapper reservationMapper;
 
-    public Reservation save(Reservation reservation) {
-        reservationMapper.insertReservation(reservation);
-        return reservation;
+    // ✅ 조건 만족 시 예약 등록 (성공 시 1, 실패 시 0 반환)
+    public int insertReservationIfAllowed(int classId, int membershipId) {
+        return reservationMapper.insertReservation(classId, membershipId);
     }
 
-    public List<Reservation> findAllByCustomerId(int customerId) {
-
-        return reservationMapper.findAllByCustomerId(customerId);
+    public boolean existsByClassAndMembership(int classId, int membershipId) {
+        return reservationMapper.existsByClassAndMembership(classId, membershipId);
     }
+
+    public List<Reservation> findReservationsByMembershipId(int membershipId) {
+        return reservationMapper.findReservationsByMembershipId(membershipId);
+    }
+
+    public List<Integer> findClassIdListByMembershipId(int membershipId) {
+        return reservationMapper.findClassIdListByMembershipId(membershipId);
+    }
+
+
 }

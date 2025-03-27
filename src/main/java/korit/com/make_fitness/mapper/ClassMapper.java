@@ -12,6 +12,5 @@ public interface ClassMapper {
     List<Class> findAllUserAndSubject ();
     List<Class> findBySubjectName (String subjectName);
     List<Class> findByNickName (String NickName);
-
-
+    void increaseCustomerReserve(int classId);
 }

@@ -7,22 +7,56 @@
     <resultMap id="ReservationResultMap" type="korit.com.make_fitness.entity.Reservation">
         <id property="reservationId" column="reservation_id"/>
         <result property="classId" column="class_id"/>
+        <result property="membershipId" column="membership_id"/>
         <result property="createdAt" column="created_at"/>
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <insert id="insertReservation" keyProperty="reservationId" useGeneratedKeys="true">
-        insert into reservation_tb
-        values(default, #{customerId}, #{classId}, #{bookingDateTime}, #{bookingStatus}, now(), now())
+    <!-- ✅ 조건 충족 시에만 인서트 되는 예약 쿼리 -->
+    <insert id="insertReservation" keyProperty="reservationId" >
+        INSERT INTO reservation_tb (class_id, membership_id, created_at, updated_at)
+        SELECT #{classId}, #{membershipId}, NOW(), NOW()
+        FROM dual
+        WHERE EXISTS (
+        SELECT 1
+        FROM class_tb c
+        JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
+        JOIN membership_tb m ON m.membership_id = #{membershipId}
+        LEFT JOIN pay_tb p ON p.user_id = m.user_id AND p.manager_id = c.user_id
+        WHERE c.class_id = #{classId}
+        AND (cs.class_subject_name = 'PT' OR cs.class_subject_name = 'Pilates')
+        AND p.pay_id IS NOT NULL
+        AND m.promotion_session_count > 0
+        AND c.class_customer_reserve &lt; c.class_max_customer
+        AND NOT EXISTS (
+        SELECT 1
+        FROM reservation_tb r
+        WHERE r.class_id = c.class_id
+        AND r.membership_id = m.membership_id
+        )
+        )
     </insert>
 
-    <select id="findAllByCustomerId" resultMap="ReservationResultMap">
-        select
-            *
-        from
-            reservation_tb
-        where
-            customer_id = #{customerId}
-            order by booking_date_time desc
+    <!-- 기존 유지 -->
+    <select id="existsByClassAndMembership" resultType="boolean">
+        SELECT EXISTS (
+        SELECT 1
+        FROM reservation_tb
+        WHERE class_id = #{classId}
+        AND membership_id = #{membershipId}
+        )
     </select>
+
+    <select id="findReservationsByMembershipId" resultMap="ReservationResultMap">
+        SELECT *
+        FROM reservation_tb
+        WHERE membership_id = #{membershipId}
+    </select>
+
+    <select id="findClassIdListByMembershipId" resultType="java.lang.Integer">
+        SELECT class_id
+        FROM reservation_tb
+        WHERE membership_id = #{membershipId}
+    </select>
+
 </mapper>

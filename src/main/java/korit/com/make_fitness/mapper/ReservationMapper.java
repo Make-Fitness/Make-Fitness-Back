@@ -2,17 +2,20 @@ package korit.com.make_fitness.mapper;
 
 import korit.com.make_fitness.entity.Reservation;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface ReservationMapper {
 
-    // 수업 예약
-    int insertReservation(Reservation reservation);
+    int insertReservation(@Param("classId") int classId, @Param("membershipId") int membershipId);
 
-    // 수업 전체 조회
-    List<Reservation> findAllByCustomerId(int customerId);
+    boolean existsByClassAndMembership(@Param("classId") int classId, @Param("membershipId") int membershipId);
+
+    List<Reservation> findReservationsByMembershipId(@Param("membershipId") int membershipId);
+
+    List<Integer> findClassIdListByMembershipId(@Param("membershipId") int membershipId);
 
 
 }

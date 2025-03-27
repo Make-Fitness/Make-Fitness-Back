@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class RespClassListDto {
+    private int classId;
     private int userId;
     private String classSubjectName;
     private String classTime;

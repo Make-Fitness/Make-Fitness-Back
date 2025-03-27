@@ -28,9 +28,15 @@
         values (default, #{userId}, #{classSubjectId}, DATE_FORMAT(#{classTime}, '%Y-%m-%d %H'), #{classMaxCustomer}, #{classCustomerReserve}, now(), now())
     </insert>
 
+    <update id="increaseCustomerReserve">
+        UPDATE class_tb
+        SET class_customer_reserve = class_customer_reserve + 1
+        WHERE class_id = #{classId}
+    </update>
 
     <select id="findAllUserAndSubject" resultMap="ClassResultMap">
         SELECT
+            c.class_id,
             c.user_id,
             s.class_subject_name,
             c.class_time,
@@ -45,6 +51,7 @@
     </select>
     <select id="findBySubjectName" resultMap="ClassResultMap">
         SELECT
+            c.class_id,
             c.user_id,
             s.class_subject_name,
             c.class_time,
@@ -63,6 +70,7 @@
 
     <select id="findByNickName" resultMap="ClassResultMap">
         SELECT
+            c.class_id,
             c.user_id,
             s.class_subject_name,
             c.class_time,

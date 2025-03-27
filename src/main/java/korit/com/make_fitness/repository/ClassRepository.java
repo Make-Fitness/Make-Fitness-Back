@@ -13,24 +13,28 @@ public class ClassRepository {
     @Autowired
     private ClassMapper classMapper;
 
-    // 수업 등록
-    public int insertClass(Class classEntity) {
-        return classMapper.insertClass(classEntity);
+    // ✅ 수업 등록
+    public void insertClass(Class classEntity) {
+        classMapper.insertClass(classEntity);
     }
 
-    // 수업 전체 조회
+    // ✅ 전체 수업 조회
     public List<Class> findAllUserAndSubject() {
         return classMapper.findAllUserAndSubject();
     }
 
-    // 수업 이름으로 조회
+    // ✅ 수업명으로 조회
     public List<Class> findBySubjectName(String subjectName) {
         return classMapper.findBySubjectName(subjectName);
     }
 
-    // 강사 이름으로 조회
+    // ✅ 강사 닉네임으로 조회
     public List<Class> findByManagerNickname(String nickname) {
         return classMapper.findByNickName(nickname);
     }
 
+    // ✅ 예약 인원 +1 증가
+    public void increaseCustomerReserve(int classId) {
+        classMapper.increaseCustomerReserve(classId);
+    }
 }
