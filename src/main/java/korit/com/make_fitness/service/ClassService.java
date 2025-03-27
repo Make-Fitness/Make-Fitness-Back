@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class ClassService {
@@ -29,5 +30,23 @@ public class ClassService {
 
         classRepository.insertClass(classEntity);
         return classEntity;
+    }
+
+    // 수업 전체 조회
+    @Transactional(readOnly = true)
+    public List<Class> getAllClassWithUserAndSubject() {
+        return classRepository.findAllUserAndSubject();
+    }
+
+    // 수업 이름으로 조회
+    @Transactional(readOnly = true)
+    public List<Class> getBySubjectName(String subjectName) {
+        return classRepository.findBySubjectName(subjectName);
+    }
+
+    // 강사 이름으로 조회
+    @Transactional(readOnly = true)
+    public List<Class> getByManagerNickname(String nickname) {
+        return classRepository.findByManagerNickname(nickname);
     }
 }
