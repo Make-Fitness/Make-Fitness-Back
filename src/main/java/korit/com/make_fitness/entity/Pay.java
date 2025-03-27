@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pay {
-    private int paymentId;
+    private int payId;
+    private String uuid;
     private int userId;
+    private int managerId;
     private int promotionId;
     private String paymentMethod;
     private int paymentAmount;
-    private int renewal;
-    private int monthly;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

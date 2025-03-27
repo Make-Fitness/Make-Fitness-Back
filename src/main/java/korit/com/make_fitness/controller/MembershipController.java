@@ -22,16 +22,6 @@ public class MembershipController {
         return ResponseEntity.ok().body(membershipService.insertCustomer(reqMembershipDto));
     }
 
-    @Operation(summary = "멤버십 가입", description = "멤버십 가입 설명")
-    @PutMapping("/pilates")
-    public ResponseEntity<?> updateMembership(@RequestBody ReqUpdateMembershipDto reqUpdateMembershipDto) {
-        if (reqUpdateMembershipDto.getMembershipId() == 0) {
-            throw new IllegalArgumentException("customerId is required");
-        }
-
-        membershipService.updateMembership(reqUpdateMembershipDto);
-        return ResponseEntity.ok().build();
-    }
 
 
 }
