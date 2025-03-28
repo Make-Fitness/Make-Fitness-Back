@@ -37,7 +37,6 @@
         )
     </insert>
 
-    <!-- 기존 유지 -->
     <select id="existsByClassAndMembership" resultType="boolean">
         SELECT EXISTS (
         SELECT 1
