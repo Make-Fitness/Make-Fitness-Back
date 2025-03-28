@@ -9,6 +9,9 @@ import org.apache.ibatis.annotations.Mapper;
 public interface MembershipMapper {
     int insert(Membership membership);
     int insert(Pay pay);
+    int updateSessionCount(int membershipId);
+
+    int getPromotionSessionCount(int membershipId);
 
     Membership findByUserId(int userId);
 }
