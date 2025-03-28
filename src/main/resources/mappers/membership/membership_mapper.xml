@@ -38,7 +38,11 @@
         WHERE
             pt.promotion_id = #{promotionId}
     </insert>
-
+    <update id="updateSessionCount">
+        update membership_tb mt
+        set mt.promotion_session_count = GREATEST(0, mt.promotion_session_count - 1)
+        where mt.membership_id = #{membershipId}
+    </update>
 
     <select id="findByUserId" resultMap="membershipResultMap">
         select *
@@ -46,5 +50,13 @@
             customer_tb
         where
             user_id = #{userId}
+    </select>
+    <select id="getPromotionSessionCount" resultType="int">
+        select
+            promotion_session_count
+        from
+            membership_tb
+        where
+            membership_id = #{membershipId}
     </select>
 </mapper>

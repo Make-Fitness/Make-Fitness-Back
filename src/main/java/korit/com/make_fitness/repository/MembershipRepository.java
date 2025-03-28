@@ -6,6 +6,7 @@ import korit.com.make_fitness.mapper.MembershipMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -27,4 +28,12 @@ public class MembershipRepository {
         return membershipMapper.findByUserId(userId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void updateSessionCount(int membershipId) {
+        membershipMapper.updateSessionCount(membershipId);
+    }
+
+    public int findPromotionSessionCount(int membershipId) {
+        return membershipMapper.getPromotionSessionCount(membershipId);
+    }
 }
