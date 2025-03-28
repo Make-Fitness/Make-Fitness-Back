@@ -25,34 +25,49 @@ public class JwtAuthenticationFilter implements Filter {
     @Autowired
     private UserRepository userRepository;
 
+    // ✅ JWT 인증 제외할 URI 목록 (필터 통과 대상)
     private static final List<String> whitelist = List.of(
+<<<<<<< HEAD
             "/api/auth/", "/swagger", "/v3/api-docs", "/swagger-ui"
     );
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+=======
+            "/api/auth",
+            "/swagger",
+            "/v3/api-docs",
+            "/swagger-ui",
+            "/api/makefitness" // ✅ 결제 API 경로 추가
+    );
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+            throws IOException, ServletException {
+>>>>>>> 8b69941c548912c0918f58c77f1760483c72182f
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String uri = request.getRequestURI();
 
-        // ✅ 인증 예외 경로는 바로 통과
+        // ✅ 인증 제외 경로는 바로 통과
         if (isWhitelisted(uri)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
-        // ✅ 나머지는 토큰 인증 처리
+        // ✅ 나머지 요청은 JWT 인증 처리
         jwtAuthentication(getAccessToken(request));
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
     private boolean isWhitelisted(String uri) {
+        // uri가 whitelist 중 하나로 시작하면 true
         return whitelist.stream().anyMatch(uri::startsWith);
     }
 
     private void jwtAuthentication(String accessToken) {
         if (accessToken == null) {
-            System.out.println("❌ 토큰 없음. 인증 처리 생략.");
+            System.out.println("❌ 토큰 없음. 인증 생략");
             return;
         }
 
@@ -61,9 +76,11 @@ public class JwtAuthenticationFilter implements Filter {
 
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
-        System.out.println("✅ 인증 성공. userId: " + userId);
+        System.out.println("✅ JWT 인증 성공, userId: " + userId);
 
-        PrincipalUser principalUser = PrincipalUser.builder().user(user).build();
+        PrincipalUser principalUser = PrincipalUser.builder()
+                .user(user)
+                .build();
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
