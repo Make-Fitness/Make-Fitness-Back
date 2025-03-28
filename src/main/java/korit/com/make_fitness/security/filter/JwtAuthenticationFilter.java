@@ -25,26 +25,18 @@ public class JwtAuthenticationFilter implements Filter {
     @Autowired
     private UserRepository userRepository;
 
-    // ✅ JWT 인증 제외할 URI 목록 (필터 통과 대상)
-    private static final List<String> whitelist = List.of(
-<<<<<<< HEAD
-            "/api/auth/", "/swagger", "/v3/api-docs", "/swagger-ui"
-    );
-
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-=======
+    // ✅ JWT 인증 제외할 URI 목록
+    private static final List<String> WHITELIST = List.of(
             "/api/auth",
             "/swagger",
             "/v3/api-docs",
             "/swagger-ui",
-            "/api/makefitness" // ✅ 결제 API 경로 추가
+            "/api/makefitness"  // 필요에 따라 추가 경로
     );
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
->>>>>>> 8b69941c548912c0918f58c77f1760483c72182f
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String uri = request.getRequestURI();
@@ -61,8 +53,7 @@ public class JwtAuthenticationFilter implements Filter {
     }
 
     private boolean isWhitelisted(String uri) {
-        // uri가 whitelist 중 하나로 시작하면 true
-        return whitelist.stream().anyMatch(uri::startsWith);
+        return WHITELIST.stream().anyMatch(uri::startsWith);
     }
 
     private void jwtAuthentication(String accessToken) {
@@ -93,7 +84,6 @@ public class JwtAuthenticationFilter implements Filter {
         if (authorization != null && authorization.startsWith("Bearer ")) {
             return authorization.substring(7);
         }
-
         return null;
     }
 }
