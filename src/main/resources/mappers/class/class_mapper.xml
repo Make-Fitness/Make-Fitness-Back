@@ -34,6 +34,11 @@
         WHERE class_id = #{classId}
     </update>
 
+    <delete id="deleteClassById">
+        delete from class_tb
+        where class_id = #{classId}
+    </delete>
+
     <select id="findAllUserAndSubject" resultMap="ClassResultMap">
         SELECT
             c.class_id,

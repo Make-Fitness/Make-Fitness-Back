@@ -26,11 +26,12 @@ public class JwtAuthenticationFilter implements Filter {
     private UserRepository userRepository;
 
     private static final List<String> whitelist = List.of(
-            "/api/auth", "/swagger", "/v3/api-docs", "/swagger-ui"
+            "/api/auth/", "/swagger", "/v3/api-docs", "/swagger-ui"
     );
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String uri = request.getRequestURI();
 
@@ -75,6 +76,7 @@ public class JwtAuthenticationFilter implements Filter {
         if (authorization != null && authorization.startsWith("Bearer ")) {
             return authorization.substring(7);
         }
+
         return null;
     }
 }

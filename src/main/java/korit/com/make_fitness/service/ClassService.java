@@ -57,6 +57,15 @@ public class ClassService {
         classRepository.increaseCustomerReserve(classId);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteClass(int classId, User user) throws AccessDeniedException {
+
+        if (!user.getRoleName().equals("ROLE_MASTER") && !user.getRoleName().equals("ROLE_MANAGER")) {
+            throw new AccessDeniedException("수업 삭제 권한이 없습니다.");
+        }
+        classRepository.deleteClassById(classId);
+    }
+
     // DTO 변환
     private RespClassListDto convertToDto(Class c) {
         return RespClassListDto.builder()

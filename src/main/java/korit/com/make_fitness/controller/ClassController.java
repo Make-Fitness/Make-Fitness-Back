@@ -58,4 +58,15 @@ public class ClassController {
     public ResponseEntity<?> getClassByManager(@PathVariable String nickname) {
         return ResponseEntity.ok().body(classService.getByManagerNickname(nickname));
     }
+
+    @Operation(summary = "수업 삭제", description = "수업 ID로 삭제")
+    @DeleteMapping("/class/{classId}")
+    public ResponseEntity<?> deleteClass(
+            @PathVariable int classId,
+            @AuthenticationPrincipal PrincipalUser principalUser) throws AccessDeniedException {
+
+        User user = principalUser.getUser();
+        classService.deleteClass(classId, user);
+        return ResponseEntity.ok("삭제 완료");
+    }
 }
