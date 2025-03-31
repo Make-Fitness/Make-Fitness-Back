@@ -1,5 +1,6 @@
 package korit.com.make_fitness.repository;
 
+import korit.com.make_fitness.dto.request.ReqReservationDto;
 import korit.com.make_fitness.entity.Reservation;
 import korit.com.make_fitness.mapper.ReservationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,8 @@ public class ReservationRepository {
     @Autowired
     private ReservationMapper reservationMapper;
 
-    public int insertReservationIfAllowed(int classId, int membershipId) {
-        return reservationMapper.insertReservation(classId, membershipId);
+    public int insertReservationIfAllowed(ReqReservationDto dto) {
+        return reservationMapper.insertReservation(dto);
     }
 
     public boolean existsByClassAndMembership(int classId, int membershipId) {

@@ -1,5 +1,6 @@
 package korit.com.make_fitness.mapper;
 
+import korit.com.make_fitness.dto.request.ReqReservationDto;
 import korit.com.make_fitness.entity.Reservation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -9,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface ReservationMapper {
 
-    int insertReservation(@Param("classId") int classId, @Param("membershipId") int membershipId);
+    int insertReservation(ReqReservationDto dto);
 
     boolean existsByClassAndMembership(@Param("classId") int classId, @Param("membershipId") int membershipId);
 

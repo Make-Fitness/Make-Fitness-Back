@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 @Data
 public class ReqReservationDto {
 
+    @Schema(description = "예약 아이디 (자동 생성)")
+    private int reservationId;
+
     @Schema(description = "수업 아이디")
     private int classId;
 

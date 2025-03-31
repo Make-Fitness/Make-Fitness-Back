@@ -12,9 +12,7 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
-    <insert id="insertReservation"
-            keyProperty="reservationId"
-            useGeneratedKeys="true">
+    <insert id="insertReservation" parameterType="korit.com.make_fitness.dto.request.ReqReservationDto" keyProperty="reservationId" useGeneratedKeys="true">
         insert into reservation_tb (class_id, membership_id, created_at, updated_at)
         select
             #{classId}, #{membershipId}, now(), now()
@@ -23,25 +21,22 @@
         where exists (
             <![CDATA[
             select 1
-            from
-                class_tb c
-                join class_subject_tb cs on c.class_subject_id = cs.class_subject_id
-                join membership_tb m on m.membership_id = #{membershipId}
-                left join pay_tb p on p.user_id = m.user_id and p.manager_id = c.user_id
-            where
-                c.class_id = #{classId}
-                and (cs.class_subject_name = 'pt' or cs.class_subject_name = 'pilates')
-                and p.pay_id is not null
-                and m.promotion_session_count > 0
-                and c.class_customer_reserve < c.class_max_customer
-                and not exists (
-                        select 1
-                        from
-                            reservation_tb r
-                        where
-                            r.class_id = c.class_id
-                            and r.membership_id = m.membership_id
-                    )
+        from
+            class_tb c
+            join class_subject_tb cs on c.class_subject_id = cs.class_subject_id
+            join membership_tb m on m.membership_id = #{membershipId}
+            left join pay_tb p on p.user_id = m.user_id and p.manager_id = c.user_id
+        where
+            c.class_id = #{classId}
+            and (cs.class_subject_name = 'pt' or cs.class_subject_name = 'pilates')
+            and p.pay_id is not null
+            and m.promotion_session_count > 0
+            and c.class_customer_reserve < c.class_max_customer
+            and not exists (
+                select 1
+                from reservation_tb r
+                where r.class_id = c.class_id and r.membership_id = m.membership_id
+            )
         ]]>
         )
     </insert>

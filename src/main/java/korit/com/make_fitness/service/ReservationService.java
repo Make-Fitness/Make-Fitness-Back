@@ -1,5 +1,6 @@
 package korit.com.make_fitness.service;
 
+import korit.com.make_fitness.dto.request.ReqReservationDto;
 import korit.com.make_fitness.entity.Reservation;
 import korit.com.make_fitness.repository.ClassRepository;
 import korit.com.make_fitness.repository.MembershipRepository;
@@ -25,39 +26,42 @@ public class ReservationService {
 
     // 수업 예약 처리
     @Transactional(rollbackFor = Exception.class)
-    public void reserveClass(int classId, int membershipId) {
-        int result = reservationRepository.insertReservationIfAllowed(classId, membershipId);
+    public void reserveClass(ReqReservationDto reqReservationDto) throws AccessDeniedException {
+        int result = reservationRepository.insertReservationIfAllowed(reqReservationDto);
 
         if (result == 0) {
             throw new IllegalStateException("예약 조건을 만족하지 않아 예약에 실패했습니다.");
         }
 
-        classRepository.increaseCustomerReserve(classId);
+        classRepository.increaseCustomerReserve(reqReservationDto.getClassId());
     }
 
-    // 수업 예약 취소 (userId로 권한 검증 포함)
     @Transactional(rollbackFor = Exception.class)
     public void cancelReservation(int reservationId, int userId) throws AccessDeniedException {
+
+        // 1. 예약 정보 조회
         Reservation reservation = reservationRepository.findById(reservationId);
         if (reservation == null) {
             throw new IllegalStateException("해당 예약이 존재하지 않습니다.");
         }
 
+        // 2. 소유자 권한 검증
         int ownerUserId = membershipRepository.findUserIdByMembershipId(reservation.getMembershipId());
         if (ownerUserId != userId) {
             throw new AccessDeniedException("해당 예약을 취소할 권한이 없습니다.");
         }
 
+        // 3. 정원 감소 (수업에서 -1)
+        classRepository.decreaseCustomerReserve(reservation.getClassId());
+
+        // 4. 세션 복원 (멤버십에서 +1)
+        membershipRepository.restoreSessionCount(reservation.getMembershipId());
+
+        // 5. 예약 삭제
         int deleted = reservationRepository.deleteReservationById(reservationId);
         if (deleted == 0) {
             throw new IllegalStateException("예약이 이미 취소되었거나 존재하지 않습니다.");
         }
-
-        // class 세션카운트 감소
-        classRepository.decreaseCustomerReserve(reservation.getClassId());
-
-        // 멤버십 세션카운트 증가
-        membershipRepository.restoreSessionCount(reservation.getMembershipId());
     }
 
     // 단건 예약 조회 (권한 검증 포함)

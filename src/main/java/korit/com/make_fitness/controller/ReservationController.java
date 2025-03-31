@@ -1,6 +1,7 @@
 package korit.com.make_fitness.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import korit.com.make_fitness.dto.request.ReqReservationDto;
 import korit.com.make_fitness.security.principal.PrincipalUser;
 import korit.com.make_fitness.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,13 @@ public class ReservationController {
     private ReservationService reservationService;
 
     // 수업 예약
-    @Operation(summary = "수업 예약", description = "멤버십 ID 기준 수업 예약")
+    @Operation(summary = "수업 예약", description = "클래스와 멤버십 정보를 기반으로 수업을 예약")
     @PostMapping("/reservation")
     public ResponseEntity<?> reserve(
-            @RequestParam int classId,
-            @RequestParam int membershipId,
-            @AuthenticationPrincipal PrincipalUser principalUser) {
+            @RequestBody ReqReservationDto dto,
+            @AuthenticationPrincipal PrincipalUser principalUser) throws AccessDeniedException {
 
-        reservationService.reserveClass(classId, membershipId);
+        reservationService.reserveClass(dto);
         return ResponseEntity.ok("예약 성공");
     }
 
