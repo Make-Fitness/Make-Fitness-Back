@@ -7,6 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface RegisterMapper {
+
     // 수업 등록
     int insert(List<Class> classes);
 

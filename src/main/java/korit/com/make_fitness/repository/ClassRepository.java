@@ -23,14 +23,9 @@ public class ClassRepository {
         return classMapper.findAllUserAndSubject();
     }
 
-    // 수업명으로 조회
-    public List<Class> findBySubjectName(String subjectName) {
-        return classMapper.findBySubjectName(subjectName);
-    }
-
-    // 강사 닉네임으로 조회
-    public List<Class> findByManagerNickname(String nickname) {
-        return classMapper.findByNickName(nickname);
+    // 수업 필터링 조회
+    public List<Class> findFiltered(String subject, String manager) {
+        return classMapper.findFiltered(subject, manager);
     }
 
     // ClassId 로 조회

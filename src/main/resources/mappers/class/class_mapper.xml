@@ -61,11 +61,11 @@
             LEFT JOIN class_subject_tb s ON c.class_subject_id = s.class_subject_id
     </select>
 
-    <select id="findBySubjectName" resultMap="ClassResultMap">
+    <select id="findFiltered" resultMap="ClassResultMap">
         select
             c.class_id,
             c.user_id,
-            s.class_subject_id as s_class_subject_id,
+            c.class_subject_id as s_class_subject_id,
             s.class_subject_name,
             c.class_time,
             c.class_max_customer,
@@ -80,29 +80,13 @@
             left join user_tb u on c.user_id = u.user_id
             left join class_subject_tb s on c.class_subject_id = s.class_subject_id
         where
-            s.class_subject_name = #{subjectName}
-    </select>
-
-    <select id="findByNickName" resultMap="ClassResultMap">
-        select
-            c.class_id,
-            c.user_id,
-            s.class_subject_id as s_class_subject_id,
-            s.class_subject_name,
-            c.class_time,
-            c.class_max_customer,
-            c.class_customer_reserve,
-            c.created_at,
-            c.updated_at,
-            u.nickname,
-            u.ph,
-            u.gender
-        from
-            class_tb c
-            left join user_tb u on c.user_id = u.user_id
-            left join class_subject_tb s on c.class_subject_id = s.class_subject_id
-        where
-            u.nickname like concat('%', #{nickname}, '%')
+            1=1
+        <if test="subject != null and subject != ''">
+            and s.class_subject_name = #{subject}
+        </if>
+        <if test="manager != null and manager != ''">
+            and u.nickname like concat('%', #{manager}, '%')
+        </if>
     </select>
 
     <select id="findById" resultMap="ClassResultMap">

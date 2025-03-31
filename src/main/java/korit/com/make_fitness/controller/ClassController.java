@@ -55,27 +55,19 @@ public class ClassController {
         return ResponseEntity.ok("삭제 완료");
     }
 
-    @Operation(summary = "수업 조회", description = "전체 수업 조회")
-    @GetMapping("/classes/list")
-    public ResponseEntity<?> getClassList() {
-        return ResponseEntity.ok().body(classService.getAllClassWithUserAndSubject());
-    }
+    @Operation(summary = "수업 목록 조회", description = "전체 or 조건(subject, manager) 조회")
+    @GetMapping("/classes")
+    public ResponseEntity<?> getFilteredClassList(
+            @RequestParam(required = false) String subject,
+            @RequestParam(required = false) String manager) {
 
-    @Operation(summary = "과목별 수업 조회", description = "특정 과목명(Pilates 등)에 해당하는 수업만 조회")
-    @GetMapping("/class/subject/{subjectName}")
-    public ResponseEntity<?> getClassBySubject(@PathVariable String subjectName) {
-        return ResponseEntity.ok().body(classService.getBySubjectName(subjectName));
-    }
-
-    @Operation(summary = "강사이름 수업 조회", description = "강사이름으로 등록한 수업 조회")
-    @GetMapping("/class/manager/{nickname}")
-    public ResponseEntity<?> getClassByManager(@PathVariable String nickname) {
-        return ResponseEntity.ok().body(classService.getByManagerNickname(nickname));
+        List<RespClassListDto> classList = classService.getFilteredClassList(subject, manager);
+        return ResponseEntity.ok().body(classList);
     }
 
     // 수업 ID 기준 단일 수업 조회
     @Operation(summary = "수업 단건 조회", description = "classId 기준으로 특정 수업 상세 조회")
-    @GetMapping("/class/{classId}")
+    @GetMapping("/classes/{classId}")
     public ResponseEntity<?> getClassById(@PathVariable int classId) {
         return ResponseEntity.ok().body(classService.getClassById(classId));
     }

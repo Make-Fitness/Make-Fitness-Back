@@ -33,22 +33,15 @@ public class ClassService {
     }
 
     @Transactional(readOnly = true)
-    public List<RespClassListDto> getAllClassWithUserAndSubject() {
-        return classRepository.findAllUserAndSubject().stream()
-                .map(this::convertToDto)
-                .toList();
-    }
+    public List<RespClassListDto> getFilteredClassList(String subject, String manager) {
+        boolean isSubjectEmpty = subject == null || subject.trim().isEmpty();
+        boolean isManagerEmpty = manager == null || manager.trim().isEmpty();
 
-    @Transactional(readOnly = true)
-    public List<RespClassListDto> getBySubjectName(String subjectName) {
-        return classRepository.findBySubjectName(subjectName).stream()
-                .map(this::convertToDto)
-                .toList();
-    }
+        List<Class> classes = (isSubjectEmpty && isManagerEmpty)
+                ? classRepository.findAllUserAndSubject()
+                : classRepository.findFiltered(subject, manager);
 
-    @Transactional(readOnly = true)
-    public List<RespClassListDto> getByManagerNickname(String nickname) {
-        return classRepository.findByManagerNickname(nickname).stream()
+        return classes.stream()
                 .map(this::convertToDto)
                 .toList();
     }

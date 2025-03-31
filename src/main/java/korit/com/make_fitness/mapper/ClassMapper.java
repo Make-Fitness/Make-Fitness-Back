@@ -13,9 +13,10 @@ public interface ClassMapper {
 
     List<Class> findAllUserAndSubject ();
 
-    List<Class> findBySubjectName (String subjectName);
-
-    List<Class> findByNickName (String NickName);
+    List<Class> findFiltered(
+            @Param("subject") String subject,
+            @Param("manager") String manager
+    );
 
     Class findById(@Param("classId") int classId);
 
