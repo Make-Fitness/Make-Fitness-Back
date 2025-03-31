@@ -4,6 +4,22 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="korit.com.make_fitness.mapper.PayMapper">
 
+    <resultMap id="SalesResultMap" type="korit.com.make_fitness.entity.Pay">
+        <id property="payId" column="pay_id" />
+        <result property="promotionId" column="promotion_id" />
+        <result property="createdAt" column="created_at" />
+        <result property="paymentAmount" column="payment_amount" />
+
+        <association property="promotion" javaType="korit.com.make_fitness.entity.Promotion">
+            <id property="promotionId" column="promotion_id" />
+            <result property="classSubjectId" column="class_subject_id" />
+        </association>
+
+        <association property="classSubject" javaType="korit.com.make_fitness.entity.ClassSubject">
+            <id property="classSubjectId" column="class_subject_id" />
+        </association>
+    </resultMap>
+
     <insert id="insert" keyProperty="payId" useGeneratedKeys="true">
         insert into pay_tb
         (
@@ -30,4 +46,29 @@
         where
             pt.promotion_id = #{promotionId}
     </insert>
+    <select id="findSales" resultMap="SalesResultMap">
+        WITH RECURSIVE date_series AS (
+        SELECT DATE(#{startDate}) AS ds_date
+            UNION ALL
+        SELECT ds_date + INTERVAL 1 DAY FROM date_series
+            WHERE ds_date &lt; LAST_DAY(#{startDate})
+        )
+
+        select
+            ds_date as date,
+            ifnull(sum(pt.payment_amount), 0) as total_amount,
+            sum(if(pmt2.promotion_id is not null, pt.payment_amount, 0)) as pt_total_amount,
+            sum(if(pmt.promotion_id is not null, pt.payment_amount, 0)) as plt_total_amount,
+            sum(if(pmt3.promotion_id is not null, pt.payment_amount, 0)) as ht_total_amount
+        from
+            date_series ds
+            left outer join pay_tb pt on(ds.ds_date = date_format(pt.created_at, '%Y-%m-%d'))
+            left outer join promotion_tb pmt on(pmt.promotion_id = pt.promotion_id and pmt.class_subject_id = 2)
+            left outer join promotion_tb pmt2 on(pmt2.promotion_id = pt.promotion_id and pmt2.class_subject_id = 1)
+            left outer join promotion_tb pmt3 on(pmt3.promotion_id = pt.promotion_id and not pmt3.class_subject_id in(1, 2))
+        group by
+            ds_date
+        order by
+            ds_date;
+    </select>
 </mapper>

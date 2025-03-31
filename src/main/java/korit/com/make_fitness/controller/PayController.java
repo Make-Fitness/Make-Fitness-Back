@@ -6,11 +6,11 @@ import korit.com.make_fitness.dto.request.ReqMembershipDto;
 import korit.com.make_fitness.dto.request.ReqPayDto;
 import korit.com.make_fitness.service.PayService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/makefitness")
@@ -24,4 +24,11 @@ public class PayController {
         payService.registerPay(reqFinalMembershipDto.getReqMembershipDto(), reqFinalMembershipDto.getReqPayDto());
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "매출 조회", description = "매출 다건 조회 설명")
+    @GetMapping("/admin/sales/report")
+    public ResponseEntity<?> findSales(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate) {
+        return ResponseEntity.ok().body(payService.getSales(startDate));
+    }
+
 }
