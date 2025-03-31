@@ -10,10 +10,18 @@ import java.util.List;
 public interface ClassMapper {
 
     int insertClass (Class classEntity);
+
     List<Class> findAllUserAndSubject ();
+
     List<Class> findBySubjectName (String subjectName);
+
     List<Class> findByNickName (String NickName);
+
+    Class findById(@Param("classId") int classId);
+
     void increaseCustomerReserve(int classId);
+
     void deleteClassById(int classId);
+
     void decreaseCustomerReserve(@Param("classId") int classId);
 }

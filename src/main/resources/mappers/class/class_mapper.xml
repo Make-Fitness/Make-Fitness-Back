@@ -60,40 +60,71 @@
             LEFT JOIN user_tb u ON c.user_id = u.user_id
             LEFT JOIN class_subject_tb s ON c.class_subject_id = s.class_subject_id
     </select>
+
     <select id="findBySubjectName" resultMap="ClassResultMap">
-        SELECT
+        select
             c.class_id,
             c.user_id,
+            s.class_subject_id as s_class_subject_id,
             s.class_subject_name,
             c.class_time,
             c.class_max_customer,
             c.class_customer_reserve,
+            c.created_at,
+            c.updated_at,
             u.nickname,
             u.ph,
             u.gender
-        FROM
+        from
             class_tb c
-            LEFT JOIN user_tb u ON c.user_id = u.user_id
-            LEFT JOIN class_subject_tb s ON c.class_subject_id = s.class_subject_id
-        WHERE
+            left join user_tb u on c.user_id = u.user_id
+            left join class_subject_tb s on c.class_subject_id = s.class_subject_id
+        where
             s.class_subject_name = #{subjectName}
     </select>
 
     <select id="findByNickName" resultMap="ClassResultMap">
-        SELECT
+        select
             c.class_id,
             c.user_id,
+            s.class_subject_id as s_class_subject_id,
             s.class_subject_name,
             c.class_time,
             c.class_max_customer,
             c.class_customer_reserve,
+            c.created_at,
+            c.updated_at,
             u.nickname,
             u.ph,
             u.gender
-        FROM class_tb c
-            LEFT JOIN user_tb u ON c.user_id = u.user_id
-            LEFT JOIN class_subject_tb s ON c.class_subject_id = s.class_subject_id
-        WHERE u.nickname LIKE CONCAT('%', #{nickname}, '%')
+        from
+            class_tb c
+            left join user_tb u on c.user_id = u.user_id
+            left join class_subject_tb s on c.class_subject_id = s.class_subject_id
+        where
+            u.nickname like concat('%', #{nickname}, '%')
+    </select>
+
+    <select id="findById" resultMap="ClassResultMap">
+        select
+            c.class_id,
+            c.user_id,
+            c.class_subject_id as s_class_subject_id,
+            s.class_subject_name,
+            c.class_time,
+            c.class_max_customer,
+            c.class_customer_reserve,
+            c.created_at,
+            c.updated_at,
+            u.nickname,
+            u.ph,
+            u.gender
+        from
+            class_tb c
+            left join user_tb u on c.user_id = u.user_id
+            left join class_subject_tb s on c.class_subject_id = s.class_subject_id
+        where
+            c.class_id = #{classId}
     </select>
 
 </mapper>

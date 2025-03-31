@@ -53,6 +53,15 @@ public class ClassService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public RespClassListDto getClassById(int classId) {
+        Class classEntity = classRepository.findById(classId);
+        if (classEntity == null) {
+            throw new IllegalArgumentException("해당 수업이 존재하지 않습니다.");
+        }
+        return convertToDto(classEntity);
+    }
+
     public void increaseCustomerReserve(int classId) {
         classRepository.increaseCustomerReserve(classId);
     }

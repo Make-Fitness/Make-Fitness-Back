@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
+
 @RestController
 @RequestMapping("/api/makefitness")
 public class ReservationController {
@@ -15,7 +17,8 @@ public class ReservationController {
     @Autowired
     private ReservationService reservationService;
 
-    @Operation(summary = "수업 예약", description = "멤버십 ID 기준으로 수업 예약 시도 (조건 충족 시만 가능)")
+    // 수업 예약
+    @Operation(summary = "수업 예약", description = "멤버십 ID 기준 수업 예약")
     @PostMapping("/reservation")
     public ResponseEntity<?> reserve(
             @RequestParam int classId,
@@ -26,23 +29,37 @@ public class ReservationController {
         return ResponseEntity.ok("예약 성공");
     }
 
-    @Operation(summary = "수업 예약 취소", description = "수업 예약 취소 (예약 수 감소 + 세션 수 복원)")
-    @DeleteMapping("/reservation")
+    // 예약 취소 (권한 검증 포함)
+    @Operation(summary = "수업 예약 취소", description = "reservationId 기준 예약 취소 (정원 감소 + 세션 복원)")
+    @DeleteMapping("/reservations/{reservationId}")
     public ResponseEntity<?> cancelReservation(
-            @RequestParam int classId,
-            @RequestParam int membershipId,
-            @AuthenticationPrincipal PrincipalUser principalUser) {
+            @PathVariable int reservationId,
+            @AuthenticationPrincipal PrincipalUser principalUser) throws AccessDeniedException {
 
-        reservationService.cancelReservation(classId, membershipId);
+        int userId = principalUser.getUser().getUserId();
+        reservationService.cancelReservation(reservationId, userId);
         return ResponseEntity.ok("예약 취소 완료");
     }
 
+    // 단건 예약 조회 (권한 검증 포함)
+    @Operation(summary = "예약 단건 조회", description = "reservationId 기준으로 예약 상세 조회")
+    @GetMapping("/reservation/{reservationId}")
+    public ResponseEntity<?> getReservationDetail(
+            @PathVariable int reservationId,
+            @AuthenticationPrincipal PrincipalUser principalUser) throws AccessDeniedException {
+
+        int userId = principalUser.getUser().getUserId();
+        return ResponseEntity.ok(reservationService.getReservationByIdWithAuthorization(reservationId, userId));
+    }
+
+    // 멤버십 기준 예약 목록 조회
     @Operation(summary = "회원 예약 목록 조회", description = "멤버십 ID 기준으로 예약된 수업 목록 조회")
     @GetMapping("/reservation/list/{membershipId}")
     public ResponseEntity<?> getReservations(@PathVariable int membershipId) {
         return ResponseEntity.ok(reservationService.getReservationsByMembershipId(membershipId));
     }
 
+    // 예약 여부 확인
     @Operation(summary = "예약 여부 확인", description = "해당 수업에 대해 이미 예약했는지 여부 반환")
     @GetMapping("/reservation/exist")
     public ResponseEntity<?> checkReservationExists(

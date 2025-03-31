@@ -17,7 +17,7 @@ public interface ReservationMapper {
 
     List<Integer> findClassIdListByMembershipId(@Param("membershipId") int membershipId);
 
-    int deleteReservation(@Param("classId") int classId, @Param("membershipId") int membershipId);
+    Reservation findById(@Param("reservationId") int reservationId);
 
-
+    int deleteReservationById(@Param("reservationId") int reservationId);
 }

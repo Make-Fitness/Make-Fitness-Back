@@ -33,6 +33,11 @@ public class ClassRepository {
         return classMapper.findByNickName(nickname);
     }
 
+    // ClassId 로 조회
+    public Class findById(int classId) {
+        return classMapper.findById(classId);
+    }
+
     // 예약 인원 +1 증가
     public void increaseCustomerReserve(int classId) {
         classMapper.increaseCustomerReserve(classId);

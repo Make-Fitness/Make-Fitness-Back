@@ -17,5 +17,7 @@ public interface MembershipMapper {
 
     Membership findByUserId(int userId);
 
+    int findUserIdByMembershipId(@Param("membershipId") int membershipId);
+
     int restoreSessionCount(@Param("membershipId") int membershipId);
 }

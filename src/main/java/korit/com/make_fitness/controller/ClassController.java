@@ -23,7 +23,7 @@ public class ClassController {
     private ClassService classService;
 
     @Operation(summary = "수업 등록", description = "수업 등록 설명")
-    @PostMapping("/class")
+    @PostMapping("/classes")
     public ResponseEntity<?> createClass(
             @RequestBody ReqClassDto reqClassDto,
             @AuthenticationPrincipal PrincipalUser principalUser) throws AccessDeniedException {
@@ -45,7 +45,7 @@ public class ClassController {
     }
 
     @Operation(summary = "수업 삭제", description = "수업 ID로 삭제")
-    @DeleteMapping("/class/{classId}")
+    @DeleteMapping("/classes/{classId}")
     public ResponseEntity<?> deleteClass(
             @PathVariable int classId,
             @AuthenticationPrincipal PrincipalUser principalUser) throws AccessDeniedException {
@@ -56,7 +56,7 @@ public class ClassController {
     }
 
     @Operation(summary = "수업 조회", description = "전체 수업 조회")
-    @GetMapping("/class/list")
+    @GetMapping("/classes/list")
     public ResponseEntity<?> getClassList() {
         return ResponseEntity.ok().body(classService.getAllClassWithUserAndSubject());
     }
@@ -73,5 +73,10 @@ public class ClassController {
         return ResponseEntity.ok().body(classService.getByManagerNickname(nickname));
     }
 
-
+    // 수업 ID 기준 단일 수업 조회
+    @Operation(summary = "수업 단건 조회", description = "classId 기준으로 특정 수업 상세 조회")
+    @GetMapping("/class/{classId}")
+    public ResponseEntity<?> getClassById(@PathVariable int classId) {
+        return ResponseEntity.ok().body(classService.getClassById(classId));
+    }
 }

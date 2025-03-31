@@ -37,6 +37,10 @@ public class MembershipRepository {
         return membershipMapper.getPromotionSessionCount(membershipId);
     }
 
+    public int findUserIdByMembershipId(int membershipId) {
+        return membershipMapper.findUserIdByMembershipId(membershipId);
+    }
+
     // 멤버십 세션 수 증가
     public void restoreSessionCount(int membershipId) {
         membershipMapper.restoreSessionCount(membershipId);

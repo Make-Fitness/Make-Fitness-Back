@@ -72,4 +72,8 @@
         where
             membership_id = #{membershipId}
     </select>
+
+    <select id="findUserIdByMembershipId" resultType="int">
+        select user_id from membership_tb where membership_id = #{membershipId}
+    </select>
 </mapper>

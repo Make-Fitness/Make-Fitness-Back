@@ -10,6 +10,7 @@ import korit.com.make_fitness.security.principal.PrincipalUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +40,6 @@ public class JwtAuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String uri = request.getRequestURI();
 
-        // ✅ 정확히 인증 제외할 경로만 통과시켜야 함
         if (isWhitelisted(uri)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
@@ -64,14 +64,19 @@ public class JwtAuthenticationFilter implements Filter {
 
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
-        System.out.println("✅ JWT 인증 성공, userId: " + userId);
+
+        System.out.println("✅ JWT 인증 성공, userId: " + userId + ", role: " + user.getRoleName());
 
         PrincipalUser principalUser = PrincipalUser.builder()
                 .user(user)
                 .build();
 
-        Authentication authentication =
-                new UsernamePasswordAuthenticationToken(principalUser, null, principalUser.getAuthorities());
+        // ✅ 권한 주입 (ROLE_ 접두어 포함한 상태로 전달됨)
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                principalUser,
+                null,
+                List.of(new SimpleGrantedAuthority(user.getRoleName()))
+        );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
