@@ -4,20 +4,12 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="korit.com.make_fitness.mapper.PayMapper">
 
-    <resultMap id="SalesResultMap" type="korit.com.make_fitness.entity.Pay">
-        <id property="payId" column="pay_id" />
-        <result property="promotionId" column="promotion_id" />
-        <result property="createdAt" column="created_at" />
-        <result property="paymentAmount" column="payment_amount" />
-
-        <association property="promotion" javaType="korit.com.make_fitness.entity.Promotion">
-            <id property="promotionId" column="promotion_id" />
-            <result property="classSubjectId" column="class_subject_id" />
-        </association>
-
-        <association property="classSubject" javaType="korit.com.make_fitness.entity.ClassSubject">
-            <id property="classSubjectId" column="class_subject_id" />
-        </association>
+    <resultMap id="SalesResultMap" type="korit.com.make_fitness.dto.request.SalesDto">
+        <result column="date" property="date"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="pt_total_amount" property="ptTotalAmount"/>
+        <result column="plt_total_amount" property="pltTotalAmount"/>
+        <result column="ht_total_amount" property="htTotalAmount"/>
     </resultMap>
 
     <insert id="insert" keyProperty="payId" useGeneratedKeys="true">
@@ -48,27 +40,37 @@
     </insert>
     <select id="findSales" resultMap="SalesResultMap">
         WITH RECURSIVE date_series AS (
-        SELECT DATE(#{startDate}) AS ds_date
-            UNION ALL
-        SELECT ds_date + INTERVAL 1 DAY FROM date_series
-            WHERE ds_date &lt; LAST_DAY(#{startDate})
-        )
+        -- 시작 날짜를 기준으로, 첫 번째 날짜부터 마지막 날짜까지 생성
+        SELECT DATE(STR_TO_DATE(#{startDate}, '%Y-%m-%d')) AS ds_date
+        UNION ALL
 
-        select
-            ds_date as date,
-            ifnull(sum(pt.payment_amount), 0) as total_amount,
-            sum(if(pmt2.promotion_id is not null, pt.payment_amount, 0)) as pt_total_amount,
-            sum(if(pmt.promotion_id is not null, pt.payment_amount, 0)) as plt_total_amount,
-            sum(if(pmt3.promotion_id is not null, pt.payment_amount, 0)) as ht_total_amount
-        from
-            date_series ds
-            left outer join pay_tb pt on(ds.ds_date = date_format(pt.created_at, '%Y-%m-%d'))
-            left outer join promotion_tb pmt on(pmt.promotion_id = pt.promotion_id and pmt.class_subject_id = 2)
-            left outer join promotion_tb pmt2 on(pmt2.promotion_id = pt.promotion_id and pmt2.class_subject_id = 1)
-            left outer join promotion_tb pmt3 on(pmt3.promotion_id = pt.promotion_id and not pmt3.class_subject_id in(1, 2))
-        group by
-            ds_date
-        order by
-            ds_date;
+        SELECT ds_date + INTERVAL 1 DAY
+        FROM date_series
+
+        WHERE not ds_date = LAST_DAY(STR_TO_DATE(#{startDate}, '%Y-%m-%d'))
+        )
+        SELECT
+        ds.ds_date + INTERVAL 1 DAY AS date,
+        IFNULL(SUM(pt.payment_amount), 0) AS total_amount,
+        SUM(IF(pmt2.promotion_id IS NOT NULL, pt.payment_amount, 0)) AS pt_total_amount,
+        SUM(IF(pmt.promotion_id IS NOT NULL, pt.payment_amount, 0)) AS plt_total_amount,
+        SUM(IF(pmt3.promotion_id IS NOT NULL, pt.payment_amount, 0)) AS ht_total_amount
+        FROM
+        date_series ds
+        LEFT OUTER JOIN pay_tb pt
+        ON ds.ds_date = DATE(pt.created_at)
+        LEFT OUTER JOIN promotion_tb pmt
+        ON pmt.promotion_id = pt.promotion_id
+        AND pmt.class_subject_id = 2
+        LEFT OUTER JOIN promotion_tb pmt2
+        ON pmt2.promotion_id = pt.promotion_id
+        AND pmt2.class_subject_id = 1
+        LEFT OUTER JOIN promotion_tb pmt3
+        ON pmt3.promotion_id = pt.promotion_id
+        AND pmt3.class_subject_id NOT IN (1, 2)
+        GROUP BY
+        ds.ds_date
+        ORDER BY
+        ds.ds_date;
     </select>
 </mapper>

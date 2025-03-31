@@ -7,8 +7,8 @@ import java.util.Date;
 @Data
 public class SalesDto {
     private Date date;
-    private int totalSales;
-    private int ptSales;
-    private int pilatesSales;
-    private int healthSales;
+    private int totalAmount;
+    private int ptTotalAmount;
+    private int pltTotalAmount;
+    private int htTotalAmount;
 }

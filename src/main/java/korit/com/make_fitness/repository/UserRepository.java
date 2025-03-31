@@ -20,6 +20,7 @@ public class UserRepository {
         try {
             userMapper.insert(user);
         } catch (DuplicateKeyException e) {
+            e.printStackTrace();
             return Optional.empty();
         }
         return Optional.of(user);

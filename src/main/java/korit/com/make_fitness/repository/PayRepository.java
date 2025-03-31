@@ -9,6 +9,9 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Repository
@@ -25,7 +28,7 @@ public class PayRepository {
         return Optional.ofNullable(pay);
     }
 
-    public List<SalesDto> getSales(Date startDate) {
+    public List<SalesDto> getSales(LocalDate startDate) {
         return payMapper.findSales(startDate);
     }
 

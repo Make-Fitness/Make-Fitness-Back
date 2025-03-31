@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +31,7 @@ public class PayService {
         payRepository.save(reqPayDto.toPay());
     }
 
-    public List<SalesDto> getSales(Date startDate) {
+    public List<SalesDto> getSales(LocalDate startDate) {
         return payRepository.getSales(startDate);
     }
 }

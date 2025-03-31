@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @RestController
@@ -27,7 +28,7 @@ public class PayController {
 
     @Operation(summary = "매출 조회", description = "매출 다건 조회 설명")
     @GetMapping("/admin/sales/report")
-    public ResponseEntity<?> findSales(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd" ) Date startDate, @RequestParam("endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate) {
+    public ResponseEntity<?> findSales(@RequestParam("startDate") @DateTimeFormat(pattern = "yyyy-MM-dd" ) LocalDate startDate) {
         return ResponseEntity.ok().body(payService.getSales(startDate));
     }
 

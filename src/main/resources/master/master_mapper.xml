@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="korit.com.make_fitness.mapper.MasterMapper">
+    <update id="updateRoleName" keyProperty="userId" useGeneratedKeys="true">
+        update
+            user_tb
+        set
+            role_name = #{roleName}
+        where
+            user_id = #{userId}
+    </update>
+
+    <delete id="deleteManager" parameterType="int">
+        delete from
+            user_tb
+        where
+            roleName = #{roleName} and user_id = #{userId}
+    </delete>
+
+    <select id="findManager" resultType="korit.com.make_fitness.dto.request.ReqManagerDto">
+
+    </select>
+</mapper>
