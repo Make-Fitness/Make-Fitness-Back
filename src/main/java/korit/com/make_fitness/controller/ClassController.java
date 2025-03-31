@@ -28,6 +28,9 @@ public class ClassController {
             @RequestBody ReqClassDto reqClassDto,
             @AuthenticationPrincipal PrincipalUser principalUser) throws AccessDeniedException {
 
+        if (principalUser == null) {
+            throw new AccessDeniedException("로그인이 필요합니다.");
+        }
         User user = principalUser.getUser();
 
         Class classEntity = Class.builder()
@@ -39,6 +42,17 @@ public class ClassController {
                 .build();
 
         return ResponseEntity.ok().body(classService.createClass(classEntity, user));
+    }
+
+    @Operation(summary = "수업 삭제", description = "수업 ID로 삭제")
+    @DeleteMapping("/class/{classId}")
+    public ResponseEntity<?> deleteClass(
+            @PathVariable int classId,
+            @AuthenticationPrincipal PrincipalUser principalUser) throws AccessDeniedException {
+
+        User user = principalUser.getUser();
+        classService.deleteClass(classId, user);
+        return ResponseEntity.ok("삭제 완료");
     }
 
     @Operation(summary = "수업 조회", description = "전체 수업 조회")
@@ -59,14 +73,5 @@ public class ClassController {
         return ResponseEntity.ok().body(classService.getByManagerNickname(nickname));
     }
 
-    @Operation(summary = "수업 삭제", description = "수업 ID로 삭제")
-    @DeleteMapping("/class/{classId}")
-    public ResponseEntity<?> deleteClass(
-            @PathVariable int classId,
-            @AuthenticationPrincipal PrincipalUser principalUser) throws AccessDeniedException {
 
-        User user = principalUser.getUser();
-        classService.deleteClass(classId, user);
-        return ResponseEntity.ok("삭제 완료");
-    }
 }

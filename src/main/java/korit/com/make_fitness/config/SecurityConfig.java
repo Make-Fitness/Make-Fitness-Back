@@ -79,7 +79,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/api/auth/**")
                         .permitAll()
-                        .requestMatchers("/api/makefitness/**")
+                        .requestMatchers(HttpMethod.GET, "/api/makefitness/**")
                         .permitAll()
                         .anyRequest().authenticated());
         return http.build();

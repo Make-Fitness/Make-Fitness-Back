@@ -42,4 +42,9 @@ public class ClassRepository {
     public void deleteClassById(int classId) {
         classMapper.deleteClassById(classId);
     }
+
+    // 예약 인원 -1 감소
+    public void decreaseCustomerReserve(int classId) {
+        classMapper.decreaseCustomerReserve(classId);
+    }
 }

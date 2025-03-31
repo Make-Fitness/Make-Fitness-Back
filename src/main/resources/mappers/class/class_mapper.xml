@@ -34,6 +34,12 @@
         WHERE class_id = #{classId}
     </update>
 
+    <update id="decreaseCustomerReserve">
+        UPDATE class_tb
+        SET class_customer_reserve = GREATEST(0, class_customer_reserve - 1)
+        WHERE class_id = #{classId}
+    </update>
+
     <delete id="deleteClassById">
         delete from class_tb
         where class_id = #{classId}

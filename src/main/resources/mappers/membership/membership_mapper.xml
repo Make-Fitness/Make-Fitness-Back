@@ -38,10 +38,23 @@
         WHERE
             pt.promotion_id = #{promotionId}
     </insert>
+
     <update id="updateSessionCount">
-        update membership_tb mt
-        set mt.promotion_session_count = GREATEST(0, mt.promotion_session_count - 1)
-        where mt.membership_id = #{membershipId}
+        update
+            membership_tb
+        set
+            promotion_session_count = GREATEST(0, promotion_session_count - 1)
+        where
+            membership_id = #{membershipId}
+            and promotion_session_count > 0
+    </update>
+
+    <update id="restoreSessionCount">
+        update membership_tb
+        set
+            promotion_session_count = promotion_session_count + 1
+        where
+            membership_id = #{membershipId}
     </update>
 
     <select id="findByUserId" resultMap="membershipResultMap">

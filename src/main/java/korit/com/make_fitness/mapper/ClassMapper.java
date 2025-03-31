@@ -2,6 +2,7 @@ package korit.com.make_fitness.mapper;
 
 import korit.com.make_fitness.entity.Class;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface ClassMapper {
     List<Class> findByNickName (String NickName);
     void increaseCustomerReserve(int classId);
     void deleteClassById(int classId);
+    void decreaseCustomerReserve(@Param("classId") int classId);
 }

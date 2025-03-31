@@ -27,7 +27,7 @@
         WHERE c.class_id = #{classId}
         AND (cs.class_subject_name = 'PT' OR cs.class_subject_name = 'Pilates')
         AND p.pay_id IS NOT NULL
-        AND m.promotion_session_count < 0
+        AND m.promotion_session_count > 0
         AND c.class_customer_reserve < c.class_max_customer
         AND NOT EXISTS (
             SELECT 1
@@ -38,6 +38,12 @@
     ]]>
         )
     </insert>
+    <delete id="deleteReservation">
+        DELETE FROM reservation_tb
+        WHERE
+            class_id = #{classId}
+            AND membership_id = #{membershipId}
+    </delete>
 
     <select id="existsByClassAndMembership" resultType="boolean">
         SELECT EXISTS (

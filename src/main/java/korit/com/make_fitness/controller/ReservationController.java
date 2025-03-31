@@ -26,6 +26,17 @@ public class ReservationController {
         return ResponseEntity.ok("예약 성공");
     }
 
+    @Operation(summary = "수업 예약 취소", description = "수업 예약 취소 (예약 수 감소 + 세션 수 복원)")
+    @DeleteMapping("/reservation")
+    public ResponseEntity<?> cancelReservation(
+            @RequestParam int classId,
+            @RequestParam int membershipId,
+            @AuthenticationPrincipal PrincipalUser principalUser) {
+
+        reservationService.cancelReservation(classId, membershipId);
+        return ResponseEntity.ok("예약 취소 완료");
+    }
+
     @Operation(summary = "회원 예약 목록 조회", description = "멤버십 ID 기준으로 예약된 수업 목록 조회")
     @GetMapping("/reservation/list/{membershipId}")
     public ResponseEntity<?> getReservations(@PathVariable int membershipId) {

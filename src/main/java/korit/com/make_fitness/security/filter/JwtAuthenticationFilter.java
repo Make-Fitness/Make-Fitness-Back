@@ -25,13 +25,11 @@ public class JwtAuthenticationFilter implements Filter {
     @Autowired
     private UserRepository userRepository;
 
-    // ✅ JWT 인증 제외할 URI 목록
     private static final List<String> WHITELIST = List.of(
             "/api/auth",
-            "/swagger",
-            "/v3/api-docs",
             "/swagger-ui",
-            "/api/makefitness"  // 필요에 따라 추가 경로
+            "/v3/api-docs",
+            "/swagger-resources"
     );
 
     @Override
@@ -41,13 +39,12 @@ public class JwtAuthenticationFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String uri = request.getRequestURI();
 
-        // ✅ 인증 제외 경로는 바로 통과
+        // ✅ 정확히 인증 제외할 경로만 통과시켜야 함
         if (isWhitelisted(uri)) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
 
-        // ✅ 나머지 요청은 JWT 인증 처리
         jwtAuthentication(getAccessToken(request));
         filterChain.doFilter(servletRequest, servletResponse);
     }

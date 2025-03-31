@@ -52,4 +52,19 @@ public class ReservationService {
     public List<Reservation> getReservationsByMembershipId(int membershipId) {
         return reservationRepository.findReservationsByMembershipId(membershipId);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void cancelReservation(int classId, int membershipId) {
+        // 1. 예약 삭제
+        int deleted = reservationRepository.deleteReservation(classId, membershipId);
+        if (deleted == 0) {
+            throw new IllegalStateException("예약이 존재하지 않거나 이미 취소되었습니다.");
+        }
+
+        // 2. 클래스 예약 수 -1
+        classRepository.decreaseCustomerReserve(classId);
+
+        // 3. 멤버십 세션 수 +1
+        membershipRepository.restoreSessionCount(membershipId);
+    }
 }
