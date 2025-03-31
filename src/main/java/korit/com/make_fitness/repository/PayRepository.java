@@ -1,5 +1,6 @@
 package korit.com.make_fitness.repository;
 
+import korit.com.make_fitness.dto.request.SalesDto;
 import korit.com.make_fitness.entity.Pay;
 import korit.com.make_fitness.mapper.MembershipMapper;
 import korit.com.make_fitness.mapper.PayMapper;
@@ -8,7 +9,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class PayRepository {
@@ -23,4 +24,9 @@ public class PayRepository {
         }
         return Optional.ofNullable(pay);
     }
+
+    public List<SalesDto> getSales(Date startDate) {
+        return payMapper.findSales(startDate);
+    }
+
 }

@@ -21,4 +21,7 @@ public class Pay {
     private int paymentAmount;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private Promotion promotion;
+    private ClassSubject classSubject;
 }
