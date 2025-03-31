@@ -1,5 +1,6 @@
 package korit.com.make_fitness.mapper;
 
+import korit.com.make_fitness.dto.response.RespClassReservationRow;
 import korit.com.make_fitness.entity.Class;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -25,4 +26,7 @@ public interface ClassMapper {
     void deleteClassById(int classId);
 
     void decreaseCustomerReserve(@Param("classId") int classId);
+
+    // 트레이너가 등록한 수업 + 예약자 목록까지 한 번에 조회
+    List<RespClassReservationRow> findClassWithReservations(@Param("managerId") int managerId);
 }

@@ -1,5 +1,6 @@
 package korit.com.make_fitness.repository;
 
+import korit.com.make_fitness.dto.response.RespClassReservationRow;
 import korit.com.make_fitness.entity.Class;
 import korit.com.make_fitness.mapper.ClassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,9 @@ public class ClassRepository {
     // 예약 인원 -1 감소
     public void decreaseCustomerReserve(int classId) {
         classMapper.decreaseCustomerReserve(classId);
+    }
+
+    public List<RespClassReservationRow> findClassWithReservations(int managerId) {
+        return classMapper.findClassWithReservations(managerId);
     }
 }

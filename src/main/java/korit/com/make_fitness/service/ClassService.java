@@ -1,6 +1,8 @@
 package korit.com.make_fitness.service;
 
 import korit.com.make_fitness.dto.response.RespClassListDto;
+import korit.com.make_fitness.dto.response.RespClassReservationDto;
+import korit.com.make_fitness.dto.response.RespClassReservationRow;
 import korit.com.make_fitness.entity.Class;
 import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.repository.ClassRepository;
@@ -10,7 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ClassService {
@@ -67,6 +72,41 @@ public class ClassService {
         }
         classRepository.deleteClassById(classId);
     }
+
+    // ✅ 매니저가 등록한 수업 + 예약자 명단
+    @Transactional(readOnly = true)
+    public List<RespClassReservationDto> getClassWithReservations(int managerId) {
+        List<RespClassReservationRow> rows = classRepository.findClassWithReservations(managerId);
+
+        Map<Long, RespClassReservationDto> resultMap = new LinkedHashMap<>();
+
+        for (RespClassReservationRow row : rows) {
+            Long classId = row.getClassId();
+
+            // 수업별로 처음 등장한 경우 초기화
+            if (!resultMap.containsKey(classId)) {
+                RespClassReservationDto dto = RespClassReservationDto.builder()
+                        .classId(row.getClassId())
+                        .classTime(row.getClassTime())
+                        .subject(row.getSubject())
+                        .maxCustomer(row.getMaxCustomer())
+                        .currentCustomer(row.getCurrentCustomer())
+                        .reservedMembers(new ArrayList<>())
+                        .build();
+
+                resultMap.put(classId, dto);
+            }
+
+            // 예약자 닉네임 추가
+            if (row.getReservedMember() != null) {
+                resultMap.get(classId).getReservedMembers().add(row.getReservedMember());
+            }
+        }
+
+        return new ArrayList<>(resultMap.values());
+    }
+
+
 
     // DTO 변환
     private RespClassListDto convertToDto(Class c) {
