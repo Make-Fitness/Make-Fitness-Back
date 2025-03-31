@@ -1,5 +1,6 @@
 package korit.com.make_fitness.mapper;
 
+import korit.com.make_fitness.dto.request.SalesDto;
 import korit.com.make_fitness.entity.Pay;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -12,5 +13,5 @@ import java.util.Map;
 public interface PayMapper {
     int insert(Pay pay);
 
-    List<Pay> findSales(Date startDate);
+    List<SalesDto> findSales(Date startDate);
 }

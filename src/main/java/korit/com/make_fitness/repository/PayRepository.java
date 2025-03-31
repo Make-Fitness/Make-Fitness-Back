@@ -1,5 +1,6 @@
 package korit.com.make_fitness.repository;
 
+import korit.com.make_fitness.dto.request.SalesDto;
 import korit.com.make_fitness.entity.Pay;
 import korit.com.make_fitness.mapper.MembershipMapper;
 import korit.com.make_fitness.mapper.PayMapper;
@@ -24,7 +25,7 @@ public class PayRepository {
         return Optional.ofNullable(pay);
     }
 
-    public List<Pay> getSales(Date startDate) {
+    public List<SalesDto> getSales(Date startDate) {
         return payMapper.findSales(startDate);
     }
 

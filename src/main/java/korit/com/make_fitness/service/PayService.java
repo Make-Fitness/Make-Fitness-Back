@@ -2,6 +2,7 @@ package korit.com.make_fitness.service;
 
 import korit.com.make_fitness.dto.request.ReqMembershipDto;
 import korit.com.make_fitness.dto.request.ReqPayDto;
+import korit.com.make_fitness.dto.request.SalesDto;
 import korit.com.make_fitness.entity.Membership;
 import korit.com.make_fitness.entity.Pay;
 import korit.com.make_fitness.repository.MembershipRepository;
@@ -29,7 +30,7 @@ public class PayService {
         payRepository.save(reqPayDto.toPay());
     }
 
-    public List<Pay> getSales(Date startDate) {
+    public List<SalesDto> getSales(Date startDate) {
         return payRepository.getSales(startDate);
     }
 }
