@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="korit.com.make_fitness.mapper.MemberMapper">
+
+    <select id="findByNickname" resultType="korit.com.make_fitness.dto.response.RespMemberManageDto">
+        SELECT
+            u.nickname,
+            u.ph,
+            p.promotion_name AS promotionName,
+            m.promotion_session_count AS promotionSessionCount,
+            m.expired_date AS expiredDate
+        FROM
+            membership_tb m
+            JOIN user_tb u ON m.user_id = u.user_id
+            JOIN promotion_tb p ON m.promotion_id = p.promotion_id
+        WHERE
+            u.nickname LIKE CONCAT('%', #{name}, '%')
+    </select>
+</mapper>

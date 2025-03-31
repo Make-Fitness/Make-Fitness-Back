@@ -71,4 +71,14 @@ public class ClassController {
     public ResponseEntity<?> getClassById(@PathVariable int classId) {
         return ResponseEntity.ok().body(classService.getClassById(classId));
     }
+
+    @Operation(summary = "등록된 수업 + 예약자 명단 조회", description = "트레이너가 등록한 수업 목록과 예약자 정보를 확인합니다.")
+    @GetMapping("/classes/with-reservations")
+    public ResponseEntity<?> getClassWithReservations(
+            @AuthenticationPrincipal PrincipalUser principalUser) {
+
+        int managerId = principalUser.getUser().getUserId();
+        return ResponseEntity.ok(classService.getClassWithReservations(managerId));
+    }
+
 }

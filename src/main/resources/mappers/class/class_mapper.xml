@@ -111,4 +111,23 @@
             c.class_id = #{classId}
     </select>
 
+    <select id="findClassWithReservations" resultType="korit.com.make_fitness.dto.response.RespClassReservationRow">
+        select
+            c.class_id            AS classId,
+            c.class_time          AS classTime,
+            cs.class_subject_name AS subject,
+            c.class_max_customer  AS maxCustomer,
+            c.class_customer_reserve AS currentCustomer,
+            u.nickname            AS reservedMember
+        from
+            class_tb c
+            JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
+            LEFT JOIN reservation_tb r ON c.class_id = r.class_id
+            LEFT JOIN membership_tb m ON r.membership_id = m.membership_id
+            LEFT JOIN user_tb u ON m.user_id = u.user_id
+        where
+            c.user_id = #{managerId}
+            order by c.class_time ASC
+    </select>
+
 </mapper>
