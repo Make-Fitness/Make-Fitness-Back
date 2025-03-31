@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="korit.com.make_fitness.mapper.UserMapper">
+
     <resultMap id="UserResultMap" type="korit.com.make_fitness.entity.User">
         <id column="user_id" property="userId" />
         <result property="roleName" column="role_name" />
@@ -26,7 +27,7 @@
         insert into user_tb
         values (
             default,
-            "ROLE_ANONYMOUS",
+            'ROLE_ANONYMOUS',
             #{username},
             #{password},
             #{email},

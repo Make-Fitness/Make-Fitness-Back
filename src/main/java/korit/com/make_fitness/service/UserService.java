@@ -26,6 +26,7 @@ public class UserService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
     @Autowired
     private JwtUtil jwtUtil;
 
