@@ -69,4 +69,19 @@ public class ReservationController {
         boolean exists = reservationService.existsByClassAndMembership(classId, membershipId);
         return ResponseEntity.ok().body(exists);
     }
+
+    // 사용자가 예약 가능한 프로모션 목록 조회
+    @Operation(summary = "예약 가능한 프로모션 목록", description = "현재 로그인한 사용자가 예약 가능한 프로모션 목록을 반환")
+    @GetMapping("/reservations/available-promotions")
+    public ResponseEntity<?> getAvailablePromotions(@AuthenticationPrincipal PrincipalUser principalUser) {
+        int userId = principalUser.getUser().getUserId();
+        return ResponseEntity.ok(reservationService.getAvailablePromotions(userId));
+    }
+
+    @Operation(summary = "오늘 내 수업 예약 목록", description = "오늘 날짜 기준으로 예약된 수업의 시간 리스트 반환")
+    @GetMapping("/reservation/today")
+    public ResponseEntity<?> getTodayReservations(@AuthenticationPrincipal PrincipalUser principalUser) {
+        int userId = principalUser.getUser().getUserId();
+        return ResponseEntity.ok(reservationService.getTodayReservationsByUserId(userId));
+    }
 }

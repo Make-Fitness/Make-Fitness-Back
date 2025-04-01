@@ -1,9 +1,12 @@
 package korit.com.make_fitness.mapper;
 
+import korit.com.make_fitness.dto.response.RespAvailablePromotionDto;
 import korit.com.make_fitness.entity.Membership;
 import korit.com.make_fitness.entity.Pay;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface MembershipMapper {
@@ -20,4 +23,6 @@ public interface MembershipMapper {
     int findUserIdByMembershipId(@Param("membershipId") int membershipId);
 
     int restoreSessionCount(@Param("membershipId") int membershipId);
+
+
 }
