@@ -3,6 +3,8 @@ package korit.com.make_fitness.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class ReqManagerDto {
 
@@ -15,9 +17,6 @@ public class ReqManagerDto {
     @Schema(description = "성별")
     private String gender;
     
-    @Schema(description = "나이")
-    private int age;
-    
     @Schema(description = "휴대전화번호")
     private String ph;
     
@@ -26,4 +25,7 @@ public class ReqManagerDto {
     
     @Schema(description = "세션 수")
     private int classSessionCount;
+
+    @Schema(description = "년월")
+    private LocalDate classTime;
 }

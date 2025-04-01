@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="korit.com.make_fitness.mapper.MasterMapper">
+    <resultMap id="ManagerResultMap" type="korit.com.make_fitness.dto.request.ReqManagerDto">
+        <id property="managerId" column="manager_id" />
+        <result property="nickname" column="nickname" />
+        <result property="gender" column="gender" />
+        <result property="ph" column="ph" />
+        <result property="classMemberCount" column="class_member_count" />
+        <result property="classSessionCount" column="class_session_count" />
+
+    </resultMap>
+
+    <update id="updateRoleName" keyProperty="userId" useGeneratedKeys="true">
+        update
+            user_tb
+        set
+            role_name = #{roleName}
+        where
+            user_id = #{userId}
+    </update>
+
+    <delete id="deleteManager" parameterType="int">
+        delete from
+            user_tb
+        where
+            roleName = #{roleName} and user_id = #{userId}
+    </delete>
+
+<!--    <select id="findManager" resultType="korit.com.make_fitness.dto.request.ReqManagerDto">-->
+<!--        SELECT-->
+<!--            u.nickname AS trainer_nickname,-->
+<!--            u.user_id AS manager_id,-->
+<!--            IFNULL(DATE_FORMAT(#{classTime}, '%Y-%m'), 'NO_CLASS') AS class_month,-->
+<!--            COUNT(r.reservation_id) AS total_reservations-->
+<!--        FROM user_tb u-->
+<!--            LEFT JOIN class_tb c ON u.user_id = c.user_id-->
+<!--            LEFT JOIN reservation_tb r ON r.class_id = c.class_id-->
+<!--            LEFT JOIN membership_tb m ON r.membership_id = m.membership_id-->
+<!--        WHERE u.role_name = 'ROLE_MANAGER'-->
+<!--        GROUP BY u.user_id, class_month-->
+<!--        ORDER BY u.user_id, class_month;-->
+<!--    </select>-->
+
+    <select id="findManager" resultMap="ManagerResultMap">
+        SELECT
+            u.user_id AS manager_id,
+            u.nickname AS nickname,
+            u.gender AS gender,
+            u.ph AS ph,
+            COUNT(r.reservation_id) AS class_member_count,
+            COUNT(c.class_id) AS class_session_count,
+            COALESCE(DATE_FORMAT(c.class_time, '%Y-%m'), 'NO_CLASS') AS class_month
+        FROM user_tb u
+            LEFT JOIN class_tb c ON u.user_id = c.user_id
+            LEFT JOIN reservation_tb r ON r.class_id = c.class_id
+            LEFT JOIN membership_tb m ON r.membership_id = m.membership_id
+        WHERE u.role_name = 'ROLE_MANAGER'
+        AND (DATE_FORMAT(c.class_time, '%Y-%m') = DATE_FORMAT(#{classTime}, '%Y-%m'))
+        GROUP BY u.user_id, class_month
+        ORDER BY u.user_id, class_month
+    </select>
+
+</mapper>
