@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/makefitness/manager")
+@RequestMapping("/api/makefitness/manager")
 @RequiredArgsConstructor
 public class ManagerController {
 
     private final MemberService memberService;
 
     @GetMapping("/membermanagement")
-    public List<RespMemberManageDto> getMembersByNickname(@RequestParam String name) {
-        return memberService.searchMembers(name);
+    public List<RespMemberManageDto> getMembersByNickname(@RequestParam String nickName) {
+        return memberService.searchMembers(nickName);
     }
 }
