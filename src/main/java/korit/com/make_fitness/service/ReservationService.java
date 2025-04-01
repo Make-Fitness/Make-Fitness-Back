@@ -108,7 +108,9 @@ public class ReservationService {
     }
 
     @Transactional(readOnly = true)
-    public List<RespMyTodayReservationDto> getTodayReservationsByUserId(int userId) {
-        return reservationRepository.findTodayReservationListByUserId(userId);
+    public List<RespMyTodayReservationDto> getTodayReservationsByMembershipId(int membershipId) {
+
+        return reservationRepository.findTodayReservationsByMembershipId(membershipId);
     }
+
 }

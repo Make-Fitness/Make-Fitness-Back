@@ -44,7 +44,8 @@ public class ReservationRepository {
         return reservationMapper.findAvailablePromotionsByUserId(userId);
     }
 
-    public List<RespMyTodayReservationDto> findTodayReservationListByUserId(int userId) {
-        return reservationMapper.findTodayReservationListByUserId(userId);
+    public List<RespMyTodayReservationDto> findTodayReservationsByMembershipId(int membershipId) {
+        return reservationMapper.findTodayReservationsByMembershipId(membershipId);
     }
+
 }

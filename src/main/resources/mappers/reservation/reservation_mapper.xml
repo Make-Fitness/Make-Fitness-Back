@@ -98,16 +98,16 @@
             m.user_id = #{userId}
             and m.promotion_session_count > 0
     </select>
-    <select id="findTodayReservationListByUserId" resultType="korit.com.make_fitness.dto.response.RespMyTodayReservationDto">
+
+    <select id="findTodayReservationsByMembershipId" resultType="korit.com.make_fitness.dto.response.RespMyTodayReservationDto">
         select
-            c.class_time
+        c.class_time
         from
-            reservation_tb r
-            join membership_tb m on r.membership_id = m.membership_id
-            join class_tb c on r.class_id = c.class_id
+        reservation_tb r
+        join class_tb c on r.class_id = c.class_id
         where
-            m.user_id = #{userId}
-            and date(c.class_time) = current_date
+        r.membership_id = #{membershipId}
+        and date(c.class_time) = current_date
     </select>
 
 </mapper>
