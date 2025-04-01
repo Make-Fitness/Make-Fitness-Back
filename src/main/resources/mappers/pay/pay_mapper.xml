@@ -67,7 +67,7 @@
         AND pmt2.class_subject_id = 1
         LEFT OUTER JOIN promotion_tb pmt3
         ON pmt3.promotion_id = pt.promotion_id
-        AND pmt3.class_subject_id NOT IN (1, 2)
+        AND pmt3.class_subject_id = 0
         GROUP BY
         ds.ds_date
         ORDER BY
