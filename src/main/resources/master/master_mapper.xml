@@ -19,7 +19,17 @@
             roleName = #{roleName} and user_id = #{userId}
     </delete>
 
-    <select id="findManager" resultType="korit.com.make_fitness.dto.request.ReqManagerDto">
-
-    </select>
+    <select id="findManager" resultType="korit.com.make_fitness.dto.request.ReqManagerDto"><![CDATA[
+        select
+            manager_id,
+            nickname,
+            gender,
+            ph,
+            (select distinct count(*) from pay_id where user_id = ut.user_id),
+            (select sum(promotion_session_count) from membership_tb where user_id = ut.user_id)
+        from
+            user_tb ut
+        left outer join pay_tb pt on(pt.user_id = ut.user_id)
+        left outer join membership_tb mt on(mt.user_id = ut.user_id)
+    ]]></select>
 </mapper>

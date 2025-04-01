@@ -27,4 +27,10 @@ public class MasterController {
         masterService.changeRoleName(reqRightDto.getUserId());
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "마스터 권한 부여", description = "마스터 권한 설명")
+    @GetMapping("/manager")
+    public ResponseEntity<?> managerList() {
+        return ResponseEntity.ok().body(null);
+    }
 }
