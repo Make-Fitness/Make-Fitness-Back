@@ -1,6 +1,9 @@
 package korit.com.make_fitness.mapper;
 
 import korit.com.make_fitness.dto.request.ReqReservationDto;
+import korit.com.make_fitness.dto.response.RespAvailablePromotionDto;
+import korit.com.make_fitness.dto.response.RespClassReservationRow;
+import korit.com.make_fitness.dto.response.RespMyTodayReservationDto;
 import korit.com.make_fitness.entity.Reservation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,4 +24,11 @@ public interface ReservationMapper {
     Reservation findById(@Param("reservationId") int reservationId);
 
     int deleteReservationById(@Param("reservationId") int reservationId);
+
+    List<RespAvailablePromotionDto> findAvailablePromotionsByUserId(@Param("userId") int userId);
+
+    List<RespMyTodayReservationDto> findTodayReservationsByMembershipId(@Param("membershipId") int membershipId);
+
+    List<RespClassReservationRow> findAvailableClassesByMembershipId(int membershipId);
+
 }

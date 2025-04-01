@@ -1,6 +1,9 @@
 package korit.com.make_fitness.service;
 
 import korit.com.make_fitness.dto.request.ReqReservationDto;
+import korit.com.make_fitness.dto.response.RespAvailablePromotionDto;
+import korit.com.make_fitness.dto.response.RespClassReservationRow;
+import korit.com.make_fitness.dto.response.RespMyTodayReservationDto;
 import korit.com.make_fitness.entity.Reservation;
 import korit.com.make_fitness.repository.ClassRepository;
 import korit.com.make_fitness.repository.MembershipRepository;
@@ -99,4 +102,21 @@ public class ReservationService {
     public List<Reservation> getReservationsByMembershipId(int membershipId) {
         return reservationRepository.findReservationsByMembershipId(membershipId);
     }
+
+    @Transactional(readOnly = true)
+    public List<RespAvailablePromotionDto> getAvailablePromotions(int userId) {
+        return reservationRepository.findUserPromotionsByUserId(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RespMyTodayReservationDto> getTodayReservationsByMembershipId(int membershipId) {
+
+        return reservationRepository.findTodayReservationsByMembershipId(membershipId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RespClassReservationRow> getAvailableClassesByMembershipId(int membershipId) {
+        return reservationRepository.getAvailableClassesByMembershipId(membershipId);
+    }
+
 }
