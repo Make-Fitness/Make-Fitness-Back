@@ -83,4 +83,10 @@ public class ReservationController {
     public ResponseEntity<?> getTodayReservationsByMembership(@RequestParam int membershipId) {
         return ResponseEntity.ok(reservationService.getTodayReservationsByMembershipId(membershipId));
     }
+
+    @Operation(summary = "예약 가능한 수업 조회", description = "오늘 날짜 기준, 예약 가능한 수업 리스트를 조회합니다.")
+    @GetMapping("/classes/reservable")
+    public ResponseEntity<?> getReservableClasses(@RequestParam int membershipId) {
+        return ResponseEntity.ok(reservationService.getAvailableClassesByMembershipId(membershipId));
+    }
 }

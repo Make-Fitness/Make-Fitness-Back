@@ -2,6 +2,7 @@ package korit.com.make_fitness.repository;
 
 import korit.com.make_fitness.dto.request.ReqReservationDto;
 import korit.com.make_fitness.dto.response.RespAvailablePromotionDto;
+import korit.com.make_fitness.dto.response.RespClassReservationRow;
 import korit.com.make_fitness.dto.response.RespMyTodayReservationDto;
 import korit.com.make_fitness.entity.Reservation;
 import korit.com.make_fitness.mapper.ReservationMapper;
@@ -46,6 +47,10 @@ public class ReservationRepository {
 
     public List<RespMyTodayReservationDto> findTodayReservationsByMembershipId(int membershipId) {
         return reservationMapper.findTodayReservationsByMembershipId(membershipId);
+    }
+
+    public List<RespClassReservationRow> getAvailableClassesByMembershipId(int membershipId) {
+        return reservationMapper.findAvailableClassesByMembershipId(membershipId);
     }
 
 }
