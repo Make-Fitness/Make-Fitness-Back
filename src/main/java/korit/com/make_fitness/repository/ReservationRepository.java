@@ -1,6 +1,9 @@
 package korit.com.make_fitness.repository;
 
 import korit.com.make_fitness.dto.request.ReqReservationDto;
+import korit.com.make_fitness.dto.response.RespAvailablePromotionDto;
+import korit.com.make_fitness.dto.response.RespClassReservationRow;
+import korit.com.make_fitness.dto.response.RespMyTodayReservationDto;
 import korit.com.make_fitness.entity.Reservation;
 import korit.com.make_fitness.mapper.ReservationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,4 +40,17 @@ public class ReservationRepository {
     public int deleteReservationById(int reservationId) {
         return reservationMapper.deleteReservationById(reservationId);
     }
+
+    public List<RespAvailablePromotionDto> findUserPromotionsByUserId(int userId) {
+        return reservationMapper.findAvailablePromotionsByUserId(userId);
+    }
+
+    public List<RespMyTodayReservationDto> findTodayReservationsByMembershipId(int membershipId) {
+        return reservationMapper.findTodayReservationsByMembershipId(membershipId);
+    }
+
+    public List<RespClassReservationRow> getAvailableClassesByMembershipId(int membershipId) {
+        return reservationMapper.findAvailableClassesByMembershipId(membershipId);
+    }
+
 }
