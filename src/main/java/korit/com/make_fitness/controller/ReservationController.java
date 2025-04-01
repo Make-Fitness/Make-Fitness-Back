@@ -80,8 +80,7 @@ public class ReservationController {
 
     @Operation(summary = "오늘 내 수업 예약 목록", description = "오늘 날짜 기준으로 예약된 수업의 시간 리스트 반환")
     @GetMapping("/reservation/today")
-    public ResponseEntity<?> getTodayReservations(@AuthenticationPrincipal PrincipalUser principalUser) {
-        int userId = principalUser.getUser().getUserId();
-        return ResponseEntity.ok(reservationService.getTodayReservationsByUserId(userId));
+    public ResponseEntity<?> getTodayReservationsByMembership(@RequestParam int membershipId) {
+        return ResponseEntity.ok(reservationService.getTodayReservationsByMembershipId(membershipId));
     }
 }
