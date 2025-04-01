@@ -65,13 +65,6 @@ public class ClassController {
         return ResponseEntity.ok().body(classList);
     }
 
-    // 수업 ID 기준 단일 수업 조회
-    @Operation(summary = "수업 단건 조회", description = "classId 기준으로 특정 수업 상세 조회")
-    @GetMapping("/classes/{classId}")
-    public ResponseEntity<?> getClassById(@PathVariable int classId) {
-        return ResponseEntity.ok().body(classService.getClassById(classId));
-    }
-
     @Operation(summary = "등록된 수업 + 예약자 명단 조회", description = "트레이너가 등록한 수업 목록과 예약자 정보를 확인합니다.")
     @GetMapping("/classes/with-reservations")
     public ResponseEntity<?> getClassWithReservations(

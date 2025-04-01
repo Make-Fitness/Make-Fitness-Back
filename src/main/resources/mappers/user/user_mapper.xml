@@ -26,24 +26,6 @@
     <insert id="insert" keyProperty="userId" useGeneratedKeys="true">
         insert into user_tb
         values (
-<<<<<<< HEAD
-        default,
-        'ROLE_ANONYMOUS',
-        #{username},
-        #{password},
-        #{email},
-        #{nickname},
-        #{oAuth2Name},
-        #{oAuth2Provider},
-        #{ph},
-        #{gender},
-        #{accountExpired},
-        #{accountLocked},
-        #{credentialsExpired},
-        #{accountEnabled},
-        now(),
-        now()
-=======
             default,
             'ROLE_ANONYMOUS',
             #{username},
@@ -60,7 +42,6 @@
             #{accountEnabled},
             now(),
             now()
->>>>>>> c64bd1c204efb95df5dc5aaa077a3d1c65f4aaa7
         )
     </insert>
 
@@ -87,6 +68,7 @@
         where
         username = #{username}
     </select>
+    
     <select id="selectByUserId" resultMap="UserResultMap">
         select
         user_id,
@@ -110,6 +92,7 @@
         where
         user_id = #{userId}
     </select>
+
     <select id="selectNickNameByUserId" resultType="string">
         select
         nickname
