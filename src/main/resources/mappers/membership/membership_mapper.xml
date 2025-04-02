@@ -57,6 +57,7 @@
             membership_id = #{membershipId}
     </update>
 
+
     <select id="findByUserId" resultMap="membershipResultMap">
         select *
         from
