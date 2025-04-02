@@ -29,8 +29,8 @@ public class MasterService {
         return masterRepository.getManager(classTime);
     }
 
-    public List<RespMemberListDto> searchMembers(String nickname) {
-        return masterRepository.searchMembers(nickname);
+    public List<RespMemberListDto> searchMembers(String nickName) {
+        return masterRepository.searchMembers(nickName);
     }
 
 }

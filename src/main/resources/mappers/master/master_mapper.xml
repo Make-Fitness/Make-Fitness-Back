@@ -49,17 +49,20 @@
 
     <select id="findByNickname" resultType="korit.com.make_fitness.dto.response.RespMemberListDto">
         SELECT
-            u.nickname,
-            u.ph,
-            COALESCE(p.promotion_name, '') AS promotionName,
-            COALESCE(m.promotion_session_count, 0) AS promotionSessionCount,
-            COALESCE(m.expired_date, NOW()) AS expiredDate
+        u.nickname,
+        u.ph,
+        u.gender,
+        u.created_at,
+        u.role_name,
+        COALESCE(p.promotion_name, '없음') AS promotionName,
+        COALESCE(m.promotion_session_count, 0) AS promotionSessionCount,
+        COALESCE(m.expired_date, NOW()) AS expiredDate
         FROM
-            user_tb u
-            LEFT JOIN membership_tb m ON m.user_id = u.user_id
-            LEFT JOIN promotion_tb p ON m.promotion_id = p.promotion_id
+        user_tb u
+        LEFT JOIN membership_tb m ON m.user_id = u.user_id
+        LEFT JOIN promotion_tb p ON m.promotion_id = p.promotion_id
         WHERE
-            u.nickname LIKE CONCAT('%', #{name}, '%')
+        u.nickname LIKE CONCAT('%', #{name}, '%')
     </select>
 
     <select id="findByStartAndEndDate" resultType="korit.com.make_fitness.dto.response.RespSalesDto">

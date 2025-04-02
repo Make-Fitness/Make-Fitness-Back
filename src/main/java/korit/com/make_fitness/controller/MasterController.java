@@ -40,7 +40,7 @@ public class MasterController {
 
     @Operation(summary = "회원 리스트 조회", description = "회원 리스트 조회")
     @GetMapping("/users")
-    public List<RespMemberListDto> getMembersByNickname(@RequestParam String nickName) {
+    public List<RespMemberListDto> getMembersByNickname(@RequestParam(required = false, defaultValue = "") String nickName) {
         return masterService.searchMembers(nickName);
     }
 
