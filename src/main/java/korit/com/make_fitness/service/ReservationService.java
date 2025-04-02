@@ -36,6 +36,7 @@ public class ReservationService {
             throw new IllegalStateException("예약 조건을 만족하지 않아 예약에 실패했습니다.");
         }
 
+        membershipRepository.updateSessionCount(reqReservationDto.getMembershipId());
         classRepository.increaseCustomerReserve(reqReservationDto.getClassId());
     }
 
@@ -110,8 +111,25 @@ public class ReservationService {
 
     @Transactional(readOnly = true)
     public List<RespMyTodayReservationDto> getTodayReservationsByMembershipId(int membershipId) {
+        if (membershipId <= 0) {
+            throw new IllegalArgumentException("유효하지 않은 membershipId 입니다.");
+        }
 
-        return reservationRepository.findTodayReservationsByMembershipId(membershipId);
+        try {
+            List<RespMyTodayReservationDto> reservations = reservationRepository.findTodayReservationsByMembershipId(membershipId);
+
+            if (reservations == null || reservations.isEmpty()) {
+                // 비어 있을 경우도 예외처리 가능
+                // throw new NoReservationFoundException("오늘 예약된 수업이 없습니다.");
+                return List.of(); // 그냥 빈 리스트 리턴도 가능
+            }
+
+            return reservations;
+
+        } catch (Exception e) {
+            // DB 또는 기타 예외 상황에 대한 예외 로깅 및 래핑
+            throw new RuntimeException("오늘 예약 정보를 불러오는 중 오류가 발생했습니다.", e);
+        }
     }
 
     @Transactional(readOnly = true)

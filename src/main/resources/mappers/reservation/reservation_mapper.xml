@@ -100,39 +100,52 @@
     </select>
 
     <select id="findTodayReservationsByMembershipId" resultType="korit.com.make_fitness.dto.response.RespMyTodayReservationDto">
-        select
-        c.class_time
-        from
-        reservation_tb r
-        join class_tb c on r.class_id = c.class_id
-        where
-        r.membership_id = #{membershipId}
-        and date(c.class_time) = current_date
+        SELECT
+            r.reservation_id,
+            c.class_time,
+            u.nickname AS trainer_name,
+            cs.class_subject_name AS class_subject
+        FROM
+            reservation_tb r
+            JOIN class_tb c ON r.class_id = c.class_id
+            JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
+            JOIN membership_tb m ON r.membership_id = m.membership_id
+            JOIN pay_tb p ON m.promotion_id = p.promotion_id AND m.user_id = p.user_id
+            JOIN user_tb u ON u.user_id = p.manager_id
+        WHERE
+            r.membership_id = #{membershipId}
+            AND DATE(c.class_time) = CURRENT_DATE
+            AND u.role_name = 'ROLE_MANAGER'
     </select>
 
     <select id="findAvailableClassesByMembershipId" resultType="korit.com.make_fitness.dto.response.RespClassReservationRow">
-        <![CDATA[
-    SELECT
+        SELECT
         c.class_id AS classId,
         c.class_time AS classTime,
-        u.nickname AS trainerName,
+        t.nickname AS trainerName,
         cs.class_subject_name AS classSubject,
         c.class_max_customer AS maxCustomer,
         c.class_customer_reserve AS currentCustomer
-    FROM
+        FROM
         class_tb c
-        JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
-        JOIN user_tb u ON u.user_id = c.user_id
-        JOIN membership_tb m ON m.membership_id = #{membershipId}
-        JOIN pay_tb p ON p.user_id = m.user_id AND p.manager_id = c.user_id
-    WHERE
-        c.class_customer_reserve < c.class_max_customer
-        AND m.promotion_session_count > 0
+        JOIN
+        class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
+        JOIN
+        membership_tb m ON m.membership_id = #{membershipId}
+        JOIN
+        pay_tb p ON m.promotion_id = p.promotion_id AND m.user_id = p.user_id
+        JOIN
+        user_tb t ON t.user_id = p.manager_id
+        WHERE
+        DATE(c.class_time) &gt;= CURRENT_DATE
+        AND c.class_customer_reserve &lt; c.class_max_customer
+        AND m.promotion_session_count &gt; 0
         AND NOT EXISTS (
-            SELECT 1 FROM reservation_tb r
-            WHERE r.class_id = c.class_id AND r.membership_id = #{membershipId}
+        SELECT 1
+        FROM reservation_tb r
+        WHERE r.class_id = c.class_id
+        AND r.membership_id = #{membershipId}
         )
-    ]]>
     </select>
 
 </mapper>
