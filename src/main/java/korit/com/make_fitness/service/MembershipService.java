@@ -23,8 +23,16 @@ public class MembershipService {
                 .build();
 
         membershipRepository.save(membership);
+        membershipRepository.updateRoleName(reqMembershipDto.getUserId());
         return membership;
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateRoleName(int userId) {
+        membershipRepository.updateRoleName(userId);
+    }
+
+
 
     public Membership getMembershipByUserId(int userId) {
         return membershipRepository.findByUserId(userId);

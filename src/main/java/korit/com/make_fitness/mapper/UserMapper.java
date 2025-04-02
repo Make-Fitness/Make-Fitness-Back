@@ -20,4 +20,7 @@ public interface UserMapper {
 
     // 비밀번호 변경
     int updatePasswordByUserId(@Param("userId") int userId, @Param("password") String password);
+
+    int updateUserRoleToCustomer(@Param("userId") int userId);
+
 }

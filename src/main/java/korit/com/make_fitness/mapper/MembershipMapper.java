@@ -5,6 +5,7 @@ import korit.com.make_fitness.entity.Membership;
 import korit.com.make_fitness.entity.Pay;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -24,5 +25,5 @@ public interface MembershipMapper {
 
     int restoreSessionCount(@Param("membershipId") int membershipId);
 
-
+    int updateRoleName(@Param("userId") int userId);
 }
