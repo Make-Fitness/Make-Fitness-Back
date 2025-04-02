@@ -1,6 +1,8 @@
 package korit.com.make_fitness.repository;
 
-import korit.com.make_fitness.dto.request.ReqManagerDto;
+import korit.com.make_fitness.dto.response.RespManagerDto;
+import korit.com.make_fitness.dto.response.RespMemberListDto;
+import korit.com.make_fitness.dto.response.RespSalesDto;
 import korit.com.make_fitness.mapper.MasterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -21,7 +23,15 @@ public class MasterRepository {
         masterMapper.updateRoleName(userId);
     }
 
-    public List<ReqManagerDto> getManager(LocalDate classTime) {
+    public List<RespManagerDto> getManager(LocalDate classTime) {
         return masterMapper.findManager(classTime);
     }
+
+    public List<RespMemberListDto> searchMembers(String nickname) {
+        return masterMapper.findByNickname(nickname);
+    }
+
+//    public List<RespSalesDto> searchSalesWithDates() {
+//
+//    }
 }

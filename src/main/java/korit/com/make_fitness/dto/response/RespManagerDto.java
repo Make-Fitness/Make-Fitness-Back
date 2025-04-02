@@ -1,4 +1,4 @@
-package korit.com.make_fitness.dto.request;
+package korit.com.make_fitness.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class ReqManagerDto {
+public class RespManagerDto {
 
     @Schema(description = "트레이너 고유키")
     private int managerId;

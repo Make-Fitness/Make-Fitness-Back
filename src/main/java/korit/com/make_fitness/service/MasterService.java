@@ -1,6 +1,7 @@
 package korit.com.make_fitness.service;
 
-import korit.com.make_fitness.dto.request.ReqManagerDto;
+import korit.com.make_fitness.dto.response.RespManagerDto;
+import korit.com.make_fitness.dto.response.RespMemberListDto;
 import korit.com.make_fitness.repository.MasterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,12 @@ public class MasterService {
         masterRepository.updateManager(userId);
     }
 
-    public List<ReqManagerDto> getManager(LocalDate classTime) {
+    public List<RespManagerDto> getManager(LocalDate classTime) {
         return masterRepository.getManager(classTime);
+    }
+
+    public List<RespMemberListDto> searchMembers(String nickname) {
+        return masterRepository.searchMembers(nickname);
     }
 
 }
