@@ -27,7 +27,7 @@ public interface ReservationMapper {
 
     List<RespAvailablePromotionDto> findAvailablePromotionsByUserId(@Param("userId") int userId);
 
-    List<RespMyTodayReservationDto> findTodayReservationsByMembershipId(@Param("membershipId") int membershipId);
+    List<RespMyTodayReservationDto> findTodayReservationsByMembershipId(int membershipId);
 
     List<RespClassReservationRow> findAvailableClassesByMembershipId(int membershipId);
 

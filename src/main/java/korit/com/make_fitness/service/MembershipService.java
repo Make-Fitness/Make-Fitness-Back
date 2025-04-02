@@ -30,12 +30,4 @@ public class MembershipService {
         return membershipRepository.findByUserId(userId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void updateCountSession(int membershipId) {
-        membershipRepository.updateSessionCount(membershipId);
-        if(membershipRepository.findPromotionSessionCount(membershipId) < 0) {
-            throw new IllegalArgumentException("promotion_session_count는 0 미만이 될 수 없습니다.");
-        }
-    }
-
 }

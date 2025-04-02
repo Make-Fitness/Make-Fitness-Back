@@ -9,5 +9,8 @@ import java.time.LocalDateTime;
 @Builder
 public class RespMyTodayReservationDto {
 
+    private int reservationId;
     private LocalDateTime classTime;
+    private String trainerName;
+    private String classSubject;
 }

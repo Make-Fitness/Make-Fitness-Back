@@ -22,11 +22,4 @@ public class MembershipController {
         return ResponseEntity.ok().body(membershipService.insertCustomer(reqMembershipDto));
     }
 
-    @Operation(summary = "멤버십 세션 카운트 차감", description = "멤버십 세션 카운트 차감 설명")
-    @PutMapping("/membership/{membershipId}")
-    public ResponseEntity<?> updateMembership(@PathVariable("membershipId") int membershipId) {
-//        membershipService.getSessionCount(membershipId);
-        membershipService.updateCountSession(membershipId);
-        return ResponseEntity.ok().build();
-    }
 }
