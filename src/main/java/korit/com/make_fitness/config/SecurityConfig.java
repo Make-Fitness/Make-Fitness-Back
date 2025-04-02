@@ -70,17 +70,16 @@ public class SecurityConfig {
         });
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**")
-                .permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**")
-                .permitAll()
-                .requestMatchers("/api/auth/**")
-                .permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/makefitness/**")
-                .permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
 
-                .requestMatchers("/api/manage/**").hasAnyRole("MASTER", "MANAGER")
+                // ⚠️ 먼저 더 구체적인 경로부터 검사
+                .requestMatchers("/api/makefitness/manager/**").hasAnyRole("MASTER", "MANAGER")
                 .requestMatchers("/api/admin/**").hasRole("MASTER")
+
+                // 그 외 모든 GET 요청은 누구나 가능
+                .requestMatchers(HttpMethod.GET, "/api/makefitness/**").permitAll()
 
                 .anyRequest().authenticated()
         );

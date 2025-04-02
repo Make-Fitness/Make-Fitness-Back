@@ -19,7 +19,7 @@ public class ManagerController {
     private final MemberService memberService;
 
     @GetMapping("/membermanagement")
-    public List<RespMemberManageDto> getMembersByNickname(@RequestParam String nickName) {
+    public List<RespMemberManageDto> getMembersByNickname(@RequestParam(required = false) String nickName) {
         return memberService.searchMembers(nickName);
     }
 }

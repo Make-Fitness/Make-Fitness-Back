@@ -6,16 +6,19 @@
 
     <select id="findByNickname" resultType="korit.com.make_fitness.dto.response.RespMemberManageDto">
         SELECT
-            u.nickname,
-            u.ph,
-            p.promotion_name AS promotionName,
-            m.promotion_session_count AS promotionSessionCount,
-            m.expired_date AS expiredDate
+        u.nickname,
+        u.ph,
+        p.promotion_name AS promotionName,
+        m.promotion_session_count AS promotionSessionCount,
+        m.expired_date AS expiredDate
         FROM
-            membership_tb m
-            JOIN user_tb u ON m.user_id = u.user_id
-            JOIN promotion_tb p ON m.promotion_id = p.promotion_id
-        WHERE
-            u.nickname LIKE CONCAT('%', #{name}, '%')
+        membership_tb m
+        JOIN user_tb u ON m.user_id = u.user_id
+        JOIN promotion_tb p ON m.promotion_id = p.promotion_id
+        <where>
+            <if test="name != null and name != ''">
+                u.nickname LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
     </select>
 </mapper>
