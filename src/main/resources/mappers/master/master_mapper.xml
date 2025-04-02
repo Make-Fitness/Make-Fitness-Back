@@ -30,22 +30,23 @@
 
     <select id="findManager" resultMap="ManagerResultMap">
         SELECT
-            u.user_id AS manager_id,
-            u.nickname AS nickname,
-            u.gender AS gender,
-            u.ph AS ph,
-            COUNT(r.reservation_id) AS class_member_count,
-            COUNT(c.class_id) AS class_session_count,
-            COALESCE(DATE_FORMAT(c.class_time, '%Y-%m'), 'NO_CLASS') AS class_month
+        u.user_id AS manager_id,
+        u.nickname AS nickname,
+        u.gender AS gender,
+        u.ph AS ph,
+        COUNT(DISTINCT p.user_id) AS class_member_count,
+        COUNT(DISTINCT c.class_id) AS class_session_count,
+        COALESCE(DATE_FORMAT(c.class_time, '%Y-%m'), DATE_FORMAT(now(), '%Y-%m')) AS class_month
         FROM user_tb u
-            LEFT JOIN class_tb c ON u.user_id = c.user_id
-            LEFT JOIN reservation_tb r ON r.class_id = c.class_id
-            LEFT JOIN membership_tb m ON r.membership_id = m.membership_id
+        LEFT JOIN class_tb c ON u.user_id = c.user_id
+        LEFT JOIN reservation_tb r ON r.class_id = c.class_id
+        LEFT JOIN membership_tb m ON r.membership_id = m.membership_id
+        LEFT JOIN pay_tb p ON u.user_id = p.manager_id
         WHERE u.role_name = 'ROLE_MANAGER'
-        AND (DATE_FORMAT(c.class_time, '%Y-%m') = DATE_FORMAT(#{classTime}, '%Y-%m'))
         GROUP BY u.user_id, class_month
         ORDER BY u.user_id, class_month
     </select>
+
 
     <select id="findByNickname" resultType="korit.com.make_fitness.dto.response.RespMemberListDto">
         SELECT
