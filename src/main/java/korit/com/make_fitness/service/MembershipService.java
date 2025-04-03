@@ -6,10 +6,7 @@ import korit.com.make_fitness.entity.Customer;
 import korit.com.make_fitness.entity.Membership;
 import korit.com.make_fitness.repository.MembershipRepository;
 import korit.com.make_fitness.repository.UserRepository;
-<<<<<<< HEAD
 import org.springframework.beans.factory.annotation.Autowired;
-=======
->>>>>>> 7a92de3d2b2a9a9fe8bdcd762b113a6ee33bc645
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
