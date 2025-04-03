@@ -1,7 +1,9 @@
 package korit.com.make_fitness.service;
 
+import korit.com.make_fitness.dto.request.ReqDateDto;
 import korit.com.make_fitness.dto.response.RespManagerDto;
 import korit.com.make_fitness.dto.response.RespMemberListDto;
+import korit.com.make_fitness.dto.response.RespSalesDto;
 import korit.com.make_fitness.repository.MasterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,8 +23,8 @@ public class MasterService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void changeRoleName(int userId) {
-        masterRepository.updateManager(userId);
+    public int changeRoleName(int userId) {
+        return masterRepository.updateManager(userId);
     }
 
     public List<RespManagerDto> getManager(LocalDate classTime) {
@@ -31,6 +33,10 @@ public class MasterService {
 
     public List<RespMemberListDto> searchMembers(String nickName) {
         return masterRepository.searchMembers(nickName);
+    }
+
+    public List<RespSalesDto> getSalesWithStartAndEndDate(ReqDateDto reqDateDto) {
+        return masterRepository.searchSalesWithDates(reqDateDto);
     }
 
 }

@@ -1,8 +1,10 @@
 package korit.com.make_fitness.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import korit.com.make_fitness.dto.request.ReqDateDto;
 import korit.com.make_fitness.dto.request.ReqRightDto;
 import korit.com.make_fitness.dto.response.RespMemberListDto;
+import korit.com.make_fitness.dto.response.RespSalesDto;
 import korit.com.make_fitness.service.MasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +29,10 @@ public class MasterController {
 
     @Operation(summary = "마스터 권한 부여", description = "마스터 권한 설명")
     @PutMapping("/users/{userId}/role")
-    public ResponseEntity<?> changeRoleName(@RequestBody ReqRightDto reqRightDto) {
-        masterService.changeRoleName(reqRightDto.getUserId());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> changeRoleName(@PathVariable int userId, @RequestBody ReqRightDto reqRightDto) {
+        masterService.changeRoleName(userId);
+
+        return ResponseEntity.ok().body(masterService.changeRoleName(reqRightDto.getUserId()));
     }
 
     @Operation(summary = "관리자 리스트 조회", description = "관리자 리스트 조회")
@@ -44,5 +47,11 @@ public class MasterController {
         return masterService.searchMembers(nickName);
     }
 
+
+    @Operation(summary = "지정된 날짜 매출 조회", description = "지정된 날짜 매출 조회")
+    @GetMapping("/sales/reports")
+    public ResponseEntity<?> getSalesWithStartAndEndDate(ReqDateDto reqDateDto) {
+        return ResponseEntity.ok().body(masterService.getSalesWithStartAndEndDate(reqDateDto));
+    }
 
 }

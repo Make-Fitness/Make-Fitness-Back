@@ -1,5 +1,6 @@
 package korit.com.make_fitness.repository;
 
+import korit.com.make_fitness.dto.request.ReqDateDto;
 import korit.com.make_fitness.dto.response.RespManagerDto;
 import korit.com.make_fitness.dto.response.RespMemberListDto;
 import korit.com.make_fitness.dto.response.RespSalesDto;
@@ -19,8 +20,8 @@ public class MasterRepository {
         masterMapper.deleteManager(userId, roleName);
     }
 
-    public void updateManager(int userId) {
-        masterMapper.updateRoleName(userId);
+    public int updateManager(int userId) {
+        return masterMapper.updateRoleName(userId);
     }
 
     public List<RespManagerDto> getManager(LocalDate classTime) {
@@ -31,7 +32,7 @@ public class MasterRepository {
         return masterMapper.findByNickname(nickname);
     }
 
-//    public List<RespSalesDto> searchSalesWithDates() {
-//
-//    }
+    public List<RespSalesDto> searchSalesWithDates(ReqDateDto reqDateDto) {
+        return masterMapper.findByStartAndEndDate(reqDateDto);
+    }
 }

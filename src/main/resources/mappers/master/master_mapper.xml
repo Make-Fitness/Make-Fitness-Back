@@ -76,7 +76,7 @@
         SELECT ds_date + INTERVAL 1 DAY
         FROM date_series
 
-        WHERE not ds_date = LAST_DAY(STR_TO_DATE(#{endDate}, '%Y-%m-%d'))
+        WHERE not ds_date = STR_TO_DATE(#{endDate}, '%Y-%m-%d')
         )
         SELECT
         ds.ds_date + INTERVAL 1 DAY AS date,
