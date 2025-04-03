@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class MasterService {
+
     @Autowired
     private MasterRepository masterRepository;
 
@@ -23,8 +24,8 @@ public class MasterService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public int changeRoleName(int userId) {
-        return masterRepository.updateManager(userId);
+    public void changeRoleName(int userId, String roleName) {
+        masterRepository.updateRoleByUserId(userId, roleName);
     }
 
     public List<RespManagerDto> getManager(LocalDate classTime) {
@@ -38,5 +39,4 @@ public class MasterService {
     public List<RespSalesDto> getSalesWithStartAndEndDate(ReqDateDto reqDateDto) {
         return masterRepository.searchSalesWithDates(reqDateDto);
     }
-
 }

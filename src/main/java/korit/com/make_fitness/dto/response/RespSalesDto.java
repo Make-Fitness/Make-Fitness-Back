@@ -3,13 +3,14 @@ package korit.com.make_fitness.dto.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 public class RespSalesDto {
 
     @Schema(description = "날짜")
-    private Date date;
+    private LocalDate date;
     
     @Schema(description = "총 매출")
     private int totalAmount;

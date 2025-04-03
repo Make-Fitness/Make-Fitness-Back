@@ -12,15 +12,15 @@ import java.util.List;
 
 @Mapper
 public interface MasterMapper {
-    
+
     // 월별 트레이너 정보
     List<RespManagerDto> findManager(@Param("classTime") LocalDate classTime);
 
     // 매니저 삭제
     int deleteManager(@Param("userId") int userId, @Param("roleName") String roleName);
 
-    // 권한 부여
-    int updateRoleName(int userId);
+    // 회원 롤네임 수정
+    int updateRoleName(@Param("userId") int userId, @Param("roleName") String roleName);
 
     // 회원 리스트 조회
     List<RespMemberListDto> findByNickname(@Param("name") String nickName);
