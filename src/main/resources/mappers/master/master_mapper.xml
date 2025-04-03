@@ -51,6 +51,7 @@
     <select id="findByNickname" resultType="korit.com.make_fitness.dto.response.RespMemberListDto">
         SELECT
         u.nickname,
+        u.user_id,
         u.ph,
         u.gender,
         u.created_at,

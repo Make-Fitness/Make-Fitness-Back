@@ -13,6 +13,9 @@ public class RespMemberListDto {
     @Schema(description = "이름")
     private String nickName;
 
+    @Schema(description = "유저고유번호")
+    private int userId;
+
     @Schema(description = "휴대전화번호")
     private String ph;
 
