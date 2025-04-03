@@ -28,15 +28,8 @@ public class MembershipService {
         return membership;
     }
 
-
-    @Transactional(rollbackFor = Exception.class)
-    public void updateRoleName(int userId) {
-        membershipRepository.updateRoleName(userId);
-    }
-
     public Membership getMembershipByUserId(int userId) {
         return membershipRepository.findByUserId(userId);
     }
-
 
 }
