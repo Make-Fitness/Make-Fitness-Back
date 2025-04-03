@@ -16,9 +16,6 @@ public class MembershipRepository {
     @Autowired
     private MembershipMapper membershipMapper;
 
-    @Autowired
-    private UserMapper userMapper;
-
     public Optional<Membership> save(Membership membership) {
         try {
             membershipMapper.insert(membership);
