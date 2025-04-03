@@ -3,6 +3,7 @@ package korit.com.make_fitness.service;
 import korit.com.make_fitness.dto.response.RespClassListDto;
 import korit.com.make_fitness.dto.response.RespClassReservationDto;
 import korit.com.make_fitness.dto.response.RespClassReservationRow;
+import korit.com.make_fitness.dto.response.RespClassSubjectDto;
 import korit.com.make_fitness.entity.Class;
 import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.repository.ClassRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -27,6 +29,18 @@ public class ClassService {
     public Class createClass(Class classEntity, User user) throws AccessDeniedException {
         if (!user.getRoleName().equals("ROLE_MASTER") && !user.getRoleName().equals("ROLE_MANAGER")) {
             throw new AccessDeniedException("수업 등록 권한이 없습니다.");
+        }
+
+        // ✅ 트레이너가 등록 가능한 수업 subjectId 목록 확인
+        List<Integer> allowedSubjectIds = classRepository.getAllowedSubjectIdsByTrainer(user.getUserId());
+        if (!allowedSubjectIds.contains(classEntity.getClassSubjectId())) {
+            throw new AccessDeniedException("해당 수업 주제를 등록할 권한이 없습니다.");
+        }
+
+        // ✅ 중복 수업 시간 체크
+        boolean isDuplicate = classRepository.existsByTrainerAndTime(user.getUserId(), classEntity.getClassTime());
+        if (isDuplicate) {
+            throw new IllegalArgumentException("이미 해당 시간에 등록된 수업이 있습니다.");
         }
 
         classEntity.setUserId(user.getUserId());
@@ -73,7 +87,6 @@ public class ClassService {
         classRepository.deleteClassById(classId);
     }
 
-    // ✅ 매니저가 등록한 수업 + 예약자 명단
     @Transactional(readOnly = true)
     public List<RespClassReservationDto> getClassWithReservations(int managerId) {
         List<RespClassReservationRow> rows = classRepository.findClassWithReservations(managerId);
@@ -83,7 +96,6 @@ public class ClassService {
         for (RespClassReservationRow row : rows) {
             Long classId = row.getClassId();
 
-            // 수업별로 처음 등장한 경우 초기화
             if (!resultMap.containsKey(classId)) {
                 RespClassReservationDto dto = RespClassReservationDto.builder()
                         .classId(row.getClassId())
@@ -97,7 +109,6 @@ public class ClassService {
                 resultMap.put(classId, dto);
             }
 
-            // 예약자 닉네임 추가
             if (row.getReservedMember() != null) {
                 resultMap.get(classId).getReservedMembers().add(row.getReservedMember());
             }
@@ -106,9 +117,40 @@ public class ClassService {
         return new ArrayList<>(resultMap.values());
     }
 
+    @Transactional(readOnly = true)
+    public RespClassSubjectDto getTrainerClassSubject(User user) throws AccessDeniedException {
+        if (!user.getRoleName().equals("ROLE_MANAGER") && !user.getRoleName().equals("ROLE_MASTER")) {
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
 
+        List<Integer> subjectIds = classRepository.getAllowedSubjectIdsByTrainer(user.getUserId());
+        if (subjectIds.isEmpty()) {
+            throw new IllegalArgumentException("등록 가능한 수업 주제가 없습니다.");
+        }
 
-    // DTO 변환
+        int subjectId = subjectIds.get(0);
+        String subjectName = switch (subjectId) {
+            case 1 -> "PT";
+            case 2 -> "필라테스";
+            default -> "기타";
+        };
+
+        return RespClassSubjectDto.builder()
+                .classSubjectId(subjectId)
+                .classSubjectName(subjectName)
+                .build();
+    }
+
+    // ✅ 특정 날짜에 등록된 시간(hour)만 반환
+    @Transactional(readOnly = true)
+    public List<Integer> getRegisteredTimesByDate(User user, String date) throws AccessDeniedException {
+        if (!user.getRoleName().equals("ROLE_MANAGER") && !user.getRoleName().equals("ROLE_MASTER")) {
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
+        return classRepository.findRegisteredTimesByTrainerAndDate(user.getUserId(), date);
+    }
+
     private RespClassListDto convertToDto(Class c) {
         return RespClassListDto.builder()
                 .classId(c.getClassId())

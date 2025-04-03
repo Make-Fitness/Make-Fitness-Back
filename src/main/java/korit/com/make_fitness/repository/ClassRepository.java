@@ -6,6 +6,8 @@ import korit.com.make_fitness.mapper.ClassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -51,5 +53,20 @@ public class ClassRepository {
 
     public List<RespClassReservationRow> findClassWithReservations(int managerId) {
         return classMapper.findClassWithReservations(managerId);
+    }
+
+    // ✅ 트레이너가 등록 가능한 수업 subjectId 목록 조회
+    public List<Integer> getAllowedSubjectIdsByTrainer(int userId) {
+        return classMapper.getAllowedSubjectIdsByTrainer(userId);
+    }
+
+    // ✅ 중복된 수업 시간 존재 여부 확인
+    public boolean existsByTrainerAndTime(int userId, LocalDateTime classTime) {
+        return classMapper.existsByTrainerAndTime(userId, classTime);
+    }
+
+    // ✅ 특정 날짜에 등록된 시간만 조회
+    public List<Integer> findRegisteredTimesByTrainerAndDate(int userId, String date) {
+        return classMapper.findRegisteredTimesByTrainerAndDate(userId, date);
     }
 }

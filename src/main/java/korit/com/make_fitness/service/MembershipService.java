@@ -1,41 +1,45 @@
 package korit.com.make_fitness.service;
 
 import korit.com.make_fitness.dto.request.ReqMembershipDto;
-import korit.com.make_fitness.dto.request.ReqUpdateMembershipDto;
-import korit.com.make_fitness.entity.Customer;
 import korit.com.make_fitness.entity.Membership;
 import korit.com.make_fitness.repository.MembershipRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import korit.com.make_fitness.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MembershipService {
 
-    @Autowired
-    private MembershipRepository membershipRepository;
+    private final MembershipRepository membershipRepository;
+    private final UserRepository userRepository;
 
-    @Transactional(rollbackFor = Exception.class)
+    public MembershipService(MembershipRepository membershipRepository, UserRepository userRepository) {
+        this.membershipRepository = membershipRepository;
+        this.userRepository = userRepository;
+    }
+
+    @Transactional
     public Membership insertCustomer(ReqMembershipDto reqMembershipDto) {
+        int userId = reqMembershipDto.getUserId();
+
         Membership membership = Membership.builder()
-                .userId(reqMembershipDto.getUserId())
+                .userId(userId)
                 .promotionId(reqMembershipDto.getPromotionId())
                 .build();
 
         membershipRepository.save(membership);
-        membershipRepository.updateRoleName(reqMembershipDto.getUserId());
+        System.out.println("✅ membership insert 성공");
+
+        int count = userRepository.updateRoleToCustomer(userId);
+        System.out.println("🧨 update count = " + count);
+
+        String newRole = userRepository.findByUserId(userId).get().getRoleName();
+        System.out.println("🧪 현재 role_name = " + newRole);
+
         return membership;
     }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void updateRoleName(int userId) {
-        membershipRepository.updateRoleName(userId);
-    }
-
-
 
     public Membership getMembershipByUserId(int userId) {
         return membershipRepository.findByUserId(userId);
     }
-
 }

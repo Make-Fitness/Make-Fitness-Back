@@ -3,6 +3,7 @@ package korit.com.make_fitness.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import korit.com.make_fitness.dto.request.ReqClassDto;
 import korit.com.make_fitness.dto.response.RespClassListDto;
+import korit.com.make_fitness.dto.response.RespClassSubjectDto;
 import korit.com.make_fitness.entity.Class;
 import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.security.principal.PrincipalUser;
@@ -81,4 +82,24 @@ public class ClassController {
         return ResponseEntity.ok(classService.getClassWithReservations(managerId));
     }
 
+    @Operation(summary = "트레이너 담당 수업 주제 반환", description = "로그인된 트레이너의 classSubjectId 및 이름을 반환합니다.")
+    @GetMapping("/subject/me")
+    public ResponseEntity<?> getTrainerSubject(
+            @AuthenticationPrincipal PrincipalUser principalUser
+    ) throws AccessDeniedException {
+        User user = principalUser.getUser();
+        RespClassSubjectDto subjectDto = classService.getTrainerClassSubject(user);
+        return ResponseEntity.ok(subjectDto);
+    }
+
+    @Operation(summary = "해당 날짜의 등록된 수업 시간 조회", description = "트레이너 기준으로 특정 날짜에 등록된 시간 목록 반환")
+    @GetMapping("/classes/registered-times")
+    public ResponseEntity<?> getRegisteredTimesByDate(
+            @RequestParam String date,
+            @AuthenticationPrincipal PrincipalUser principalUser
+    ) throws AccessDeniedException {
+        User user = principalUser.getUser();
+        List<Integer> registeredTimes = classService.getRegisteredTimesByDate(user, date);
+        return ResponseEntity.ok(registeredTimes);
+    }
 }

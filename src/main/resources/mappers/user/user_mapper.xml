@@ -45,17 +45,11 @@
         )
     </insert>
 
-
-    <update id="updateUserRoleToCustomer">
-        UPDATE
-        user_tb
-        SET
-        role_name = 'ROLE_CUSTOMER'
-        WHERE
-        user_id = #{userId}
+    <update id="updateUserRoleToCustomer" parameterType="int">
+        UPDATE user_tb
+        SET role_name = 'ROLE_CUSTOMER'
+        WHERE user_id = #{userId}
     </update>
-
-
 
     <select id="selectByUsername" resultMap="UserResultMap">
         select

@@ -4,7 +4,6 @@ import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -44,5 +43,10 @@ public class UserRepository {
     // 비밀번호 변경
     public void updatePasswordByUserId(int userId, String password) {
         userMapper.updatePasswordByUserId(userId, password);
+    }
+
+    public int updateRoleToCustomer(int userId) {
+        return userMapper.updateUserRoleToCustomer(userId);
+
     }
 }

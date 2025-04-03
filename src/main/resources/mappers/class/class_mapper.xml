@@ -25,7 +25,7 @@
 
     <insert id="insertClass" keyProperty="classId" useGeneratedKeys="true">
         insert into class_tb
-        values (default, #{userId}, #{classSubjectId}, DATE_FORMAT(#{classTime}, '%Y-%m-%d %H'), #{classMaxCustomer}, #{classCustomerReserve}, now(), now())
+        values (default, #{userId}, #{classSubjectId}, #{classTime}, #{classMaxCustomer}, #{classCustomerReserve}, now(), now())
     </insert>
 
     <update id="increaseCustomerReserve">
@@ -112,22 +112,45 @@
     </select>
 
     <select id="findClassWithReservations" resultType="korit.com.make_fitness.dto.response.RespClassReservationRow">
-        select
-            c.class_id            AS classId,
-            c.class_time          AS classTime,
-            cs.class_subject_name AS subject,
-            c.class_max_customer  AS maxCustomer,
-            c.class_customer_reserve AS currentCustomer,
-            u.nickname            AS reservedMember
-        from
-            class_tb c
-            JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
-            LEFT JOIN reservation_tb r ON c.class_id = r.class_id
-            LEFT JOIN membership_tb m ON r.membership_id = m.membership_id
-            LEFT JOIN user_tb u ON m.user_id = u.user_id
-        where
-            c.user_id = #{managerId}
-            order by c.class_time ASC
+        SELECT
+        c.class_id            AS classId,
+        c.class_time          AS classTime,
+        cs.class_subject_name AS subject,
+        c.class_max_customer  AS maxCustomer,
+        c.class_customer_reserve AS currentCustomer,
+        u.nickname            AS reservedMember
+        FROM
+        class_tb c
+        JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
+        LEFT JOIN reservation_tb r ON c.class_id = r.class_id
+        LEFT JOIN membership_tb m ON r.membership_id = m.membership_id
+        LEFT JOIN user_tb u ON m.user_id = u.user_id
+        WHERE
+        c.user_id = #{managerId}
+        ORDER BY c.class_time ASC
     </select>
 
+    <!-- ✅ 트레이너가 등록 가능한 수업 주제 ID 목록 조회 -->
+    <select id="getAllowedSubjectIdsByTrainer" resultType="int">
+        SELECT DISTINCT p.class_subject_id
+        FROM pay_tb pay
+        JOIN promotion_tb p ON pay.promotion_id = p.promotion_id
+        WHERE pay.manager_id = #{userId}
+    </select>
+
+    <!-- ✅ 중복 수업 시간 확인 -->
+    <select id="existsByTrainerAndTime" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM class_tb
+        WHERE user_id = #{userId}
+        AND class_time = #{classTime}
+    </select>
+
+    <!-- ✅ 트레이너의 특정 날짜 수업 시간 목록 조회 -->
+    <select id="findRegisteredTimesByTrainerAndDate" resultType="int">
+        SELECT HOUR(class_time)
+        FROM class_tb
+        WHERE user_id = #{userId}
+        AND DATE(class_time) = #{date}
+    </select>
 </mapper>

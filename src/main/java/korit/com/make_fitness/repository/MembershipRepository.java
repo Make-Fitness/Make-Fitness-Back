@@ -28,10 +28,6 @@ public class MembershipRepository {
         return Optional.ofNullable(membership);
     }
 
-    public void updateRoleName(int userId) {
-        userMapper.updateUserRoleToCustomer(userId);
-    }
-
     public Membership findByUserId(int userId) {
         return membershipMapper.findByUserId(userId);
     }
