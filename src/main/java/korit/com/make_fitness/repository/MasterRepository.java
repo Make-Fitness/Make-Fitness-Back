@@ -13,6 +13,7 @@ import java.util.List;
 
 @Repository
 public class MasterRepository {
+
     @Autowired
     private MasterMapper masterMapper;
 
@@ -20,8 +21,8 @@ public class MasterRepository {
         masterMapper.deleteManager(userId, roleName);
     }
 
-    public int updateManager(int userId) {
-        return masterMapper.updateRoleName(userId);
+    public void updateRoleByUserId(int userId, String roleName) {
+        masterMapper.updateRoleName(userId, roleName);
     }
 
     public List<RespManagerDto> getManager(LocalDate classTime) {

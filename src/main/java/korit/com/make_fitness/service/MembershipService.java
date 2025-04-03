@@ -31,11 +31,9 @@ public class MembershipService {
     public void updateRoleName(int userId) {
         membershipRepository.updateRoleName(userId);
     }
-
-
-
     public Membership getMembershipByUserId(int userId) {
         return membershipRepository.findByUserId(userId);
     }
+
 
 }
