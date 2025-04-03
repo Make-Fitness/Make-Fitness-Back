@@ -15,6 +15,7 @@
         <result property="classSessionCount" column="class_session_count" />
     </resultMap>
 
+<<<<<<< HEAD
     <resultMap id="respSalesDtoMap" type="korit.com.make_fitness.dto.response.RespSalesDto">
         <result column="date" property="date"/>
         <result column="total_amount" property="totalAmount"/>
@@ -23,6 +24,8 @@
         <result column="ht_total_amount" property="htTotalAmount"/>
     </resultMap>
 
+=======
+>>>>>>> origin/이주원작업
     <!-- 유저 권한 변경 -->
     <update id="updateRoleName">
         UPDATE user_tb
@@ -44,6 +47,7 @@
         u.nickname AS nickname,
         u.gender AS gender,
         u.ph AS ph,
+<<<<<<< HEAD
         COUNT(DISTINCT p.user_id) AS class_member_count,
         COUNT(DISTINCT c.class_id) AS class_session_count,
         COALESCE(DATE_FORMAT(c.class_time, '%Y-%m'), DATE_FORMAT(now(), '%Y-%m')) AS class_month
@@ -57,6 +61,28 @@
         ORDER BY u.user_id, class_month
     </select>
 
+=======
+        COALESCE(SUM(CASE
+        WHEN DATE_FORMAT(c.class_time, '%Y-%m') = DATE_FORMAT(#{classTime}, '%Y-%m') THEN 1
+        ELSE 0 END), 0) AS class_session_count,
+        COALESCE(SUM(CASE
+        WHEN DATE_FORMAT(c.class_time, '%Y-%m') = DATE_FORMAT(#{classTime}, '%Y-%m')
+        THEN (SELECT COUNT(DISTINCT r.membership_id)
+        FROM reservation_tb r
+        JOIN class_tb cc ON r.class_id = cc.class_id
+        WHERE cc.user_id = u.user_id
+        AND DATE_FORMAT(cc.class_time, '%Y-%m') = DATE_FORMAT(#{classTime}, '%Y-%m'))
+        ELSE 0 END), 0) AS class_member_count
+        FROM user_tb u
+        LEFT JOIN class_tb c ON u.user_id = c.user_id
+        WHERE u.role_name = 'ROLE_MANAGER'
+        GROUP BY u.user_id
+        ORDER BY u.user_id
+    </select>
+
+
+
+>>>>>>> origin/이주원작업
     <!-- 회원 목록 조회 (닉네임 검색 포함) -->
     <select id="findByNickname" resultType="korit.com.make_fitness.dto.response.RespMemberListDto">
         SELECT
@@ -80,16 +106,17 @@
     </select>
 
     <!-- 날짜별 매출 조회 -->
+<<<<<<< HEAD
     <select id="findByStartAndEndDate" resultMap="respSalesDtoMap">
+=======
+    <select id="findByStartAndEndDate" resultType="korit.com.make_fitness.dto.response.RespSalesDto">
+>>>>>>> origin/이주원작업
         WITH RECURSIVE date_series AS (
-
         SELECT DATE(STR_TO_DATE(#{startDate}, '%Y-%m-%d')) AS ds_date
         UNION ALL
-
         SELECT ds_date + INTERVAL 1 DAY
         FROM date_series
-
-        WHERE not ds_date = STR_TO_DATE(#{endDate}, '%Y-%m-%d')
+        WHERE ds_date + INTERVAL 1 DAY = STR_TO_DATE(#{endDate}, '%Y-%m-%d')
         )
         SELECT
         ds.ds_date AS date,
@@ -97,23 +124,13 @@
         SUM(IF(pmt2.promotion_id IS NOT NULL, pt.payment_amount, 0)) AS pt_total_amount,
         SUM(IF(pmt.promotion_id IS NOT NULL, pt.payment_amount, 0)) AS plt_total_amount,
         SUM(IF(pmt3.promotion_id IS NOT NULL, pt.payment_amount, 0)) AS ht_total_amount
-        FROM
-        date_series ds
-        LEFT OUTER JOIN pay_tb pt
-        ON ds.ds_date = DATE(pt.created_at)
-        LEFT OUTER JOIN promotion_tb pmt
-        ON pmt.promotion_id = pt.promotion_id
-        AND pmt.class_subject_id = 2
-        LEFT OUTER JOIN promotion_tb pmt2
-        ON pmt2.promotion_id = pt.promotion_id
-        AND pmt2.class_subject_id = 1
-        LEFT OUTER JOIN promotion_tb pmt3
-        ON pmt3.promotion_id = pt.promotion_id
-        AND pmt3.class_subject_id = 0
-        GROUP BY
-        ds.ds_date
-        ORDER BY
-        ds.ds_date;
+        FROM date_series ds
+        LEFT OUTER JOIN pay_tb pt ON ds.ds_date = DATE(pt.created_at)
+        LEFT OUTER JOIN promotion_tb pmt ON pmt.promotion_id = pt.promotion_id AND pmt.class_subject_id = 2
+        LEFT OUTER JOIN promotion_tb pmt2 ON pmt2.promotion_id = pt.promotion_id AND pmt2.class_subject_id = 1
+        LEFT OUTER JOIN promotion_tb pmt3 ON pmt3.promotion_id = pt.promotion_id AND pmt3.class_subject_id = 0
+        GROUP BY ds.ds_date
+        ORDER BY ds.ds_date
     </select>
 
 

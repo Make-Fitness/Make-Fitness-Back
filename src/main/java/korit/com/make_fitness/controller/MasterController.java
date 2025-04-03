@@ -27,13 +27,13 @@ public class MasterController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "회원 권한 변경", description = "회원 번호에 따른 권한 변경")
+    @Operation(summary = "마스터 권한 부여", description = "마스터 권한 설명")
     @PutMapping("/users/{userId}/role")
     public ResponseEntity<?> changeRoleName(@PathVariable int userId, @RequestBody ReqRightDto reqRightDto) {
-        masterService.changeRoleName(userId, reqRightDto.getRoleName());
-        return ResponseEntity.ok().build(); // 변경 성공 여부만 응답
-    }
+        masterService.changeRoleName(userId);
 
+        return ResponseEntity.ok().body(masterService.changeRoleName(reqRightDto.getUserId()));
+    }
 
     @Operation(summary = "관리자 리스트 조회", description = "관리자 리스트 조회")
     @GetMapping("/manager")
