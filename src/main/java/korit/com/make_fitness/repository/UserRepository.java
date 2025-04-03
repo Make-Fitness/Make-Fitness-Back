@@ -45,4 +45,10 @@ public class UserRepository {
     public void updatePasswordByUserId(int userId, String password) {
         userMapper.updatePasswordByUserId(userId, password);
     }
+
+    // 권한 변경
+    public int updateRoleName(int userId) {
+        return userMapper.updateUserRoleToCustomer(userId);
+    }
+
 }

@@ -16,9 +16,6 @@ public class MembershipRepository {
     @Autowired
     private MembershipMapper membershipMapper;
 
-    @Autowired
-    private UserMapper userMapper;
-
     public Optional<Membership> save(Membership membership) {
         try {
             membershipMapper.insert(membership);
@@ -26,10 +23,6 @@ public class MembershipRepository {
             return Optional.empty();
         }
         return Optional.ofNullable(membership);
-    }
-
-    public void updateRoleName(int userId) {
-        userMapper.updateUserRoleToCustomer(userId);
     }
 
     public Membership findByUserId(int userId) {

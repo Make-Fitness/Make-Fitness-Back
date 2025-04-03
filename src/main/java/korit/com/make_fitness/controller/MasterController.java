@@ -35,7 +35,7 @@ public class MasterController {
     }
 
 
-    @Operation(summary = "관리자 리스트 조회", description = "관리자 리스트 조회")
+    @Operation(summary = "트레이너 리스트 조회", description = "트레이너 리스트 조회")
     @GetMapping("/manager")
     public ResponseEntity<?> managerList(LocalDate classTime) {
         return ResponseEntity.ok().body(masterService.getManager(classTime));
@@ -46,7 +46,6 @@ public class MasterController {
     public List<RespMemberListDto> getMembersByNickname(@RequestParam(required = false, defaultValue = "") String nickName) {
         return masterService.searchMembers(nickName);
     }
-
 
     @Operation(summary = "지정된 날짜 매출 조회", description = "지정된 날짜 매출 조회")
     @GetMapping("/sales/reports")
