@@ -14,5 +14,7 @@ import java.time.LocalDateTime;
 public class DayAttendance {
     private int attendId;
     private int userId;
+    private String username;
+    private String ph;
     private LocalDateTime attendDate;
 }

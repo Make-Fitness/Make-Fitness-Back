@@ -1,5 +1,6 @@
 package korit.com.make_fitness.controller;
 
+import korit.com.make_fitness.dto.request.ReqAttendanceDto;
 import korit.com.make_fitness.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,7 @@ public class AttendanceController {
     private AttendanceService attendanceService;
 
     @PostMapping("/users/{userId}")
-    public ResponseEntity<?> attendanceCheck(@PathVariable("userId") int userId) {
-        attendanceService.attendHealth(userId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<?> attendanceCheck(@PathVariable("userId") int userId, ReqAttendanceDto reqAttendanceDto) {
+        return ResponseEntity.ok().body(attendanceService.attendHealth(userId, reqAttendanceDto));
     }
 }
