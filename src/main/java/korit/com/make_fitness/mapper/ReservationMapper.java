@@ -1,3 +1,4 @@
+// ReservationMapper.java
 package korit.com.make_fitness.mapper;
 
 import korit.com.make_fitness.dto.request.ReqReservationDto;
@@ -12,7 +13,6 @@ import java.util.List;
 
 @Mapper
 public interface ReservationMapper {
-
     int insertReservation(ReqReservationDto dto);
 
     boolean existsByClassAndMembership(@Param("classId") int classId, @Param("membershipId") int membershipId);
@@ -31,4 +31,9 @@ public interface ReservationMapper {
 
     List<RespClassReservationRow> findAvailableClassesByMembershipId(int membershipId);
 
+    // 예약된 유저의 membership_id 리스트 조회
+    List<Integer> findMembershipIdsByClassId(@Param("classId") int classId);
+
+    // 클래스에 연결된 예약 전체 조회
+    List<Reservation> findReservationsByClassId(@Param("classId") int classId);
 }

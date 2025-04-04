@@ -6,7 +6,6 @@ import korit.com.make_fitness.mapper.ClassMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class ClassRepository {
         return classMapper.findFiltered(subject, manager);
     }
 
-    // ClassId 로 조회
+    // ClassId로 조회
     public Class findById(int classId) {
         return classMapper.findById(classId);
     }
@@ -51,6 +50,7 @@ public class ClassRepository {
         classMapper.decreaseCustomerReserve(classId);
     }
 
+    // 트레이너가 등록한 수업 + 예약자 목록까지 한 번에 조회
     public List<RespClassReservationRow> findClassWithReservations(int managerId) {
         return classMapper.findClassWithReservations(managerId);
     }
@@ -68,5 +68,15 @@ public class ClassRepository {
     // ✅ 특정 날짜에 등록된 시간만 조회
     public List<Integer> findRegisteredTimesByTrainerAndDate(int userId, String date) {
         return classMapper.findRegisteredTimesByTrainerAndDate(userId, date);
+    }
+
+    // 예약된 membershipId 리스트 조회
+    public List<Integer> findMembershipIdsByClassId(int classId) {
+        return classMapper.findMembershipIdsByClassId(classId);
+    }
+
+    // 예약된 membership 세션 일괄 복원
+    public void restoreSessionCountsByMembershipIds(List<Integer> membershipIds) {
+        classMapper.restoreSessionCountsByMembershipIds(membershipIds);
     }
 }

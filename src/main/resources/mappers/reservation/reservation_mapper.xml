@@ -15,9 +15,8 @@
     <insert id="insertReservation" parameterType="korit.com.make_fitness.dto.request.ReqReservationDto" keyProperty="reservationId" useGeneratedKeys="true">
         insert into reservation_tb (class_id, membership_id, created_at, updated_at)
         select
-            #{classId}, #{membershipId}, now(), now()
-        from
-            dual
+        #{classId}, #{membershipId}, now(), now()
+        from dual
         <![CDATA[
         where exists (
             select 1
@@ -47,103 +46,111 @@
 
     <select id="existsByClassAndMembership" resultType="boolean">
         select exists (
-        select
-            1
-        from
-            reservation_tb
-        where
-            class_id = #{classId}
-            and membership_id = #{membershipId}
+        select 1
+        from reservation_tb
+        where class_id = #{classId}
+        and membership_id = #{membershipId}
         )
     </select>
 
     <select id="findReservationsByMembershipId" resultMap="ReservationResultMap">
         select *
-        from
-            reservation_tb
-        where
-            membership_id = #{membershipId}
+        from reservation_tb
+        where membership_id = #{membershipId}
     </select>
 
     <select id="findClassIdListByMembershipId" resultType="java.lang.Integer">
         select class_id
-        from
-            reservation_tb
-        where
-            membership_id = #{membershipId}
+        from reservation_tb
+        where membership_id = #{membershipId}
     </select>
 
     <select id="findById" resultMap="ReservationResultMap">
         select *
-        from
-            reservation_tb
-        where
-            reservation_id = #{reservationId}
+        from reservation_tb
+        where reservation_id = #{reservationId}
     </select>
 
     <select id="findAvailablePromotionsByUserId" resultType="korit.com.make_fitness.dto.response.RespAvailablePromotionDto">
         select
-            m.membership_id AS membershipId,
-            p.promotion_name AS promotionName,
-            trainer.nickname AS trainerName,
-            m.promotion_session_count AS remainingSessionCount,
-            m.expired_date AS expiredDate
+        m.membership_id AS membershipId,
+        p.promotion_name AS promotionName,
+        trainer.nickname AS trainerName,
+        m.promotion_session_count AS remainingSessionCount,
+        m.expired_date AS expiredDate
         from
-            membership_tb m
-            join promotion_tb p ON m.promotion_id = p.promotion_id
-            join pay_tb pay on pay.user_id = m.user_id and pay.promotion_id = p.promotion_id
-            join user_tb trainer on trainer.user_id = pay.manager_id
+        membership_tb m
+        join promotion_tb p ON m.promotion_id = p.promotion_id
+        join pay_tb pay on pay.user_id = m.user_id and pay.promotion_id = p.promotion_id
+        join user_tb trainer on trainer.user_id = pay.manager_id
         where
-            m.user_id = #{userId}
-            and m.promotion_session_count > 0
+        m.user_id = #{userId}
+        and m.promotion_session_count > 0
     </select>
 
     <select id="findTodayReservationsByMembershipId" resultType="korit.com.make_fitness.dto.response.RespMyTodayReservationDto">
         SELECT
-            r.reservation_id,
-            c.class_time,
-            u.nickname AS trainer_name,
-            cs.class_subject_name AS class_subject
+        r.reservation_id,
+        c.class_time,
+        u.nickname AS trainer_name,
+        cs.class_subject_name AS class_subject
         FROM
-            reservation_tb r
-            JOIN class_tb c ON r.class_id = c.class_id
-            JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
-            JOIN membership_tb m ON r.membership_id = m.membership_id
-            JOIN pay_tb p ON m.promotion_id = p.promotion_id AND m.user_id = p.user_id
-            JOIN user_tb u ON u.user_id = p.manager_id
+        reservation_tb r
+        JOIN class_tb c ON r.class_id = c.class_id
+        JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
+        JOIN membership_tb m ON r.membership_id = m.membership_id
+        JOIN pay_tb p ON m.promotion_id = p.promotion_id AND m.user_id = p.user_id
+        JOIN user_tb u ON u.user_id = p.manager_id
         WHERE
-            r.membership_id = #{membershipId}
-            AND DATE(c.class_time) = CURRENT_DATE
-            AND u.role_name = 'ROLE_MANAGER'
+        r.membership_id = #{membershipId}
+        AND DATE(c.class_time) = CURRENT_DATE
+        AND u.role_name = 'ROLE_MANAGER'
     </select>
 
     <select id="findAvailableClassesByMembershipId" resultType="korit.com.make_fitness.dto.response.RespClassReservationRow">
         <![CDATA[
-    SELECT
-        c.class_id AS classId,
-        c.class_time AS classTime,
-        t.nickname AS trainerName,
-        cs.class_subject_name AS classSubject,
-        c.class_max_customer AS maxCustomer,
-        c.class_customer_reserve AS currentCustomer
-    FROM
-        class_tb c
-        JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
-        JOIN membership_tb m ON m.membership_id = #{membershipId}
-        JOIN pay_tb p ON m.promotion_id = p.promotion_id AND m.user_id = p.user_id
-        JOIN user_tb t ON t.user_id = p.manager_id
-    WHERE
-        DATE(c.class_time) >= CURRENT_DATE
-        AND c.class_customer_reserve < c.class_max_customer
-        AND m.promotion_session_count > 0
-        AND c.user_id = p.manager_id
-        AND NOT EXISTS (
-            SELECT 1
-            FROM reservation_tb r
-            WHERE r.class_id = c.class_id
-            AND r.membership_id = #{membershipId}
-        )
-    ]]>
+        SELECT
+            c.class_id AS classId,
+            c.class_time AS classTime,
+            t.nickname AS trainerName,
+            cs.class_subject_name AS classSubject,
+            c.class_max_customer AS maxCustomer,
+            c.class_customer_reserve AS currentCustomer
+        FROM
+            class_tb c
+            JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
+            JOIN membership_tb m ON m.membership_id = #{membershipId}
+            JOIN pay_tb p ON m.promotion_id = p.promotion_id AND m.user_id = p.user_id
+            JOIN user_tb t ON t.user_id = p.manager_id
+        WHERE
+            DATE(c.class_time) >= CURRENT_DATE
+            AND m.promotion_session_count > 0
+            AND c.user_id = p.manager_id
+            AND NOT EXISTS (
+                SELECT 1
+                FROM reservation_tb r
+                WHERE r.class_id = c.class_id
+                AND r.membership_id = #{membershipId}
+            )
+        ORDER BY c.class_time
+        ]]>
+    </select>
+
+    <delete id="cancelReservationsByClassId" parameterType="int">
+        DELETE FROM reservation_tb
+        WHERE class_id = #{classId}
+    </delete>
+
+    <select id="findReservationsByClassId" resultMap="ReservationResultMap">
+        SELECT *
+        FROM reservation_tb
+        WHERE class_id = #{classId}
+    </select>
+
+    <select id="findMembershipIdsByClassId" resultType="java.lang.Integer">
+        SELECT DISTINCT membership_id
+        FROM reservation_tb
+        WHERE class_id = #{classId}
     </select>
 
 </mapper>

@@ -9,6 +9,6 @@ import java.time.LocalDateTime;
 public class ReqUpdateMembershipDto {
 
     @Schema(description = "멤버십 회원 고유키")
-    private int membershipId;
+    private int classId;
 
 }

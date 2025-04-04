@@ -45,7 +45,7 @@ public class ClassController {
         return ResponseEntity.ok().body(classService.createClass(classEntity, user));
     }
 
-    @Operation(summary = "수업 삭제", description = "수업 ID로 삭제")
+    @Operation(summary = "수업 삭제", description = "수업을 삭제하고 예약된 유저들의 멤버십 카운트를 증가시킴")
     @DeleteMapping("/classes/{classId}")
     public ResponseEntity<?> deleteClass(
             @PathVariable int classId,
@@ -53,7 +53,8 @@ public class ClassController {
 
         User user = principalUser.getUser();
         classService.deleteClass(classId, user);
-        return ResponseEntity.ok("삭제 완료");
+
+        return ResponseEntity.ok("수업이 삭제되었고 예약된 멤버십 카운트가 증가되었습니다.");
     }
 
     @Operation(summary = "수업 목록 조회", description = "전체 or 조건(subject, manager) 조회")
@@ -66,7 +67,6 @@ public class ClassController {
         return ResponseEntity.ok().body(classList);
     }
 
-    // 수업 ID 기준 단일 수업 조회
     @Operation(summary = "수업 단건 조회", description = "classId 기준으로 특정 수업 상세 조회")
     @GetMapping("/classes/{classId}")
     public ResponseEntity<?> getClassById(@PathVariable int classId) {
