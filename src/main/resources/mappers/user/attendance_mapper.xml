@@ -2,17 +2,42 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="korit.com.make_fitness.mapper.AttendanceMapper">
 
-    <insert id="insert" keyProperty="attendId" useGeneratedKeys="true">
-        insert into day_attendance_tb
-        values
-        (
-            default,
-            #{userId},
-            #{username},
-            #{ph},
-            now()
+    <!-- ✅ 출석 INSERT -->
+    <insert id="insert"
+            parameterType="korit.com.make_fitness.entity.DayAttendance"
+            keyProperty="attendId"
+            useGeneratedKeys="true">
+        INSERT INTO day_attendance_tb (
+        user_id,
+        ph,
+        attend_date
+        ) VALUES (
+        #{userId},
+        #{ph},
+        NOW()
         )
     </insert>
+
+    <!-- ✅ 전화번호로 유저 ID 조회 -->
+    <select id="selectUserIdByPh"
+            parameterType="string"
+            resultType="int">
+        SELECT user_id
+        FROM user_tb
+        WHERE ph = #{ph}
+    </select>
+
+    <!-- ✅ 오늘 이미 출석했는지 확인 -->
+    <select id="countTodayAttendance"
+            parameterType="int"
+            resultType="int">
+        SELECT COUNT(*)
+        FROM day_attendance_tb
+        WHERE user_id = #{userId}
+        AND DATE(attend_date) = CURDATE()
+    </select>
+
 </mapper>
