@@ -79,7 +79,7 @@
         WHERE
             membership_id = #{membershipId}
     </select>
-    
+
     <!-- ✅ 개별 유저 role_name 을 CUSTOMER 로 변경 -->
     <update id="updateUserRoleToCustomer">
         UPDATE user_tb
