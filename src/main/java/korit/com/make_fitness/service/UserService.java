@@ -115,4 +115,7 @@ public class UserService {
         String newPassword = passwordEncoder.encode(password);
         userRepository.updatePasswordByUserId(userId, newPassword);
     }
+
+
+
 }

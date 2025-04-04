@@ -15,60 +15,71 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <!-- 멤버십 가입자 추가(+결제건 같이 저장) -->
     <insert id="insert" keyProperty="membershipId" useGeneratedKeys="true">
         INSERT INTO membership_tb (
-        user_id,
-        promotion_id,
-        promotion_session_count,
-        promotion_session_time,
-        expired_date,
-        created_at,
-        updated_at
+            user_id,
+            promotion_id,
+            promotion_session_count,
+            promotion_session_time,
+            expired_date,
+            created_at,
+            updated_at
         )
         SELECT
-        #{userId},
-        pt.promotion_id,
-        pt.promotion_session_count,
-        pt.promotion_session_time,
-        DATE_ADD(NOW(), INTERVAL pt.promotion_session_time MONTH),
-        NOW(),
-        NOW()
+            #{userId},
+            pt.promotion_id,
+            pt.promotion_session_count,
+            pt.promotion_session_time,
+            DATE_ADD(NOW(), INTERVAL pt.promotion_session_time MONTH),
+            NOW(),
+            NOW()
         FROM
-        promotion_tb pt
+            promotion_tb pt
         WHERE
-        pt.promotion_id = #{promotionId}
+            pt.promotion_id = #{promotionId}
     </insert>
 
+    <!-- 세션 카운트 감소 -->
     <update id="updateSessionCount">
-        UPDATE membership_tb
-        SET promotion_session_count = GREATEST(0, promotion_session_count - 1)
-        WHERE membership_id = #{membershipId}
-        AND promotion_session_count > 0
+        UPDATE
+            membership_tb
+        SET
+            promotion_session_count = GREATEST(0, promotion_session_count - 1)
+        WHERE
+            membership_id = #{membershipId} AND promotion_session_count > 0
     </update>
 
+    <!-- 세션 카운트 증가 -->
     <update id="restoreSessionCount">
-        UPDATE membership_tb
-        SET promotion_session_count = promotion_session_count + 1
-        WHERE membership_id = #{membershipId}
+        UPDATE
+            membership_tb
+        SET
+            promotion_session_count = promotion_session_count + 1
+        WHERE
+            membership_id = #{membershipId}
     </update>
 
+    <!-- userId로 멤버십 가입자 조회 -->
     <select id="findByUserId" resultMap="membershipResultMap">
-        SELECT *
-        FROM customer_tb
-        WHERE user_id = #{userId}
+        SELECT
+            *
+        FROM
+            customer_tb
+        WHERE
+            user_id = #{userId}
     </select>
 
-    <select id="getPromotionSessionCount" resultType="int">
-        SELECT promotion_session_count
-        FROM membership_tb
-        WHERE membership_id = #{membershipId}
-    </select>
-
+    <!-- 멤버십 고유키를 userId로 조회 -->
     <select id="findUserIdByMembershipId" resultType="int">
-        SELECT user_id
-        FROM membership_tb
-        WHERE membership_id = #{membershipId}
+        SELECT
+            user_id
+        FROM
+            membership_tb
+        WHERE
+            membership_id = #{membershipId}
     </select>
+<<<<<<< HEAD
 
     <!-- ✅ 개별 유저 role_name 을 CUSTOMER 로 변경 -->
     <update id="updateUserRoleToCustomer">
@@ -86,4 +97,6 @@
         )
     </update>
 
+=======
+>>>>>>> 907973991fa9f222743ee9b9a20651d5166854e1
 </mapper>
