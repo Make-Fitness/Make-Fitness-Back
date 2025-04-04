@@ -5,8 +5,5 @@ import lombok.Data;
 
 @Data
 public class ReqAttendanceDto {
-    private String username;
     private String ph;
-
-
 }
