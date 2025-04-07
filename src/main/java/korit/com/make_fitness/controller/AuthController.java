@@ -7,7 +7,6 @@ import korit.com.make_fitness.dto.response.RespCustomerDto;
 import korit.com.make_fitness.dto.response.RespLoginDto;
 import korit.com.make_fitness.dto.response.RespMembershipDto;
 import korit.com.make_fitness.dto.response.RespTokenDto;
-import korit.com.make_fitness.entity.Customer;
 import korit.com.make_fitness.entity.Membership;
 import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.service.MembershipService;

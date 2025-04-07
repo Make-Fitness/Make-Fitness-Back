@@ -18,6 +18,7 @@ public class MasterService {
     @Autowired
     private MasterRepository masterRepository;
 
+    //
     @Transactional(rollbackFor = Exception.class)
     public void removeManager(String roleName, int userId) {
         masterRepository.deleteManager(roleName, userId);

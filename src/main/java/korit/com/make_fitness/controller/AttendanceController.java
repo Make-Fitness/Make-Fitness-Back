@@ -2,9 +2,11 @@ package korit.com.make_fitness.controller;
 
 import korit.com.make_fitness.dto.request.ReqAttendanceDto;
 import korit.com.make_fitness.entity.DayAttendance;
+import korit.com.make_fitness.security.principal.PrincipalUser;
 import korit.com.make_fitness.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -57,8 +59,9 @@ public class AttendanceController {
         return ResponseEntity.ok().body(null);
     }
 
-    @GetMapping("/attendance/{userId}")
-    public ResponseEntity<?> findAttendanceByUserId(@PathVariable int userId) {
+    @GetMapping("/me")
+    public ResponseEntity<?> getMyAttendance(@AuthenticationPrincipal PrincipalUser principalUser) {
+        Integer userId = principalUser.getUser().getUserId();
         return ResponseEntity.ok().body(attendanceService.findAttendanceByUserId(userId));
     }
 }

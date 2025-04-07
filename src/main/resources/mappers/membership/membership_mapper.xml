@@ -65,7 +65,7 @@
         SELECT
             *
         FROM
-            customer_tb
+            user_tb
         WHERE
             user_id = #{userId}
     </select>
