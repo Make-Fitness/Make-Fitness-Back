@@ -5,6 +5,7 @@ import korit.com.make_fitness.dto.response.RespManagerDto;
 import korit.com.make_fitness.dto.response.RespMemberListDto;
 import korit.com.make_fitness.dto.response.RespSalesDto;
 import korit.com.make_fitness.mapper.MasterMapper;
+import korit.com.make_fitness.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,9 @@ public class MasterRepository {
 
     @Autowired
     private MasterMapper masterMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     public void deleteManager(String roleName, int userId) {
         masterMapper.deleteManager(userId, roleName);
@@ -35,5 +39,13 @@ public class MasterRepository {
 
     public List<RespSalesDto> searchSalesWithDates(ReqDateDto reqDateDto) {
         return masterMapper.findByStartAndEndDate(reqDateDto);
+    }
+
+    public List<RespSalesDto> getSales(LocalDate startDate) {
+        return masterMapper.findSales(startDate);
+    }
+
+    public void updateRoleName(int userId) {
+        userMapper.updateUserRoleToCustomer(userId);
     }
 }

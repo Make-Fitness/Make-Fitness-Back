@@ -1,11 +1,14 @@
 package korit.com.make_fitness.service;
 
 import korit.com.make_fitness.dto.request.ReqAttendanceDto;
+import korit.com.make_fitness.dto.response.RespAttendanceDto;
 import korit.com.make_fitness.entity.DayAttendance;
 import korit.com.make_fitness.repository.AttendanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class AttendanceService {
@@ -61,5 +64,9 @@ public class AttendanceService {
                 .build();
 
         return attendanceRepository.attend(dayAttendance);
+    }
+
+    public List<RespAttendanceDto> findAttendanceByUserId(int userId) {
+        return attendanceRepository.findAttendanceByUserId(userId);
     }
 }

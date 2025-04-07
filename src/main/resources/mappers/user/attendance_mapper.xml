@@ -39,5 +39,14 @@
         WHERE user_id = #{userId}
         AND DATE(attend_date) = CURDATE()
     </select>
+    <select id="selectAttendanceByUserId" resultType="korit.com.make_fitness.dto.response.RespAttendanceDto">
+        SELECT
+            user_id as userId,
+            attend_date as attendDate
+        FROM
+            day_attendance_tb
+        WHERE
+            user_id = #{userId}
+    </select>
 
 </mapper>

@@ -1,8 +1,11 @@
 package korit.com.make_fitness.mapper;
 
+import korit.com.make_fitness.dto.response.RespAttendanceDto;
 import korit.com.make_fitness.entity.DayAttendance;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface AttendanceMapper {
@@ -21,4 +24,6 @@ public interface AttendanceMapper {
      * 오늘 출석했는지 확인
      */
     int countTodayAttendance(@Param("userId") int userId);
+
+    List<RespAttendanceDto> selectAttendanceByUserId(@Param("userId") int userId);
 }

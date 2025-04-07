@@ -15,6 +15,14 @@
         <result property="classSessionCount" column="class_session_count" />
     </resultMap>
 
+    <resultMap id="SalesResultMap" type="korit.com.make_fitness.dto.response.RespSalesDto">
+        <result column="date" property="date"/>
+        <result column="total_amount" property="totalAmount"/>
+        <result column="pt_total_amount" property="ptTotalAmount"/>
+        <result column="plt_total_amount" property="pltTotalAmount"/>
+        <result column="ht_total_amount" property="htTotalAmount"/>
+    </resultMap>
+
     <resultMap id="respSalesDtoMap" type="korit.com.make_fitness.dto.response.RespSalesDto">
         <result column="date" property="date"/>
         <result column="total_amount" property="totalAmount"/>
@@ -119,6 +127,42 @@
         ds.ds_date
         ORDER BY
         ds.ds_date;
+    </select>
+
+    <select id="findSales" resultMap="SalesResultMap">
+        WITH RECURSIVE date_series AS (
+        -- 시작 날짜를 기준으로, 첫 번째 날짜부터 마지막 날짜까지 생성
+        SELECT DATE(STR_TO_DATE(#{startDate}, '%Y-%m-%d')) AS ds_date
+        UNION ALL
+
+        SELECT ds_date + INTERVAL 1 DAY
+        FROM date_series
+
+        WHERE not ds_date = LAST_DAY(STR_TO_DATE(#{startDate}, '%Y-%m-%d'))
+        )
+        SELECT
+        ds.ds_date + INTERVAL 1 DAY AS date,
+        IFNULL(SUM(pt.payment_amount), 0) AS total_amount,
+        SUM(IF(pmt2.promotion_id IS NOT NULL, pt.payment_amount, 0)) AS pt_total_amount,
+        SUM(IF(pmt.promotion_id IS NOT NULL, pt.payment_amount, 0)) AS plt_total_amount,
+        SUM(IF(pmt3.promotion_id IS NOT NULL, pt.payment_amount, 0)) AS ht_total_amount
+        FROM
+        date_series ds
+        LEFT OUTER JOIN pay_tb pt
+        ON ds.ds_date = DATE(pt.created_at)
+        LEFT OUTER JOIN promotion_tb pmt
+        ON pmt.promotion_id = pt.promotion_id
+        AND pmt.class_subject_id = 2
+        LEFT OUTER JOIN promotion_tb pmt2
+        ON pmt2.promotion_id = pt.promotion_id
+        AND pmt2.class_subject_id = 1
+        LEFT OUTER JOIN promotion_tb pmt3
+        ON pmt3.promotion_id = pt.promotion_id
+        AND pmt3.class_subject_id = 0
+        GROUP BY
+        ds.ds_date
+        ORDER BY
+        ds.ds_date
     </select>
 
 

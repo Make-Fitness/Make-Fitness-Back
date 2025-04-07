@@ -39,4 +39,9 @@ public class MasterService {
     public List<RespSalesDto> getSalesWithStartAndEndDate(ReqDateDto reqDateDto) {
         return masterRepository.searchSalesWithDates(reqDateDto);
     }
+
+    public List<RespSalesDto> getSales(LocalDate startDate) {
+        return masterRepository.getSales(startDate);
+    }
+
 }
