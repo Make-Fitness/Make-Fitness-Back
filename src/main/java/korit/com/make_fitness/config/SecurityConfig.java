@@ -2,8 +2,6 @@ package korit.com.make_fitness.config;
 
 import korit.com.make_fitness.security.filter.JwtAuthenticationFilter;
 import korit.com.make_fitness.security.handler.CustomAuthenticationEntryPoint;
-import korit.com.make_fitness.security.oAuth2.CustomOAuth2SuccessHandler;
-import korit.com.make_fitness.security.oAuth2.CustomOAuth2UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +20,6 @@ public class SecurityConfig {
 
     @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
-
-    @Autowired
-    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
-
-    @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
 
     @Autowired
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -55,13 +47,6 @@ public class SecurityConfig {
         http.httpBasic(httpBasic -> httpBasic.disable());
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        http.oauth2Login(oauth2 -> {
-            oauth2.userInfoEndpoint(userInfoEndpoint -> {
-                userInfoEndpoint.userService(customOAuth2UserService);
-            });
-            oauth2.successHandler(customOAuth2SuccessHandler);
-        });
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

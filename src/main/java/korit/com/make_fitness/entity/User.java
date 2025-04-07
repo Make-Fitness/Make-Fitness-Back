@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
+
     private int userId;
     private String roleName;
     private String username;
@@ -35,8 +36,5 @@ public class User {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
-
-
 
 }

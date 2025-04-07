@@ -37,6 +37,7 @@ public class UserService {
      */
     @Transactional(rollbackFor = Exception.class)
     public User join(ReqJoinDto reqJoinDto) {
+
         if (duplicatedByUsername(reqJoinDto.getUsername())) {
             throw new DuplicatedValueException(List.of(
                     FieldError.builder()
@@ -71,7 +72,7 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("사용자 정보를 다시 확인해 주세요."));
 
         if (!passwordEncoder.matches(reqLoginDto.getPassword(), user.getPassword())) {
-            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
+            throw new BadCredentialsException("사용자 정보가 일치하지 않습니다.");
         }
 
         Date expires = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24));  // 24시간
@@ -115,7 +116,4 @@ public class UserService {
         String newPassword = passwordEncoder.encode(password);
         userRepository.updatePasswordByUserId(userId, newPassword);
     }
-
-
-
 }

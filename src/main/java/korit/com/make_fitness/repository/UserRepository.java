@@ -16,8 +16,10 @@ public class UserRepository {
 
     // 회원가입
     public Optional<User> save(User user) {
+
         try {
             userMapper.insert(user);
+
         } catch (DuplicateKeyException e) {
             e.printStackTrace();
             return Optional.empty();
@@ -45,13 +47,9 @@ public class UserRepository {
         userMapper.updatePasswordByUserId(userId, password);
     }
 
-    public int updateRoleToCustomer(int userId) {
-        return userMapper.updateUserRoleToCustomer(userId);
-
-    }
     // 권한 변경
-    public int updateRoleName(int userId) {
-        return userMapper.updateUserRoleToCustomer(userId);
+    public void updateRoleName(int userId) {
+        userMapper.updateUserRoleToCustomer(userId);
     }
 
 

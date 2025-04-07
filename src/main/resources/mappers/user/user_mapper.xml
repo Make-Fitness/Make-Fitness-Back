@@ -32,8 +32,6 @@
             #{password},
             #{email},
             #{nickname},
-            #{oAuth2Name},
-            #{oAuth2Provider},
             #{ph},
             #{gender},
             #{accountExpired},
@@ -46,74 +44,73 @@
     </insert>
 
     <update id="updateUserRoleToCustomer" parameterType="int">
-        UPDATE user_tb
-        SET role_name = 'ROLE_CUSTOMER'
-        WHERE user_id = #{userId}
+        update
+            user_tb
+        set
+            role_name = 'ROLE_CUSTOMER'
+        where
+            user_id = #{userId}
     </update>
 
     <select id="selectByUsername" resultMap="UserResultMap">
         select
-        user_id,
-        role_name,
-        username,
-        password,
-        email,
-        nickname,
-        oauth2_name,
-        oauth2_provider,
-        ph,
-        gender,
-        account_expired,
-        account_locked,
-        credentials_expired,
-        account_enabled,
-        created_at,
-        updated_at
+            user_id,
+            role_name,
+            username,
+            password,
+            email,
+            nickname,
+            ph,
+            gender,
+            account_expired,
+            account_locked,
+            credentials_expired,
+            account_enabled,
+            created_at,
+            updated_at
         from
-        user_tb
+            user_tb
         where
-        username = #{username}
+            username = #{username}
     </select>
 
     <select id="selectByUserId" resultMap="UserResultMap">
         select
-        user_id,
-        role_name,
-        username,
-        password,
-        email,
-        nickname,
-        oauth2_name,
-        oauth2_provider,
-        ph,
-        gender,
-        account_expired,
-        account_locked,
-        credentials_expired,
-        account_enabled,
-        created_at,
-        updated_at
+            user_id,
+            role_name,
+            username,
+            password,
+            email,
+            nickname,
+            ph,
+            gender,
+            account_expired,
+            account_locked,
+            credentials_expired,
+            account_enabled,
+            created_at,
+            updated_at
         from
-        user_tb
+            user_tb
         where
-        user_id = #{userId}
+            user_id = #{userId}
     </select>
 
     <select id="selectNickNameByUserId" resultType="string">
         select
-        nickname
+            nickname
         from
-        user_tb
+            user_tb
         where
-        user_id = #{userId}
+            user_id = #{userId}
     </select>
 
     <update id="updatePasswordByUserId" keyProperty="userId">
         update
-        user_tb
+            user_tb
         set
-        password = #{password}
+            password = #{password}
         where
-        user_id = #{userId}
+            user_id = #{userId}
     </update>
 </mapper>

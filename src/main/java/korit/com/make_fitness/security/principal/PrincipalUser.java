@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Getter
 @Builder
-public class PrincipalUser implements UserDetails, OAuth2User {
+public class PrincipalUser implements UserDetails{
     private User user;
     private Map<String, Object> attributes;
     private String name;
@@ -27,16 +27,6 @@ public class PrincipalUser implements UserDetails, OAuth2User {
     @Override
     public String getPassword() {
         return user.getPassword();
-    }
-
-    @Override
-    public String getName() {
-        return attributes.get("id").toString();
-    }
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        return attributes;
     }
 
     @Override

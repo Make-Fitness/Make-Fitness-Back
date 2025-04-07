@@ -3,10 +3,8 @@ package korit.com.make_fitness.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import korit.com.make_fitness.dto.request.ReqJoinDto;
 import korit.com.make_fitness.dto.request.ReqLoginDto;
-import korit.com.make_fitness.dto.response.RespCustomerDto;
 import korit.com.make_fitness.dto.response.RespLoginDto;
 import korit.com.make_fitness.dto.response.RespMembershipDto;
-import korit.com.make_fitness.dto.response.RespTokenDto;
 import korit.com.make_fitness.entity.Membership;
 import korit.com.make_fitness.entity.User;
 import korit.com.make_fitness.service.MembershipService;
@@ -29,7 +27,6 @@ public class AuthController {
     @Operation(summary = "회원가입", description = "회원가입 설명")
     @PostMapping("/signup")
     public ResponseEntity<?> join(@RequestBody ReqJoinDto reqJoinDto) {
-        System.out.println("회원가입 요청 수신: " + reqJoinDto);
 
         return ResponseEntity.ok().body(userService.join(reqJoinDto));
     }
@@ -44,21 +41,6 @@ public class AuthController {
         // 유저 정보 조회
         User user = userService.getUserByUsername(reqLoginDto);
 
-        // 고객 정보 조회 조건
-//        Customer customer = membershipService.getCustomerByUserId(user.getUserId());
-//        RespCustomerDto customerDto = null;
-//        if (customer != null) {
-//            customerDto = RespCustomerDto.builder()
-//                    .customerId(customer.getCustomerId())
-//                    .joinDate(customer.getJoinDate())
-//                    .expireDate(customer.getExpireDate())
-//                    .resetDate(customer.getResetDate())
-//                    .restDate(customer.getRestDate())
-//                    .classStatus(customer.getClassStatus())
-//                    .classSessionCount(customer.getClassSessionCount())
-//                    .build();
-//        }
-
         Membership membership = membershipService.getMembershipByUserId(user.getUserId());
         RespMembershipDto membershipDto = null;
         if(membership != null) {
@@ -70,8 +52,6 @@ public class AuthController {
                     .expiredDate(membership.getExpiredDate())
                     .build();
         }
-
-
 
         // 응답 객체 생성
         RespLoginDto respLoginDto = RespLoginDto.builder()
