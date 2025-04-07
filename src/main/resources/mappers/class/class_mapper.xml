@@ -22,145 +22,174 @@
 
     <insert id="insertClass" keyProperty="classId" useGeneratedKeys="true">
         insert into class_tb
-        values (default, #{userId}, #{classSubjectId}, #{classTime}, #{classMaxCustomer}, #{classCustomerReserve}, now(), now())
+        values
+        (
+            default,
+            #{userId},
+            #{classSubjectId},
+            #{classTime},
+            #{classMaxCustomer},
+            #{classCustomerReserve},
+            now(),
+            now()
+        )
     </insert>
 
     <update id="increaseCustomerReserve">
-        UPDATE class_tb
-        SET class_customer_reserve = class_customer_reserve + 1
-        WHERE class_id = #{classId}
+        update class_tb
+        set
+            class_customer_reserve = class_customer_reserve + 1
+        where
+            class_id = #{classId}
     </update>
 
     <update id="decreaseCustomerReserve">
-        UPDATE class_tb
-        SET class_customer_reserve = GREATEST(0, class_customer_reserve - 1)
-        WHERE class_id = #{classId}
+        update class_tb
+        set
+            class_customer_reserve = greatest(0, class_customer_reserve - 1)
+        where
+            class_id = #{classId}
     </update>
 
     <delete id="deleteClassById">
         delete from class_tb
-        where class_id = #{classId}
+        where
+            class_id = #{classId}
     </delete>
 
     <select id="findAllUserAndSubject" resultMap="ClassResultMap">
-        SELECT
-        c.class_id,
-        c.user_id,
-        s.class_subject_name,
-        c.class_time,
-        c.class_max_customer,
-        c.class_customer_reserve,
-        u.nickname,
-        u.ph,
-        u.gender
-        FROM class_tb c
-        LEFT JOIN user_tb u ON c.user_id = u.user_id
-        LEFT JOIN class_subject_tb s ON c.class_subject_id = s.class_subject_id
+        select
+            c.class_id,
+            c.user_id,
+            s.class_subject_name,
+            c.class_time,
+            c.class_max_customer,
+            c.class_customer_reserve,
+            u.nickname,
+            u.ph,
+            u.gender
+        from
+            class_tb c
+            left join user_tb u on c.user_id = u.user_id
+            left join class_subject_tb s on c.class_subject_id = s.class_subject_id
     </select>
 
     <select id="findFiltered" resultMap="ClassResultMap">
         select
-        c.class_id,
-        c.user_id,
-        c.class_subject_id as s_class_subject_id,
-        s.class_subject_name,
-        c.class_time,
-        c.class_max_customer,
-        c.class_customer_reserve,
-        c.created_at,
-        c.updated_at,
-        u.nickname,
-        u.ph,
-        u.gender
+            c.class_id,
+            c.user_id,
+            c.class_subject_id as s_class_subject_id,
+            s.class_subject_name,
+            c.class_time,
+            c.class_max_customer,
+            c.class_customer_reserve,
+            c.created_at,
+            c.updated_at,
+            u.nickname,
+            u.ph,
+            u.gender
         from
-        class_tb c
-        left join user_tb u on c.user_id = u.user_id
-        left join class_subject_tb s on c.class_subject_id = s.class_subject_id
+            class_tb c
+            left join user_tb u on c.user_id = u.user_id
+            left join class_subject_tb s on c.class_subject_id = s.class_subject_id
         where
-        1=1
-        <if test="subject != null and subject != ''">
-            and s.class_subject_name = #{subject}
-        </if>
-        <if test="manager != null and manager != ''">
-            and u.nickname like concat('%', #{manager}, '%')
-        </if>
+            1=1
+            <if test="subject != null and subject != ''">
+                and s.class_subject_name = #{subject}
+            </if>
+            <if test="manager != null and manager != ''">
+                and u.nickname like concat('%', #{manager}, '%')
+            </if>
     </select>
 
     <select id="findById" resultMap="ClassResultMap">
         select
-        c.class_id,
-        c.user_id,
-        c.class_subject_id as s_class_subject_id,
-        s.class_subject_name,
-        c.class_time,
-        c.class_max_customer,
-        c.class_customer_reserve,
-        c.created_at,
-        c.updated_at,
-        u.nickname,
-        u.ph,
-        u.gender
+            c.class_id,
+            c.user_id,
+            c.class_subject_id as s_class_subject_id,
+            s.class_subject_name,
+            c.class_time,
+            c.class_max_customer,
+            c.class_customer_reserve,
+            c.created_at,
+            c.updated_at,
+            u.nickname,
+            u.ph,
+            u.gender
         from
-        class_tb c
-        left join user_tb u on c.user_id = u.user_id
-        left join class_subject_tb s on c.class_subject_id = s.class_subject_id
+            class_tb c
+            left join user_tb u on c.user_id = u.user_id
+            left join class_subject_tb s on c.class_subject_id = s.class_subject_id
         where
-        c.class_id = #{classId}
+            c.class_id = #{classId}
     </select>
 
     <select id="findClassWithReservations" resultType="korit.com.make_fitness.dto.response.RespClassReservationRow">
-        SELECT
-        c.class_id            AS classId,
-        c.class_time          AS classTime,
-        cs.class_subject_name AS subject,
-        c.class_max_customer  AS maxCustomer,
-        c.class_customer_reserve AS currentCustomer,
-        u.nickname            AS reservedMember
-        FROM
-        class_tb c
-        JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
-        LEFT JOIN reservation_tb r ON c.class_id = r.class_id
-        LEFT JOIN membership_tb m ON r.membership_id = m.membership_id
-        LEFT JOIN user_tb u ON m.user_id = u.user_id
+        select
+            c.class_id            as classId,
+            c.class_time          as classTime,
+            cs.class_subject_name as subject,
+            c.class_max_customer  as maxCustomer,
+            c.class_customer_reserve as currentCustomer,
+            u.nickname            as reservedMember
+        from
+            class_tb c
+        join class_subject_tb cs on c.class_subject_id = cs.class_subject_id
+        left join reservation_tb r on c.class_id = r.class_id
+        left join membership_tb m on r.membership_id = m.membership_id
+        left join user_tb u ON m.user_id = u.user_id
         WHERE
-        c.user_id = #{managerId}
-        ORDER BY c.class_time ASC
+            c.user_id = #{managerId}
+        order by c.class_time asc
     </select>
 
     <select id="getAllowedSubjectIdsByTrainer" resultType="int">
-        SELECT DISTINCT p.class_subject_id
-        FROM pay_tb pay
-        JOIN promotion_tb p ON pay.promotion_id = p.promotion_id
-        WHERE pay.manager_id = #{userId}
+        select
+            distinct p.class_subject_id
+        from
+            pay_tb pay
+            join promotion_tb p on pay.promotion_id = p.promotion_id
+        where
+            pay.manager_id = #{userId}
     </select>
 
     <select id="existsByTrainerAndTime" resultType="boolean">
-        SELECT COUNT(*) > 0
-        FROM class_tb
-        WHERE user_id = #{userId}
-        AND class_time = #{classTime}
+        select
+            count(*) > 0
+        from
+            class_tb
+        where
+            user_id = #{userId} and class_time = #{classTime}
     </select>
 
     <select id="findRegisteredTimesByTrainerAndDate" resultType="int">
-        SELECT HOUR(class_time)
-        FROM class_tb
-        WHERE user_id = #{userId}
-        AND DATE(class_time) = #{date}
+        select
+            hour(class_time)
+        from
+            class_tb
+        where
+            user_id = #{userId} and date(class_time) = #{date}
     </select>
 
     <select id="findMembershipIdsByClassId" resultType="int">
-        SELECT DISTINCT r.membership_id
-        FROM reservation_tb r
-        WHERE r.class_id = #{classId}
+        select
+            distinct r.membership_id
+        from
+            reservation_tb r
+        where
+            r.class_id = #{classId}
     </select>
 
     <update id="restoreSessionCountsByMembershipIds">
-        UPDATE membership_tb
-        SET promotion_session_count = promotion_session_count + 1
-        WHERE membership_id IN
-        <foreach collection="membershipIds" item="id" open="(" separator="," close=")">
-            #{id}
-        </foreach>
+        update
+            membership_tb
+        set
+            promotion_session_count = promotion_session_count + 1
+        where
+            membership_id in
+            <foreach collection="membershipIds" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
     </update>
 
 </mapper>

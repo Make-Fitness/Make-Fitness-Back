@@ -5,19 +5,19 @@
 <mapper namespace="korit.com.make_fitness.mapper.MemberMapper">
 
     <select id="findByNickname" resultType="korit.com.make_fitness.dto.response.RespMemberManageDto">
-        SELECT
-        u.nickname,
-        u.ph,
-        p.promotion_name AS promotionName,
-        m.promotion_session_count AS promotionSessionCount,
-        m.expired_date AS expiredDate
-        FROM
-        membership_tb m
-        JOIN user_tb u ON m.user_id = u.user_id
-        JOIN promotion_tb p ON m.promotion_id = p.promotion_id
+        select
+            u.nickname,
+            u.ph,
+            p.promotion_name as promotionName,
+            m.promotion_session_count as promotionSessionCount,
+            m.expired_date as expiredDate
+        from
+            membership_tb m
+            join user_tb u on m.user_id = u.user_id
+            join promotion_tb p on m.promotion_id = p.promotion_id
         <where>
             <if test="name != null and name != ''">
-                u.nickname LIKE CONCAT('%', #{name}, '%')
+                u.nickname like concat('%', #{name}, '%')
             </if>
         </where>
     </select>

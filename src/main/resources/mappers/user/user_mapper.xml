@@ -11,8 +11,6 @@
         <result property="password" column="password" />
         <result property="email" column="email" />
         <result property="nickname" column="nickname" />
-        <result property="oAuth2Name" column="oauth2_name" />
-        <result property="oAuth2Provider" column="oauth2_provider" />
         <result property="ph" column="ph" />
         <result property="gender" column="gender" />
         <result property="accountExpired" column="account_expired" />

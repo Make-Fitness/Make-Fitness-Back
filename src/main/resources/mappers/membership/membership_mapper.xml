@@ -17,7 +17,7 @@
 
     <!-- 멤버십 가입자 추가(+결제건 같이 저장) -->
     <insert id="insert" keyProperty="membershipId" useGeneratedKeys="true">
-        INSERT INTO membership_tb (
+        insert into membership_tb (
             user_id,
             promotion_id,
             promotion_session_count,
@@ -26,74 +26,78 @@
             created_at,
             updated_at
         )
-        SELECT
+        select
             #{userId},
             pt.promotion_id,
             pt.promotion_session_count,
             pt.promotion_session_time,
-            DATE_ADD(NOW(), INTERVAL pt.promotion_session_time MONTH),
-            NOW(),
-            NOW()
-        FROM
+            date_add(now(), interval pt.promotion_session_time month),
+            now(),
+            now()
+        from
             promotion_tb pt
-        WHERE
+        where
             pt.promotion_id = #{promotionId}
     </insert>
 
     <!-- 세션 카운트 감소 -->
     <update id="updateSessionCount">
-        UPDATE
+        update
             membership_tb
-        SET
-            promotion_session_count = GREATEST(0, promotion_session_count - 1)
-        WHERE
-            membership_id = #{membershipId} AND promotion_session_count > 0
+        set
+            promotion_session_count = greatest(0, promotion_session_count - 1)
+        where
+            membership_id = #{membershipId} and promotion_session_count > 0
     </update>
 
     <!-- 세션 카운트 증가 -->
     <update id="restoreSessionCount">
-        UPDATE
+        update
             membership_tb
-        SET
+        set
             promotion_session_count = promotion_session_count + 1
-        WHERE
+        where
             membership_id = #{membershipId}
     </update>
 
     <!-- userId로 멤버십 가입자 조회 -->
     <select id="findByUserId" resultMap="membershipResultMap">
-        SELECT
+        select
             *
-        FROM
+        from
             user_tb
-        WHERE
+        where
             user_id = #{userId}
     </select>
 
     <!-- 멤버십 고유키를 userId로 조회 -->
     <select id="findUserIdByMembershipId" resultType="int">
-        SELECT
+        select
             user_id
-        FROM
+        from
             membership_tb
-        WHERE
+        where
             membership_id = #{membershipId}
     </select>
 
     <!-- ✅ 개별 유저 role_name 을 CUSTOMER 로 변경 -->
     <update id="updateUserRoleToCustomer">
-        UPDATE user_tb
-        SET role_name = 'CUSTOMER'
-        WHERE user_id = #{userId}
+        update user_tb
+        set
+            role_name = 'CUSTOMER'
+        where
+            user_id = #{userId}
     </update>
 
     <!-- ✅ membership_tb에 등록된 모든 유저의 role_name을 CUSTOMER로 일괄 변경 -->
     <update id="bulkUpdateAllMembershipUserRolesToCustomer">
-        UPDATE user_tb
-        SET role_name = 'CUSTOMER'
-        WHERE user_id IN (
-        SELECT user_id FROM membership_tb
-        )
+        update user_tb
+        set
+            role_name = 'CUSTOMER'
+        where
+            user_id in (
+                select user_id from membership_tb
+            )
     </update>
 
 </mapper>
