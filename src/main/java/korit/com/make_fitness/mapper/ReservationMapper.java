@@ -5,6 +5,7 @@ import korit.com.make_fitness.dto.request.ReqReservationDto;
 import korit.com.make_fitness.dto.response.RespAvailablePromotionDto;
 import korit.com.make_fitness.dto.response.RespClassReservationRow;
 import korit.com.make_fitness.dto.response.RespMyTodayReservationDto;
+import korit.com.make_fitness.dto.response.RespReservationHistoryDto;
 import korit.com.make_fitness.entity.Reservation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -36,4 +37,6 @@ public interface ReservationMapper {
 
     // 클래스에 연결된 예약 전체 조회
     List<Reservation> findReservationsByClassId(@Param("classId") int classId);
-}
+
+    // 과거에 내가 들었던 수업 목록 (날짜 기준 내림차순)
+    List<RespReservationHistoryDto> findReservationHistoryByMembershipId(@Param("membershipId") int membershipId);}

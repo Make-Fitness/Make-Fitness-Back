@@ -4,6 +4,7 @@ import korit.com.make_fitness.dto.request.ReqReservationDto;
 import korit.com.make_fitness.dto.response.RespAvailablePromotionDto;
 import korit.com.make_fitness.dto.response.RespClassReservationRow;
 import korit.com.make_fitness.dto.response.RespMyTodayReservationDto;
+import korit.com.make_fitness.dto.response.RespReservationHistoryDto;
 import korit.com.make_fitness.entity.Reservation;
 import korit.com.make_fitness.repository.ClassRepository;
 import korit.com.make_fitness.repository.MembershipRepository;
@@ -127,5 +128,11 @@ public class ReservationService {
     @Transactional(readOnly = true)
     public List<RespClassReservationRow> getAvailableClassesByMembershipId(int membershipId) {
         return reservationRepository.getAvailableClassesByMembershipId(membershipId);
+    }
+
+    // ✅ 과거 포함한 예약 내역 전체 조회
+    @Transactional(readOnly = true)
+    public List<RespReservationHistoryDto> getReservationHistoryByMembershipId(int membershipId, int userId) {
+        return reservationRepository.findReservationHistoryByMembershipId(membershipId);
     }
 }

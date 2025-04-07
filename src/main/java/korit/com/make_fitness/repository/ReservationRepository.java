@@ -4,6 +4,7 @@ import korit.com.make_fitness.dto.request.ReqReservationDto;
 import korit.com.make_fitness.dto.response.RespAvailablePromotionDto;
 import korit.com.make_fitness.dto.response.RespClassReservationRow;
 import korit.com.make_fitness.dto.response.RespMyTodayReservationDto;
+import korit.com.make_fitness.dto.response.RespReservationHistoryDto;
 import korit.com.make_fitness.entity.Reservation;
 import korit.com.make_fitness.mapper.ReservationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,5 +62,10 @@ public class ReservationRepository {
     // 특정 클래스에 연결된 모든 멤버십 ID 조회
     public List<Integer> findMembershipIdsByClassId(int classId) {
         return reservationMapper.findMembershipIdsByClassId(classId);
+    }
+
+    // ✅ 지난 예약 목록 조회 (캘린더에 표시하기 위함)
+    public List<RespReservationHistoryDto> findReservationHistoryByMembershipId(int membershipId) {
+        return reservationMapper.findReservationHistoryByMembershipId(membershipId);
     }
 }

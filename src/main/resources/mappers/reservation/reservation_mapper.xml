@@ -136,6 +136,28 @@
         ]]>
     </select>
 
+    <select id="findReservationHistoryByMembershipId" resultType="korit.com.make_fitness.dto.response.RespMyTodayReservationDto">
+        <![CDATA[
+        SELECT
+        r.reservation_id,
+        c.class_time,
+        u.nickname AS trainer_name,
+        cs.class_subject_name AS class_subject
+        FROM
+        reservation_tb r
+        JOIN class_tb c ON r.class_id = c.class_id
+        JOIN class_subject_tb cs ON c.class_subject_id = cs.class_subject_id
+        JOIN membership_tb m ON r.membership_id = m.membership_id
+        JOIN pay_tb p ON m.promotion_id = p.promotion_id AND m.user_id = p.user_id
+        JOIN user_tb u ON u.user_id = p.manager_id
+        WHERE
+        r.membership_id = #{membershipId}
+        AND DATE(c.class_time) < CURRENT_DATE
+        AND u.role_name = 'ROLE_MANAGER'
+        ORDER BY c.class_time DESC
+    ]]>
+    </select>
+
     <delete id="cancelReservationsByClassId" parameterType="int">
         DELETE FROM reservation_tb
         WHERE class_id = #{classId}

@@ -80,4 +80,13 @@ public class ReservationController {
     public ResponseEntity<?> getReservableClasses(@RequestParam int membershipId) {
         return ResponseEntity.ok(reservationService.getAvailableClassesByMembershipId(membershipId));
     }
+
+    @Operation(summary = "과거 수업 예약 이력", description = "멤버십 ID를 기준으로 오늘 이전에 수강한 수업 목록을 조회")
+    @GetMapping("/reservation/history")
+    public ResponseEntity<?> getReservationHistory(
+            @RequestParam int membershipId,
+            @AuthenticationPrincipal PrincipalUser principalUser) throws AccessDeniedException {
+        int userId = principalUser.getUser().getUserId();
+        return ResponseEntity.ok(reservationService.getReservationHistoryByMembershipId(membershipId, userId));
+    }
 }
