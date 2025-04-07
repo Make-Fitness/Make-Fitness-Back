@@ -63,5 +63,5 @@ public class AttendanceController {
     public ResponseEntity<?> getMyAttendance(@AuthenticationPrincipal PrincipalUser principalUser) {
         Integer userId = principalUser.getUser().getUserId();
         return ResponseEntity.ok().body(attendanceService.findAttendanceByUserId(userId));
-    }
+    }                   
 }
