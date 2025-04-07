@@ -53,4 +53,13 @@ public class ReservationRepository {
         return reservationMapper.findAvailableClassesByMembershipId(membershipId);
     }
 
+    // 예약 테이블에서 특정 수업에 대한 모든 예약 목록 조회
+    public List<Reservation> findReservationsByClassId(int classId) {
+        return reservationMapper.findReservationsByClassId(classId);
+    }
+
+    // 특정 클래스에 연결된 모든 멤버십 ID 조회
+    public List<Integer> findMembershipIdsByClassId(int classId) {
+        return reservationMapper.findMembershipIdsByClassId(classId);
+    }
 }

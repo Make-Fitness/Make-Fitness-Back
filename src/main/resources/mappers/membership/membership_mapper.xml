@@ -79,4 +79,21 @@
         WHERE
             membership_id = #{membershipId}
     </select>
+
+    <!-- ✅ 개별 유저 role_name 을 CUSTOMER 로 변경 -->
+    <update id="updateUserRoleToCustomer">
+        UPDATE user_tb
+        SET role_name = 'CUSTOMER'
+        WHERE user_id = #{userId}
+    </update>
+
+    <!-- ✅ membership_tb에 등록된 모든 유저의 role_name을 CUSTOMER로 일괄 변경 -->
+    <update id="bulkUpdateAllMembershipUserRolesToCustomer">
+        UPDATE user_tb
+        SET role_name = 'CUSTOMER'
+        WHERE user_id IN (
+        SELECT user_id FROM membership_tb
+        )
+    </update>
+
 </mapper>

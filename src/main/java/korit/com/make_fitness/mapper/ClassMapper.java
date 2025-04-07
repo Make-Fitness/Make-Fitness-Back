@@ -11,29 +11,29 @@ import java.util.List;
 @Mapper
 public interface ClassMapper {
 
-    int insertClass (Class classEntity);
+    int insertClass(Class classEntity);
 
-    List<Class> findAllUserAndSubject ();
+    List<Class> findAllUserAndSubject();
 
-    List<Class> findFiltered(
-            @Param("subject") String subject,
-            @Param("manager") String manager
-    );
+    List<Class> findFiltered(@Param("subject") String subject, @Param("manager") String manager);
 
     List<Integer> getAllowedSubjectIdsByTrainer(@Param("userId") int userId);
-    boolean existsByTrainerAndTime(int userId, LocalDateTime classTime);
+
+    boolean existsByTrainerAndTime(@Param("userId") int userId, @Param("classTime") LocalDateTime classTime);
 
     Class findById(@Param("classId") int classId);
 
-    void increaseCustomerReserve(int classId);
+    void increaseCustomerReserve(@Param("classId") int classId);
 
-    void deleteClassById(int classId);
+    void deleteClassById(@Param("classId") int classId);
 
     void decreaseCustomerReserve(@Param("classId") int classId);
 
-    // 트레이너가 등록한 수업 + 예약자 목록까지 한 번에 조회
     List<RespClassReservationRow> findClassWithReservations(@Param("managerId") int managerId);
 
     List<Integer> findRegisteredTimesByTrainerAndDate(@Param("userId") int userId, @Param("date") String date);
 
+    List<Integer> findMembershipIdsByClassId(@Param("classId") int classId);
+
+    void restoreSessionCountsByMembershipIds(@Param("membershipIds") List<Integer> membershipIds);
 }
