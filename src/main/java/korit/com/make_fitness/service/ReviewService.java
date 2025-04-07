@@ -1,7 +1,6 @@
 package korit.com.make_fitness.service;
 
 import korit.com.make_fitness.dto.request.ReqReviewDto;
-import korit.com.make_fitness.entity.Customer;
 import korit.com.make_fitness.entity.Review;
 import korit.com.make_fitness.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;

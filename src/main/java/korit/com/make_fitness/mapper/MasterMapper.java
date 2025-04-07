@@ -28,5 +28,6 @@ public interface MasterMapper {
     // 날짜별 매출 조회
     List<RespSalesDto> findByStartAndEndDate(ReqDateDto reqDateDto);
 
+    // 매월 매출 조회
     List<RespSalesDto> findSales(LocalDate startDate);
 }
