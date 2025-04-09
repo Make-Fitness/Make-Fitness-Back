@@ -1,7 +1,6 @@
 package korit.com.make_fitness.controller;
 
 import korit.com.make_fitness.dto.request.ReqAttendanceDto;
-import korit.com.make_fitness.entity.DayAttendance;
 import korit.com.make_fitness.security.principal.PrincipalUser;
 import korit.com.make_fitness.service.AttendanceService;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +15,8 @@ public class AttendanceController {
 
     private final AttendanceService attendanceService;
 
-    /**
-     * ✅ 1. 전화번호로 사용자 존재 여부 및 중복 출석 확인
-     */
+
+    // 전화번호로 사용자 존재 여부 및 중복 출석 확인
     @GetMapping("/resolve-user")
     public ResponseEntity<?> resolveUserByPhone(@RequestParam("ph") String ph) {
         Integer userId = attendanceService.findUserIdByPhone(ph);
@@ -35,9 +33,7 @@ public class AttendanceController {
         );
     }
 
-    /**
-     * ✅ 2. 출석 등록 (userId + 이름, 전화번호 전달)
-     */
+    // 출석 등록 (userId + 이름, 전화번호 전달)
     @PostMapping("/users/{userId}")
     public ResponseEntity<?> attend(
             @PathVariable int userId,

@@ -30,11 +30,7 @@ public class UserService {
     @Autowired
     private JwtUtil jwtUtil;
 
-    /**
-     * 회원가입
-     * @param reqJoinDto 사용자 가입 요청 정보
-     * @return 저장된 사용자 객체
-     */
+    // 회원가입
     @Transactional(rollbackFor = Exception.class)
     public User join(ReqJoinDto reqJoinDto) {
 
@@ -52,20 +48,12 @@ public class UserService {
         return user;
     }
 
-    /**
-     * 아이디 중복 확인
-     * @param username 사용자 아이디
-     * @return 중복 여부
-     */
+    // 아이디 중복확인
     public boolean duplicatedByUsername(String username) {
         return userRepository.findByUsername(username).isPresent();
     }
 
-    /**
-     * 로그인 (사용자 정보 검증 후 JWT 토큰 발급)
-     * @param reqLoginDto 로그인 요청 정보
-     * @return JWT 토큰
-     */
+    // 로그인 (사용자 정보 검증 후 JWT 토큰 발급)
     public String login(ReqLoginDto reqLoginDto) {
         User user = userRepository
                 .findByUsername(reqLoginDto.getUsername())
@@ -87,31 +75,19 @@ public class UserService {
         );
     }
 
-    /**
-     * 사용자 정보 조회 (회원 ID로)
-     * @param reqLoginDto 로그인 요청 DTO
-     * @return 사용자 정보
-     */
+    // 사용자 정보 조회 (회원 ID로)
     public User getUserByUsername(ReqLoginDto reqLoginDto) throws NotFoundException {
         return userRepository
                 .findByUsername(reqLoginDto.getUsername())
                 .orElseThrow(() -> new NotFoundException("사용자를 찾지 못했습니다."));
     }
 
-    /**
-     * 사용자 닉네임 조회
-     * @param userId 사용자 ID
-     * @return 닉네임
-     */
+    // 사용자 닉네임 조회
     public String nickname(int userId) {
         return userRepository.findNicknameByUserId(userId);
     }
 
-    /**
-     * 비밀번호 변경
-     * @param userId 사용자 ID
-     * @param password 새로운 비밀번호
-     */
+    // 비밀번호 변경
     public void updatePasswordByUserId(int userId, String password) {
         String newPassword = passwordEncoder.encode(password);
         userRepository.updatePasswordByUserId(userId, newPassword);

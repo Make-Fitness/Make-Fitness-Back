@@ -16,9 +16,7 @@ public class AttendanceService {
     @Autowired
     private AttendanceRepository attendanceRepository;
 
-    /**
-     * ✅ 기존 방식 - 전화번호 기반 출석 처리 (단일 API용)
-     */
+     // 전화번호 기반 출석 처리
     @Transactional(rollbackFor = Exception.class)
     public int attendHealth(ReqAttendanceDto reqAttendanceDto) {
         Integer userId = attendanceRepository.findUserIdByPhone(reqAttendanceDto.getPh());
@@ -39,23 +37,17 @@ public class AttendanceService {
         return attendanceRepository.attend(dayAttendance);
     }
 
-    /**
-     * ✅ 신규 방식 - 전화번호로 userId 반환 (검증용)
-     */
+     // 전화번호로 userId 반환
     public Integer findUserIdByPhone(String ph) {
         return attendanceRepository.findUserIdByPhone(ph);
     }
 
-    /**
-     * ✅ 신규 방식 - 오늘 이미 출석했는지 확인
-     */
+     // 오늘 이미 출석했는지 확인
     public boolean hasAlreadyAttendedToday(int userId) {
         return attendanceRepository.hasAlreadyAttendedToday(userId);
     }
 
-    /**
-     * ✅ 신규 방식 - userId와 ReqAttendanceDto로 출석 등록
-     */
+     // userId와 ReqAttendanceDto로 출석 등록
     @Transactional(rollbackFor = Exception.class)
     public int attendWithUserId(int userId, ReqAttendanceDto dto) {
         DayAttendance dayAttendance = DayAttendance.builder()
@@ -66,6 +58,7 @@ public class AttendanceService {
         return attendanceRepository.attend(dayAttendance);
     }
 
+    // userId로 출석체크 조회
     public List<RespAttendanceDto> findAttendanceByUserId(int userId) {
         return attendanceRepository.findAttendanceByUserId(userId);
     }

@@ -5,7 +5,7 @@
 
 <mapper namespace="korit.com.make_fitness.mapper.AttendanceMapper">
 
-    <!-- ✅ 출석 INSERT -->
+    <!-- 출석 INSERT -->
     <insert id="insert"
             parameterType="korit.com.make_fitness.entity.DayAttendance"
             keyProperty="attendId"
@@ -21,7 +21,7 @@
         )
     </insert>
 
-    <!-- ✅ 전화번호로 유저 ID 조회 -->
+    <!-- 전화번호로 유저 ID 조회 -->
     <select id="selectUserIdByPh"
             parameterType="string"
             resultType="int">
@@ -30,7 +30,7 @@
         WHERE ph = #{ph}
     </select>
 
-    <!-- ✅ 오늘 이미 출석했는지 확인 -->
+    <!-- 오늘 이미 출석했는지 확인 -->
     <select id="countTodayAttendance"
             parameterType="int"
             resultType="int">
@@ -39,6 +39,7 @@
         WHERE user_id = #{userId}
         AND DATE(attend_date) = CURDATE()
     </select>
+
     <select id="selectAttendanceByUserId" resultType="korit.com.make_fitness.dto.response.RespAttendanceDto">
         SELECT
             user_id as userId,

@@ -130,7 +130,7 @@ public class ReservationService {
         return reservationRepository.getAvailableClassesByMembershipId(membershipId);
     }
 
-    // ✅ 과거 포함한 예약 내역 전체 조회
+    // 과거 포함한 예약 내역 전체 조회
     @Transactional(readOnly = true)
     public List<RespReservationHistoryDto> getReservationHistoryByMembershipId(int membershipId, int userId) {
         return reservationRepository.findReservationHistoryByMembershipId(membershipId);

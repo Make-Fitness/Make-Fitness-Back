@@ -64,7 +64,7 @@ public class ReservationRepository {
         return reservationMapper.findMembershipIdsByClassId(classId);
     }
 
-    // ✅ 지난 예약 목록 조회 (캘린더에 표시하기 위함)
+    // 지난 예약 목록 조회 (캘린더에 표시하기 위함)
     public List<RespReservationHistoryDto> findReservationHistoryByMembershipId(int membershipId) {
         return reservationMapper.findReservationHistoryByMembershipId(membershipId);
     }

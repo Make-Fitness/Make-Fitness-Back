@@ -2,7 +2,6 @@ package korit.com.make_fitness.controller;
 
 import korit.com.make_fitness.dto.response.RespMemberManageDto;
 import korit.com.make_fitness.service.MemberService;
-import korit.com.make_fitness.service.MembershipService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
