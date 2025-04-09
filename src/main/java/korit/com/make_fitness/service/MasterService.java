@@ -18,12 +18,6 @@ public class MasterService {
     @Autowired
     private MasterRepository masterRepository;
 
-    // 트레이너 삭제
-    @Transactional(rollbackFor = Exception.class)
-    public void removeManager(String roleName, int userId) {
-        masterRepository.deleteManager(roleName, userId);
-    }
-
     // 회원가입자 권한 변경
     @Transactional(rollbackFor = Exception.class)
     public void changeRoleName(int userId, String roleName) {

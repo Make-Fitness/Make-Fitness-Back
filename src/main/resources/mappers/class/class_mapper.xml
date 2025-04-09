@@ -134,11 +134,11 @@
             u.nickname            as reservedMember
         from
             class_tb c
-        join class_subject_tb cs on c.class_subject_id = cs.class_subject_id
-        left join reservation_tb r on c.class_id = r.class_id
-        left join membership_tb m on r.membership_id = m.membership_id
-        left join user_tb u ON m.user_id = u.user_id
-        WHERE
+            join class_subject_tb cs on c.class_subject_id = cs.class_subject_id
+            left join reservation_tb r on c.class_id = r.class_id
+            left join membership_tb m on r.membership_id = m.membership_id
+            left join user_tb u ON m.user_id = u.user_id
+        where
             c.user_id = #{managerId}
         order by c.class_time asc
     </select>

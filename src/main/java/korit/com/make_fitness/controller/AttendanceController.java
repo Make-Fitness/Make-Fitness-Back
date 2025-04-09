@@ -52,7 +52,7 @@ public class AttendanceController {
     }
 
     // 내부 응답 객체 (클래스 바깥으로 뺄 수도 있음)
-    record ResolveUserResponse(Integer userId) {}
+    record ResolveUserResponse(int userId) {}
 
     @GetMapping("/check")
     public ResponseEntity<?> checkAttendance(@PathVariable int userId) {
@@ -61,7 +61,7 @@ public class AttendanceController {
 
     @GetMapping("/me")
     public ResponseEntity<?> getMyAttendance(@AuthenticationPrincipal PrincipalUser principalUser) {
-        Integer userId = principalUser.getUser().getUserId();
+        int userId = principalUser.getUser().getUserId();
         return ResponseEntity.ok().body(attendanceService.findAttendanceByUserId(userId));
     }                   
 }

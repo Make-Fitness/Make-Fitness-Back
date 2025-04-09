@@ -46,12 +46,6 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getReservationByIdWithAuthorization(reservationId, userId));
     }
 
-    @Operation(summary = "회원 예약 목록 조회", description = "멤버십 ID 기준으로 예약된 수업 목록 조회")
-    @GetMapping("/reservation/list/{membershipId}")
-    public ResponseEntity<?> getReservations(@PathVariable int membershipId) {
-        return ResponseEntity.ok(reservationService.getReservationsByMembershipId(membershipId));
-    }
-
     @Operation(summary = "예약 여부 확인", description = "해당 수업에 대해 이미 예약했는지 여부 반환")
     @GetMapping("/reservation/exist")
     public ResponseEntity<?> checkReservationExists(

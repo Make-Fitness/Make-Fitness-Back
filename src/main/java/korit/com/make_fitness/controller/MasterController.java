@@ -20,14 +20,6 @@ public class MasterController {
     @Autowired
     private MasterService masterService;
 
-    // 트레이너 삭제 기능
-    @Operation(summary = "트레이너 삭제", description = "트레이너 삭제")
-    @DeleteMapping("/manager/{userId}")
-    public ResponseEntity<?> removeManager(@RequestBody ReqRightDto reqRightDto) {
-        masterService.removeManager(reqRightDto.getRoleName(), reqRightDto.getUserId());
-        return ResponseEntity.ok().build();
-    }
-
     // master 권한으로 회원 권한 변경
     @Operation(summary = "회원 권한 변경", description = "회원 번호에 따라 master 권한으로 회원 권한 변경")
     @PutMapping("/users/{userId}/role")
@@ -50,6 +42,7 @@ public class MasterController {
         return masterService.searchMembers(nickName);
     }
 
+    // 지정된 날짜 매출 조회
     @Operation(summary = "지정된 날짜 매출 조회", description = "지정된 날짜 매출 조회")
     @GetMapping("/sales/reports")
     public ResponseEntity<?> getSalesWithStartAndEndDate(ReqDateDto reqDateDto) {

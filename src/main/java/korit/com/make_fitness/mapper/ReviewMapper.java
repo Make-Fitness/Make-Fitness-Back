@@ -7,6 +7,7 @@ import java.util.List;
 
 @Mapper
 public interface ReviewMapper {
+
     int insertReview(Review review);
 
     List<Review> selectAllReviews();
