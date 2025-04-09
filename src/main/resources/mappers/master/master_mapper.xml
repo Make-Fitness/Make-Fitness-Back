@@ -31,13 +31,6 @@
         where user_id = #{userId}
     </update>
 
-    <!-- 매니저 삭제 -->
-    <delete id="deleteManager">
-        delete from user_tb
-        where role_name = #{roleName}
-        and user_id = #{userId}
-    </delete>
-
     <!-- 매니저 목록 조회 -->
     <select id="findManager" resultMap="ManagerResultMap">
         select

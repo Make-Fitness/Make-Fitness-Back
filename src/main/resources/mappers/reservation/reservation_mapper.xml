@@ -15,7 +15,7 @@
     <insert id="insertReservation" parameterType="korit.com.make_fitness.dto.request.ReqReservationDto" keyProperty="reservationId" useGeneratedKeys="true">
         insert into reservation_tb (class_id, membership_id, created_at, updated_at)
         select
-        #{classId}, #{membershipId}, now(), now()
+            #{classId}, #{membershipId}, now(), now()
         from dual
         <![CDATA[
         where exists (
@@ -48,64 +48,72 @@
     <select id="existsByClassAndMembership" resultType="boolean">
         select exists (
         select 1
-        from reservation_tb
-        where class_id = #{classId}
-        and membership_id = #{membershipId}
+        from
+            reservation_tb
+        where
+            class_id = #{classId}
+            and membership_id = #{membershipId}
         )
     </select>
 
     <select id="findReservationsByMembershipId" resultMap="ReservationResultMap">
         select *
-        from reservation_tb
-        where membership_id = #{membershipId}
+        from
+            reservation_tb
+        where
+            membership_id = #{membershipId}
     </select>
 
     <select id="findClassIdListByMembershipId" resultType="java.lang.Integer">
         select class_id
-        from reservation_tb
-        where membership_id = #{membershipId}
+        from
+            reservation_tb
+        where
+            membership_id = #{membershipId}
     </select>
 
     <select id="findById" resultMap="ReservationResultMap">
         select *
-        from reservation_tb
-        where reservation_id = #{reservationId}
+        from
+            reservation_tb
+        where
+            reservation_id = #{reservationId}
     </select>
 
     <select id="findAvailablePromotionsByUserId" resultType="korit.com.make_fitness.dto.response.RespAvailablePromotionDto">
         select
-        m.membership_id as membershipId,
-        p.promotion_name as promotionName,
-        trainer.nickname as trainerName,
-        m.promotion_session_count as remainingSessionCount,
-        m.expired_date as expiredDate
+            m.membership_id as membershipId,
+            p.promotion_name as promotionName,
+            trainer.nickname as trainerName,
+            m.promotion_session_count as remainingSessionCount,
+            m.expired_date as expiredDate
         from
-        membership_tb m
-        join promotion_tb p on m.promotion_id = p.promotion_id
-        join pay_tb pay on pay.user_id = m.user_id and pay.promotion_id = p.promotion_id
-        join user_tb trainer on trainer.user_id = pay.manager_id
+            membership_tb m
+            join promotion_tb p on m.promotion_id = p.promotion_id
+            join pay_tb pay on pay.user_id = m.user_id and pay.promotion_id = p.promotion_id
+            join user_tb trainer on trainer.user_id = pay.manager_id
         where
-        m.user_id = #{userId}
-        and m.promotion_session_count > 0
+            m.user_id = #{userId}
+            and m.promotion_session_count > 0
     </select>
 
     <select id="findTodayReservationsByMembershipId" resultType="korit.com.make_fitness.dto.response.RespMyTodayReservationDto">
         select
-        r.reservation_id,
-        c.class_time,
-        u.nickname as trainer_name,
-        cs.class_subject_name as class_subject
-        from
-        reservation_tb r
-        join class_tb c on r.class_id = c.class_id
-        join class_subject_tb cs on c.class_subject_id = cs.class_subject_id
-        join membership_tb m on r.membership_id = m.membership_id
-        join pay_tb p on m.promotion_id = p.promotion_id and m.user_id = p.user_id
-        join user_tb u on u.user_id = p.manager_id
+            r.reservation_id,
+            c.class_time,
+            u.nickname as trainer_name,
+            cs.class_subject_name as class_subject
+            from
+            reservation_tb r
+            join class_tb c on r.class_id = c.class_id
+            join class_subject_tb cs on c.class_subject_id = cs.class_subject_id
+            join membership_tb m on r.membership_id = m.membership_id
+            join pay_tb p on m.promotion_id = p.promotion_id and m.user_id = p.user_id
+            join user_tb u on u.user_id = p.manager_id
         where
-        r.membership_id = #{membershipId}
-        and DATE(c.class_time) = CURRENT_DATE
-        and u.role_name = 'ROLE_MANAGER'
+            r.membership_id = #{membershipId}
+            and DATE(c.class_time) = CURRENT_DATE
+            and u.role_name = 'ROLE_MANAGER'
     </select>
 
     <select id="findAvailableClassesByMembershipId" resultType="korit.com.make_fitness.dto.response.RespClassReservationRow">
@@ -137,37 +145,44 @@
         ]]>
     </select>
 
-    <select id="findReservationHistoryByMembershipId" resultType="korit.com.make_fitness.dto.response.RespMyTodayReservationDto">
+    <select id="findReservationHistoryByMembershipId" resultType="korit.com.make_fitness.dto.response.RespReservationHistoryDto">
         <![CDATA[
-        select
-        r.reservation_id,
-        c.class_time,
-        u.nickname as trainer_name,
-        cs.class_subject_name as class_subject
-        from
+    select
+        r.reservation_id as reservationId,
+        c.class_id as classId,
+        c.class_time as classTime,
+        u.nickname as trainerName,
+        cs.class_subject_name as classSubject,
+        false as attended,
+        false as canceled
+    from
         reservation_tb r
         join class_tb c on r.class_id = c.class_id
         join class_subject_tb cs on c.class_subject_id = cs.class_subject_id
         join membership_tb m on r.membership_id = m.membership_id
         join pay_tb p on m.promotion_id = p.promotion_id and m.user_id = p.user_id
         join user_tb u on u.user_id = p.manager_id
-        where
+    where
         r.membership_id = #{membershipId}
         and date(c.class_time) < CURRENT_DATE
         and u.role_name = 'ROLE_MANAGER'
-        order by c.class_time desc
+    order by c.class_time desc
     ]]>
     </select>
 
     <delete id="cancelReservationsByClassId" parameterType="int">
-        delete from reservation_tb
-        where class_id = #{classId}
+        delete
+            from reservation_tb
+        where
+            class_id = #{classId}
     </delete>
 
     <select id="findReservationsByClassId" resultMap="ReservationResultMap">
         select *
-        from reservation_tb
-        where class_id = #{classId}
+        from
+            reservation_tb
+        where
+            class_id = #{classId}
     </select>
 
     <select id="findMembershipIdsByClassId" resultType="java.lang.Integer">

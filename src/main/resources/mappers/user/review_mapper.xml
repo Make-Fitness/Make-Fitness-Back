@@ -10,6 +10,7 @@
     </insert>
 
     <select id="selectAllReviews" resultType="korit.com.make_fitness.entity.Review">
+
         select
             review_id,
             likeStar,

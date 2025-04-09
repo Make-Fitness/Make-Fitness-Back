@@ -16,9 +16,6 @@ public interface MasterMapper {
     // 월별 트레이너 정보
     List<RespManagerDto> findManager(@Param("classTime") LocalDate classTime);
 
-    // 매니저 삭제
-    int deleteManager(@Param("userId") int userId, @Param("roleName") String roleName);
-
     // 회원 롤네임 수정
     int updateRoleName(@Param("userId") int userId, @Param("roleName") String roleName);
 

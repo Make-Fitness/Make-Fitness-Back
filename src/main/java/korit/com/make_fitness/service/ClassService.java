@@ -22,9 +22,6 @@ public class ClassService {
     @Autowired
     private ClassRepository classRepository;
 
-    @Autowired
-    private MembershipRepository membershipRepository;
-
     // 수업 등록
     @Transactional(rollbackFor = Exception.class)
     public Class createClass(Class classEntity, User user) throws AccessDeniedException {
@@ -147,6 +144,7 @@ public class ClassService {
         return convertToDto(classEntity);
     }
 
+    // 공통 Dto
     private RespClassListDto convertToDto(Class c) {
         return RespClassListDto.builder()
                 .classId(c.getClassId())

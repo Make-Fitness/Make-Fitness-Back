@@ -28,7 +28,7 @@ public class ReservationService {
     @Autowired
     private ClassRepository classRepository;
 
-    // 수업 예약 처리
+    // ✅ 수업 예약 처리
     @Transactional(rollbackFor = Exception.class)
     public void reserveClass(ReqReservationDto reqReservationDto) throws AccessDeniedException {
         int result = reservationRepository.insertReservationIfAllowed(reqReservationDto);
@@ -37,11 +37,14 @@ public class ReservationService {
             throw new IllegalStateException("예약 조건을 만족하지 않아 예약에 실패했습니다.");
         }
 
+        // 멤버십 세션카운트 차감
         membershipRepository.updateSessionCount(reqReservationDto.getMembershipId());
+
+        // 예약 인원 +1 증가
         classRepository.increaseCustomerReserve(reqReservationDto.getClassId());
     }
 
-    // 예약 취소 처리
+    // ✅ 예약 취소 처리
     @Transactional(rollbackFor = Exception.class)
     public void cancelReservation(int reservationId, int userId) throws AccessDeniedException {
         Reservation reservation = reservationRepository.findById(reservationId);
@@ -69,6 +72,7 @@ public class ReservationService {
         return reservationRepository.findReservationsByClassId(classId);
     }
 
+    // 단건 예약 조회 (권한 확인 포함)
     @Transactional(readOnly = true)
     public Reservation getReservationByIdWithAuthorization(int reservationId, int userId) throws AccessDeniedException {
         Reservation reservation = reservationRepository.findById(reservationId);
@@ -85,26 +89,25 @@ public class ReservationService {
         return reservation;
     }
 
+    // 해당 클래스와 멤버십으로 예약된 적 있는지 확인
     @Transactional(readOnly = true)
     public boolean existsByClassAndMembership(int classId, int membershipId) {
         return reservationRepository.existsByClassAndMembership(classId, membershipId);
     }
 
+    // 멤버십 기준 예약한 클래스 ID 리스트 반환
     @Transactional(readOnly = true)
     public List<Integer> getClassIdListByMembershipId(int membershipId) {
         return reservationRepository.findClassIdListByMembershipId(membershipId);
     }
 
-    @Transactional(readOnly = true)
-    public List<Reservation> getReservationsByMembershipId(int membershipId) {
-        return reservationRepository.findReservationsByMembershipId(membershipId);
-    }
-
+    // 사용자 ID로 예약 가능한 프로모션 리스트 조회
     @Transactional(readOnly = true)
     public List<RespAvailablePromotionDto> getAvailablePromotions(int userId) {
         return reservationRepository.findUserPromotionsByUserId(userId);
     }
 
+    // 오늘 예약 정보 조회
     @Transactional(readOnly = true)
     public List<RespMyTodayReservationDto> getTodayReservationsByMembershipId(int membershipId) {
         if (membershipId <= 0) {
@@ -125,6 +128,7 @@ public class ReservationService {
         }
     }
 
+    // 오늘 이후 예약 가능한 클래스 목록 조회
     @Transactional(readOnly = true)
     public List<RespClassReservationRow> getAvailableClassesByMembershipId(int membershipId) {
         return reservationRepository.getAvailableClassesByMembershipId(membershipId);

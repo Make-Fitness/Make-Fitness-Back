@@ -21,11 +21,6 @@ public class MasterRepository {
     @Autowired
     private UserMapper userMapper;
 
-    // 트레이너 삭제 기능
-    public void deleteManager(String roleName, int userId) {
-        masterMapper.deleteManager(userId, roleName);
-    }
-
     // userId로 조회하여 회원 권한 부여
     public void updateRoleByUserId(int userId, String roleName) {
         masterMapper.updateRoleName(userId, roleName);

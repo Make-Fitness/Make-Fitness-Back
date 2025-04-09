@@ -26,10 +26,6 @@ public class ReservationRepository {
         return reservationMapper.existsByClassAndMembership(classId, membershipId);
     }
 
-    public List<Reservation> findReservationsByMembershipId(int membershipId) {
-        return reservationMapper.findReservationsByMembershipId(membershipId);
-    }
-
     public List<Integer> findClassIdListByMembershipId(int membershipId) {
         return reservationMapper.findClassIdListByMembershipId(membershipId);
     }
