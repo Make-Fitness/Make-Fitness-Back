@@ -1,4 +1,4 @@
-# 🏋️‍♂️ Make Fitness | 헬스 수업 예약 플랫폼
+![KakaoTalk_20250416_142452041](https://github.com/user-attachments/assets/a98ab71d-2410-4dcb-86bf-2480923b706b)# 🏋️‍♂️ Make Fitness | 헬스 수업 예약 플랫폼
 
 > 트레이너와 회원 간의 **수업 등록**, **예약**, **출결**, **결제** 과정을  
 > 효율적으로 연결하는 **웹 기반 통합 헬스 관리 시스템**
@@ -16,10 +16,10 @@
 - [🧪 테스트 계정](#-테스트-계정)  
 - [🖼 주요 화면](#-주요-화면)  
 - [🧠 구현 포인트](#-구현-포인트)  
+- [📄 API 명세서 & ERD](#-api-명세서--erd)  
 - [👨‍💻 개발자 정보](#-개발자-정보)  
-- [🔗 관련 링크](#-관련-링크)  
+- [🔗 관련링크](#-관련링크)  
 - [💬 프로젝트 회고](#-프로젝트-회고)
-
 ---
 
 ## ✨ 프로젝트 소개
@@ -110,8 +110,7 @@ npm run dev
 > 로그인 기능
 
 ## 📝 수업 등록 (트레이너)
-<img width="1280" alt="Image" src="https://github.com/user-attachments/assets/a23968f6-4315-452f-98d8-52e621daf3da" style= "width: 1000px;" />
-<img width="1280" alt="Image" src="https://github.com/user-attachments/assets/486230d8-d3bf-4c07-a5b4-f616f5d89ed1" style= "width: 1000px;" />
+![Image](https://github.com/user-attachments/assets/85daedec-d894-4649-849c-edb6a39f632b)
 
 
 > 트레이너는 원하는 날짜의 시간대를 선택해 수업을 등록하거나, 이미 등록된 수업은 삭제 모드로 전환해 쉽게 제거 가능하다.  
@@ -119,7 +118,7 @@ npm run dev
 ## 📅 수업 예약 (회원)
 <img width="1280" alt="Image" src="https://github.com/user-attachments/assets/ceca91a6-9263-4933-a133-dc7b0e343517" style= "width: 1000px;" />
 
-<img width="1280" alt="Image" src="https://github.com/user-attachments/assets/f3ee190f-e2fb-46bb-8a2f-4d2893a22b07" style= "width: 1000px;" />
+![Image](https://github.com/user-attachments/assets/6463bbf9-8a39-4c8d-8fb9-2a7f9d7ec0c4)
 
 > 이용자는 날짜를 선택해 예약 가능한 수업을 확인하고, 정원 초과 여부 및 예약 상태를 실시간으로 확인 후 즉시 예약/취소할 수 있다.
 > 서버와 연동되어 세션 차감, 중복 방지, 정원 관리가 자동 처리된다.
@@ -146,7 +145,8 @@ npm run dev
 > 관리자는 회원관리 페이지에서 회원가입한 모든 회원을 볼 수 있으며 회원구분에서 권한을 변경할 수 있도 페이지를 구현하였습니다.
 
 ## 📌 멤버십 가입
-<img width="1280" alt="Image" src="https://github.com/user-attachments/assets/9700ce87-8213-45f6-b765-fc288f03fd8c" style= "width: 1000px;" />
+![KakaoTalk_20250416_142452041](https://github.com/user-attachments/assets/9166c266-f837-4be7-a613-e33aed3319bb)
+
 
 > 사용자가 선택한 멤버십 상품을 결제 후, 서버에 등록하여 세션/권한까지 자동 설정이 되도록 설계하였습니다.
 
@@ -171,6 +171,54 @@ npm run dev
 Swagger + GitHub Actions
 → API 문서 자동화 및 배포 자동화 CI/CD 구성
 
+## 📄 API 명세서 & ERD
+
+### 🛰️ API 명세서 요약
+
+| 구분     | 기능         | Method | API Path                                     | 설명                             |
+|----------|--------------|--------|----------------------------------------------|----------------------------------|
+| 비회원   | 로그인        | POST   | `/auth/signin`                               | 로그인 요청                      |
+| 비회원   | 회원가입      | POST   | `/auth/signup`                               | 회원가입 요청                    |
+| 공통     | 수업 조회     | GET    | `/makefitness/exercise`                      | PT/필라테스 수업 리스트          |
+| 공통     | 위치 조회     | GET    | `/makefitness/map`                           | 헬스장 지도 위치                 |
+| 공통     | 멤버십        | GET    | `/makefitness/membership`                    | 이용권 리스트                    |
+| 공통     | 강사진        | GET    | `/makefitness/trainer`                       | 트레이너 리스트 조회             |
+| 공통     | 리뷰 작성     | POST   | `/makefitness/review`                        | 리뷰 작성                        |
+| 회원     | 수업 예약     | POST   | `/makefitness/reservations`                  | 수업 예약                        |
+| 회원     | 마이페이지    | GET    | `/makefitness/mypage`                        | 회원 정보 수정/확인             |
+| 매니저   | 회원관리      | GET    | `/makefitness/manager/membermanagement`      | 소속 회원 리스트                |
+| 매니저   | 수업 등록     | POST   | `/makefitness/manager/classes`               | 수업 등록                        |
+| 관리자   | 매출 관리     | GET    | `/makefitness/sales`                         | 관리자 매출 페이지               |
+| 관리자   | 근무자 관리   | GET    | `/makefitness/worker`                        | 트레이너 관리                    |
+
+[👉 API 명세서 ] 
+![Image](https://github.com/user-attachments/assets/89843b3e-4d1c-4173-8ee7-8f9a5d5d63a9)
+![Image](https://github.com/user-attachments/assets/858c7f76-0c0a-436a-b725-7560901b3662)
+
+### 🗂️ ERD (Entity Relationship Diagram)
+![Image](https://github.com/user-attachments/assets/5e376d5b-af3b-4c16-bb72-2ad11dd79b47)
+
+- 각 테이블 간 관계와 비즈니스 흐름을 시각적으로 표현
+- `user_tb`, `class_tb`, `promotion_tb`, `membership_tb`, `reservation_tb`, `pay_tb` 중심으로 구성
+
+### 👨‍💻 프론트 / 백엔드 역할 분담 요약
+
+#### ✅ 프론트엔드
+- 캘린더 기반 수업 예약 / 삭제 / 출석 UI
+- 회원별 수업 조회, 이용권 확인 기능 구현
+- PortOne 연동 결제 버튼 + 모달 연동
+- React Router 기반 라우팅 / 권한 처리
+- Emotion 기반 UI 컴포넌트
+
+#### ✅ 백엔드
+- Spring Security + JWT 인증 체계 구축
+- MyBatis 기반 쿼리 매핑 및 DTO 구조
+- 수업 예약 제한 조건 / 출석 로직 구현
+- 이용권 구매 → 세션 차감 / 복구 프로세스
+- Swagger 문서화 + CI/CD 자동 배포 연동
+
+---
+
 ### 👨‍💻 개발자 정보
 
 | 이름               | 역할                     |
@@ -186,8 +234,8 @@ Swagger + GitHub Actions
 - CI/CD 자동화 및 배포 구성
 
 ### 🔗 관련링크
-🔗 배포 주소: https://makefitness.store/
-📄 노션 프로젝트 문서: https://lake-guanaco-5fe.notion.site/1af2ef25054380d5bdf8f184138b735e
+## 🔗 배포 주소: https://makefitness.store/
+## 📄 노션 프로젝트 문서: https://lake-guanaco-5fe.notion.site/1af2ef25054380d5bdf8f184138b735e
 
 ### 💬 프로젝트 회고
 “끝까지 해보자는 마음 하나”
